@@ -1,7 +1,12 @@
 package gleb.server;
 
+import oracle.jdbc.OracleDatabaseMetaData;
+import oracle.jdbc.OracleResultSet;
+
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.RowSetListener;
 import javax.sql.rowset.CachedRowSet;
@@ -13,6 +18,7 @@ public class CoffeesTableModel implements TableModel {
 
     CachedRowSet coffeesRowSet; // The ResultSet to interpret
     ResultSetMetaData metadata; // Additional information about the results
+    List<Integer> noNullCols;
     int numcols, numrows; // How many rows and columns in the table
 
     public CachedRowSet getCoffeesRowSet() {
@@ -39,17 +45,23 @@ public class CoffeesTableModel implements TableModel {
         this.coffeesRowSet.addRowSetListener(listener);
     }
 
+    void constraintChecker() throws SQLException {
+        int colCount = coffeesRowSet.getMetaData().getColumnCount();
+        noNullCols = new ArrayList<>();
 
-    public void insertRow(String coffeeName, int supplierID, float price,
-                          int sales, int total) throws SQLException {
+        for (int i = 1; i <= colCount; i++)
+            if (coffeesRowSet.getMetaData().isNullable(i) == ResultSetMetaData.columnNoNulls)
+                noNullCols.add(i);
+    }
+
+    public void insertRow(int job_id, String job_title, int min_salary, int max_salary) throws SQLException {
 
         try {
             this.coffeesRowSet.moveToInsertRow();
-            this.coffeesRowSet.updateString("COF_NAME", coffeeName);
-            this.coffeesRowSet.updateInt("SUP_ID", supplierID);
-            this.coffeesRowSet.updateFloat("PRICE", price);
-            this.coffeesRowSet.updateInt("SALES", sales);
-            this.coffeesRowSet.updateInt("TOTAL", total);
+            this.coffeesRowSet.updateInt("JOB_ID", job_id);
+            this.coffeesRowSet.updateString("JOB_TITLE", job_title);
+            this.coffeesRowSet.updateInt("MIN_SALARY", min_salary);
+            this.coffeesRowSet.updateInt("MAX_SALARY", max_salary);
             this.coffeesRowSet.insertRow();
             this.coffeesRowSet.moveToCurrentRow();
         } catch (SQLException e) {
