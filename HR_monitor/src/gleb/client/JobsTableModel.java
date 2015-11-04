@@ -1,12 +1,11 @@
-package gleb.server;
+package gleb.client;
 
-import oracle.jdbc.OracleDatabaseMetaData;
-import oracle.jdbc.OracleResultSet;
+import gleb.server.LoGGer;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Types;
+import java.util.logging.Level;
 
 import javax.sql.RowSetListener;
 import javax.sql.rowset.CachedRowSet;
@@ -14,66 +13,56 @@ import javax.sql.rowset.CachedRowSet;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-public class CoffeesTableModel implements TableModel {
+public class JobsTableModel implements TableModel {
 
-    CachedRowSet coffeesRowSet; // The ResultSet to interpret
-    ResultSetMetaData metadata; // Additional information about the results
-    List<Integer> noNullCols;
-    int numcols, numrows; // How many rows and columns in the table
+    private CachedRowSet rowSet; // The ResultSet to interpret
+    private ResultSetMetaData metadata; // Additional information about the results
+    private int numcols, numrows; // How many rows and columns in the table
 
-    public CachedRowSet getCoffeesRowSet() {
-        return coffeesRowSet;
+    public CachedRowSet getRowSet() {
+        return rowSet;
     }
 
 
-    public CoffeesTableModel(CachedRowSet rowSetArg) throws SQLException {
+    public JobsTableModel(CachedRowSet rowSetArg) throws SQLException {
 
-        this.coffeesRowSet = rowSetArg;
-        this.metadata = this.coffeesRowSet.getMetaData();
+        this.rowSet = rowSetArg;
+        this.metadata = this.rowSet.getMetaData();
         numcols = metadata.getColumnCount();
 
         // Retrieve the number of rows.
-        this.coffeesRowSet.beforeFirst();
+        this.rowSet.beforeFirst();
         this.numrows = 0;
-        while (this.coffeesRowSet.next()) {
+        while (this.rowSet.next()) {
             this.numrows++;
         }
-        this.coffeesRowSet.beforeFirst();
+        this.rowSet.beforeFirst();
     }
 
     public void addEventHandlersToRowSet(RowSetListener listener) {
-        this.coffeesRowSet.addRowSetListener(listener);
-    }
-
-    void constraintChecker() throws SQLException {
-        int colCount = coffeesRowSet.getMetaData().getColumnCount();
-        noNullCols = new ArrayList<>();
-
-        for (int i = 1; i <= colCount; i++)
-            if (coffeesRowSet.getMetaData().isNullable(i) == ResultSetMetaData.columnNoNulls)
-                noNullCols.add(i);
+        this.rowSet.addRowSetListener(listener);
     }
 
     public void insertRow(int job_id, String job_title, int min_salary, int max_salary) throws SQLException {
 
         try {
-            this.coffeesRowSet.moveToInsertRow();
-            this.coffeesRowSet.updateInt("JOB_ID", job_id);
-            this.coffeesRowSet.updateString("JOB_TITLE", job_title);
-            this.coffeesRowSet.updateInt("MIN_SALARY", min_salary);
-            this.coffeesRowSet.updateInt("MAX_SALARY", max_salary);
-            this.coffeesRowSet.insertRow();
-            this.coffeesRowSet.moveToCurrentRow();
+            this.rowSet.moveToInsertRow();
+            this.rowSet.updateInt("JOB_ID", job_id);
+            this.rowSet.updateString("JOB_TITLE", job_title);
+            this.rowSet.updateInt("MIN_SALARY", min_salary);
+            this.rowSet.updateInt("MAX_SALARY", max_salary);
+            this.rowSet.insertRow();
+            this.rowSet.moveToCurrentRow();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LoGGer.log(Level.SEVERE, null, e);
         }
     }
 
     public void close() {
         try {
-            coffeesRowSet.getStatement().close();
+            rowSet.getStatement().close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LoGGer.log(Level.SEVERE, null, e);
         }
     }
 
@@ -102,8 +91,9 @@ public class CoffeesTableModel implements TableModel {
         try {
             return this.metadata.getColumnLabel(column + 1);
         } catch (SQLException e) {
-            return e.toString();
+            LoGGer.log(Level.SEVERE, null, e);
         }
+        return null;
     }
 
     /** Method from interface TableModel; returns the most specific superclass for
@@ -125,15 +115,16 @@ public class CoffeesTableModel implements TableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
 
         try {
-            this.coffeesRowSet.absolute(rowIndex + 1);
-            Object o = this.coffeesRowSet.getObject(columnIndex + 1);
+            this.rowSet.absolute(rowIndex + 1);
+            Object o = this.rowSet.getObject(columnIndex + 1);
             if (o == null)
                 return null;
             else
                 return o.toString();
         } catch (SQLException e) {
-            return e.toString();
+            e.printStackTrace();
         }
+        return null;
     }
 
     /** Method from interface TableModel; returns true if the specified cell
@@ -143,7 +134,9 @@ public class CoffeesTableModel implements TableModel {
      */
 
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return false;
+        if (columnIndex == 0)
+            return false;
+        return true;
     }
 
     // Because the sample does not allow users to edit any cells from the
@@ -151,7 +144,26 @@ public class CoffeesTableModel implements TableModel {
     // and removeTableModelListener, do not need to be implemented.
 
     public void setValueAt(Object value, int row, int column) {
-        System.out.println("Calling setValueAt row " + row + ", column " + column);
+        column++;
+        try {
+            int type = metadata.getColumnType(column);
+            switch (type) {
+                case Types.VARCHAR:
+                    rowSet.updateString(column, (String) value);
+                    break;
+//                case Types.INTEGER:
+//                    rowSet.updateInt(column, (Integer) value);
+//                    break;
+                case Types.NUMERIC:
+                    rowSet.updateDouble(column, Double.parseDouble((String) value));
+                    break;
+                default:
+                    LoGGer.warning("Dont support this type for update");
+            }
+            rowSet.updateRow();
+        } catch (SQLException e) {
+            LoGGer.log(Level.SEVERE, null, e);
+        }
     }
 
     public void addTableModelListener(TableModelListener l) {

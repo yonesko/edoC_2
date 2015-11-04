@@ -4,12 +4,25 @@ import com.sun.rowset.CachedRowSetImpl;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.sql.rowset.CachedRowSet;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Locale;
+import java.util.logging.Level;
 
 public class DataSource {
-    public static OracleDataSource getOracleDataSource(String user, String pass) throws SQLException {
+    private static Connection connection;
+    private static OracleDataSource oraDS;
+
+    static {
+        try {
+            oraDS = DataSource.getOracleDataSource("hr", "hr");
+            connection = oraDS.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private static OracleDataSource getOracleDataSource(String user, String pass) throws SQLException {
         OracleDataSource oracleDS = null;
         Locale.setDefault(Locale.ENGLISH);
 
@@ -21,23 +34,18 @@ public class DataSource {
         }
         return oracleDS;
     }
-    public static CachedRowSet getContentsOfCoffeesTable() throws SQLException {
-        CachedRowSet crs = null;
+
+    public static void close() {
         try {
-            crs = new CachedRowSetImpl();
-            crs.setType(ResultSet.TYPE_SCROLL_INSENSITIVE);
-            crs.setConcurrency(ResultSet.CONCUR_UPDATABLE);
-            crs.setUsername("hr");
-            crs.setPassword("hr");
-            crs.setUrl("jdbc:oracle:thin:" + "hr" + "/" + "hr" + "@//localhost:1521/XE");
-
-            // Regardless of the query, fetch the contents of COFFEES
-            crs.setCommand("SELECT job_id, job_title, min_salary, max_salary FROM jobs");
-            crs.execute();
-
+            connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LoGGer.log(Level.SEVERE, null, e);
         }
-        return crs;
+    }
+    public static Connection getConnection() {
+        return connection;
+    }
+    public static OracleDataSource getOraDS() {
+        return oraDS;
     }
 }

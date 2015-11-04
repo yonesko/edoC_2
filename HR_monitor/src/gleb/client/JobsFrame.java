@@ -31,21 +31,19 @@
 
 package gleb.client;
 
-import gleb.server.CoffeesTableModel;
 import gleb.server.DataSource;
+import gleb.server.JobsTable;
 
 import javax.sql.RowSetEvent;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.RowSetListener;
 import javax.sql.rowset.CachedRowSet;
 
-public class CoffeesFrame extends JFrame implements RowSetListener {
+public class JobsFrame extends JFrame implements RowSetListener {
   
-  Connection connection;
   JTable table; // The table for displaying data
 
   JLabel label_job_title;
@@ -62,35 +60,24 @@ public class CoffeesFrame extends JFrame implements RowSetListener {
   JButton button_UPDATE_DATABASE;
   JButton button_DISCARD_CHANGES;
 
-  CoffeesTableModel myCoffeesTableModel;
+  JobsTableModel jobsTableModel;
 
-  public CoffeesFrame() throws SQLException {
-    super("Должности"); // Set window title
-    
-    connection = DataSource.getOracleDataSource("hr", "hr").getConnection();
-
-    // Close connections exit the application when the user
-    // closes the window
+  public JobsFrame() throws SQLException {
+    super("Должности");
 
     addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
-          try {
-            connection.close();
-          } catch (SQLException sqle) {
-            sqle.printStackTrace();
-          }
+          DataSource.close();
           System.exit(0);
         }
       });
 
-    // Initialize and lay out window controls
+    CachedRowSet myCachedRowSet = new JobsTable().getCrs();
+    jobsTableModel = new JobsTableModel(myCachedRowSet);
+    jobsTableModel.addEventHandlersToRowSet(this);
 
-    CachedRowSet myCachedRowSet = DataSource.getContentsOfCoffeesTable();
-    myCoffeesTableModel = new CoffeesTableModel(myCachedRowSet);
-    myCoffeesTableModel.addEventHandlersToRowSet(this);
-
-    table = new JTable(); // Displays the table
-    table.setModel(myCoffeesTableModel);
+    table = new JTable();
+    table.setModel(jobsTableModel);
 
     label_job_title = new JLabel();
     label_job_id = new JLabel();
@@ -239,29 +226,32 @@ public class CoffeesFrame extends JFrame implements RowSetListener {
     // Add listeners for the buttons in the application
 
     button_ADD_ROW.addActionListener(new ActionListener() {
-
         public void actionPerformed(ActionEvent e) {
+          //check constraints
+          if (tf_job_title.getText().length() == 0) {
+            JOptionPane.showMessageDialog(JobsFrame.this, "job_title cant be empty");
+          } else {
+            try {
 
-          JOptionPane.showMessageDialog(CoffeesFrame.this,
-                                        new String[] {
-                "Adding the following row:",
-                "Coffee name: [" + tf_job_id.getText() + "]",
-                "Supplier ID: [" + tf_job_title.getText() + "]",
-                "Price: [" + tf_min_salary.getText() + "]",
-                "Sales: [" + tf_max_salary.getText() + "]" });
+              jobsTableModel.insertRow(
+                      Integer.parseInt(tf_job_id.getText()),
+                      tf_job_title.getText(),
+                      Integer.parseInt(tf_min_salary.getText()),
+                      Integer.parseInt(tf_max_salary.getText())
+              );
 
-
-          try {
-
-            myCoffeesTableModel.insertRow(
-                    Integer.parseInt(tf_job_id.getText()),
-                    tf_job_title.getText(),
-                    Integer.parseInt(tf_min_salary.getText()),
-                    Integer.parseInt(tf_max_salary.getText())
-            );
-          } catch (SQLException sqle) {
-            displaySQLExceptionDialog(sqle);
+            } catch (SQLException sqle) {
+              displaySQLExceptionDialog(sqle);
+            }
+            JOptionPane.showMessageDialog(JobsFrame.this,
+                    new String[] {
+                            "Adding the following row:",
+                            "job_id name: [" + tf_job_id.getText() + "]",
+                            "job_title ID: [" + tf_job_title.getText() + "]",
+                            "min_salary: [" + tf_min_salary.getText() + "]",
+                            "max_salary: [" + tf_max_salary.getText() + "]" });
           }
+
         }
       });
 
@@ -269,7 +259,7 @@ public class CoffeesFrame extends JFrame implements RowSetListener {
 
         public void actionPerformed(ActionEvent e) {
           try {
-            myCoffeesTableModel.getCoffeesRowSet().acceptChanges();
+            jobsTableModel.getRowSet().acceptChanges();
           } catch (SQLException sqle) {
             displaySQLExceptionDialog(sqle);
             // Now revert back changes
@@ -297,7 +287,7 @@ public class CoffeesFrame extends JFrame implements RowSetListener {
     e.printStackTrace();
     // Display the SQLException in a dialog box
     JOptionPane.showMessageDialog(
-      CoffeesFrame.this,
+      JobsFrame.this,
       new String[] {
         e.getClass().getName() + ": ",
         e.getMessage()
@@ -306,14 +296,14 @@ public class CoffeesFrame extends JFrame implements RowSetListener {
   }
 
   private void createNewTableModel() throws SQLException {
-    myCoffeesTableModel = new CoffeesTableModel(DataSource.getContentsOfCoffeesTable());
-    myCoffeesTableModel.addEventHandlersToRowSet(this);
-    table.setModel(myCoffeesTableModel);
+    jobsTableModel = new JobsTableModel(new JobsTable().getCrs());
+    jobsTableModel.addEventHandlersToRowSet(this);
+    table.setModel(jobsTableModel);
   }
 
   public static void main(String[] args) throws Exception {
     try {
-      CoffeesFrame qf = new CoffeesFrame();
+      JobsFrame qf = new JobsFrame();
       qf.pack();
       qf.setVisible(true);
     } catch (SQLException sqle) {
@@ -331,21 +321,20 @@ public class CoffeesFrame extends JFrame implements RowSetListener {
 
   public void rowChanged(RowSetEvent event) {
 
-    CachedRowSet currentRowSet = this.myCoffeesTableModel.getCoffeesRowSet();
+    CachedRowSet currentRowSet = this.jobsTableModel.getRowSet();
 
     try {
       currentRowSet.moveToCurrentRow();
-      myCoffeesTableModel =
-        new CoffeesTableModel(myCoffeesTableModel.getCoffeesRowSet());
-      table.setModel(myCoffeesTableModel);
+      jobsTableModel =
+        new JobsTableModel(jobsTableModel.getRowSet());
+      table.setModel(jobsTableModel);
 
     } catch (SQLException ex) {
       ex.printStackTrace();
 
       // Display the error in a dialog box.
-
       JOptionPane.showMessageDialog(
-        CoffeesFrame.this,
+        JobsFrame.this,
         new String[] { // Display a 2-line message
           ex.getClass().getName() + ": ",
           ex.getMessage()
