@@ -1,44 +1,32 @@
 package gleb.server;
 
-import com.sun.rowset.CachedRowSetImpl;
-import gleb.server.DataSource;
-import gleb.server.LoGGer;
-
-import javax.sql.rowset.CachedRowSet;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.logging.Level;
 
-public class JobsTable {
-    private CachedRowSet crs;
-    private String[] cols;
-
-    public CachedRowSet getCrs() {
-        return crs;
-    }
-
-    public String[] getCols() {
-        return cols;
-    }
+public class JobsTable extends BaseTable {
 
     public JobsTable() {
-        cols = new String[] {
-                "job_id"
+        colsNotEditable = new ArrayList<>();
+        cols = new ArrayList<>(Arrays.asList("job_id"
                 ,"job_title"
                 ,"min_salary"
-                ,"max_salary"
+                ,"max_salary"));
 
-        };
+        initCachedRowSet("SELECT " + String.join(", ", cols) + " FROM jobs_test");
+        setDisabled("job_id", true);
+    }
+    public void insertRow(int job_id, String job_title, int min_salary, int max_salary) {
         try {
-            crs = new CachedRowSetImpl();
-            crs.setType(ResultSet.TYPE_SCROLL_SENSITIVE);
-            crs.setConcurrency(ResultSet.CONCUR_UPDATABLE);
-            crs.setUrl(DataSource.getOraDS().getURL());
-
-            // Regardless of the query, fetch the contents of COFFEES
-            crs.setCommand("SELECT " + String.join(", ", cols) + " FROM jobs_test");
-            LoGGer.info(crs.getCommand());
-            crs.execute();
+            crs.moveToInsertRow();
+            crs.updateInt("JOB_ID", job_id);
+            crs.updateString("JOB_TITLE", job_title);
+            crs.updateInt("MIN_SALARY", min_salary);
+            crs.updateInt("MAX_SALARY", max_salary);
+            crs.insertRow();
+            crs.moveToCurrentRow();
         } catch (SQLException e) {
             LoGGer.log(Level.SEVERE, null, e);
         }

@@ -31,20 +31,16 @@
 
 package gleb.client;
 
-import gleb.server.DataSource;
-import gleb.server.JobsTable;
-
 import javax.sql.RowSetEvent;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
 import javax.sql.RowSetListener;
-import javax.sql.rowset.CachedRowSet;
 
 public class JobsFrame extends JFrame implements RowSetListener {
   
-  JTable table; // The table for displaying data
+  JTable table;
 
   JLabel label_job_title;
   JLabel label_job_id;
@@ -62,18 +58,16 @@ public class JobsFrame extends JFrame implements RowSetListener {
 
   JobsTableModel jobsTableModel;
 
-  public JobsFrame() throws SQLException {
+  public JobsFrame() {
     super("Должности");
 
     addWindowListener(new WindowAdapter() {
-        public void windowClosing(WindowEvent e) {
-          DataSource.close();
-          System.exit(0);
-        }
-      });
+      public void windowClosing(WindowEvent e) {
+        System.exit(0);
+      }
+    });
 
-    CachedRowSet myCachedRowSet = new JobsTable().getCrs();
-    jobsTableModel = new JobsTableModel(myCachedRowSet);
+    jobsTableModel = new JobsTableModel();
     jobsTableModel.addEventHandlersToRowSet(this);
 
     table = new JTable();
@@ -226,59 +220,37 @@ public class JobsFrame extends JFrame implements RowSetListener {
     // Add listeners for the buttons in the application
 
     button_ADD_ROW.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          //check constraints
-          if (tf_job_title.getText().length() == 0) {
-            JOptionPane.showMessageDialog(JobsFrame.this, "job_title cant be empty");
-          } else {
-            try {
-
-              jobsTableModel.insertRow(
-                      Integer.parseInt(tf_job_id.getText()),
-                      tf_job_title.getText(),
-                      Integer.parseInt(tf_min_salary.getText()),
-                      Integer.parseInt(tf_max_salary.getText())
-              );
-
-            } catch (SQLException sqle) {
-              displaySQLExceptionDialog(sqle);
-            }
-            JOptionPane.showMessageDialog(JobsFrame.this,
-                    new String[] {
-                            "Adding the following row:",
-                            "job_id name: [" + tf_job_id.getText() + "]",
-                            "job_title ID: [" + tf_job_title.getText() + "]",
-                            "min_salary: [" + tf_min_salary.getText() + "]",
-                            "max_salary: [" + tf_max_salary.getText() + "]" });
-          }
-
+      public void actionPerformed(ActionEvent e) {
+        //check constraints
+        if (tf_job_title.getText().length() == 0) {
+          JOptionPane.showMessageDialog(JobsFrame.this, "job_title cant be empty");
+        } else {
+          jobsTableModel.insertRow(
+                  Integer.parseInt(tf_job_id.getText()),
+                  tf_job_title.getText(),
+                  Integer.parseInt(tf_min_salary.getText()),
+                  Integer.parseInt(tf_max_salary.getText())
+          );
+          JOptionPane.showMessageDialog(JobsFrame.this,
+            new String[] {
+                    "Adding the following row:",
+                    "job_id name: [" + tf_job_id.getText() + "]",
+                    "job_title ID: [" + tf_job_title.getText() + "]",
+                    "min_salary: [" + tf_min_salary.getText() + "]",
+                    "max_salary: [" + tf_max_salary.getText() + "]" });
         }
+      }
       });
 
     button_UPDATE_DATABASE.addActionListener(new ActionListener() {
-
         public void actionPerformed(ActionEvent e) {
-          try {
-            jobsTableModel.getRowSet().acceptChanges();
-          } catch (SQLException sqle) {
-            displaySQLExceptionDialog(sqle);
-            // Now revert back changes
-            try {
-              createNewTableModel();
-            } catch (SQLException sqle2) {
-              displaySQLExceptionDialog(sqle2);
-            }
-          }
+            jobsTableModel.acceptChanges();
         }
       });
 
     button_DISCARD_CHANGES.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          try {
-            createNewTableModel();
-          } catch (SQLException sqle) {
-            displaySQLExceptionDialog(sqle);
-          }
+          createNewTableModel();
         }
       });
   }
@@ -295,52 +267,23 @@ public class JobsFrame extends JFrame implements RowSetListener {
     );
   }
 
-  private void createNewTableModel() throws SQLException {
-    jobsTableModel = new JobsTableModel(new JobsTable().getCrs());
+  private void createNewTableModel() {
+    jobsTableModel = new JobsTableModel();
     jobsTableModel.addEventHandlersToRowSet(this);
     table.setModel(jobsTableModel);
   }
 
   public static void main(String[] args) throws Exception {
-    try {
       JobsFrame qf = new JobsFrame();
       qf.pack();
       qf.setVisible(true);
-    } catch (SQLException sqle) {
-      sqle.printStackTrace();
-    }
-    catch (Exception e) {
-      System.out.println("Unexpected exception");
-      e.printStackTrace();
-    }
   }
-
- // public void actionPerformed(ActionEvent event) {  }
 
   public void rowSetChanged(RowSetEvent event) {  }
 
   public void rowChanged(RowSetEvent event) {
-
-    CachedRowSet currentRowSet = this.jobsTableModel.getRowSet();
-
-    try {
-      currentRowSet.moveToCurrentRow();
-      jobsTableModel =
-        new JobsTableModel(jobsTableModel.getRowSet());
-      table.setModel(jobsTableModel);
-
-    } catch (SQLException ex) {
-      ex.printStackTrace();
-
-      // Display the error in a dialog box.
-      JOptionPane.showMessageDialog(
-        JobsFrame.this,
-        new String[] { // Display a 2-line message
-          ex.getClass().getName() + ": ",
-          ex.getMessage()
-        }
-      );
-    }
+    jobsTableModel = new JobsTableModel();
+    table.setModel(jobsTableModel);
   }
 
   public void cursorMoved(RowSetEvent event) {  }
