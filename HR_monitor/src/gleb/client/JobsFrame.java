@@ -255,18 +255,6 @@ public class JobsFrame extends JFrame implements RowSetListener {
       });
   }
 
-  private void displaySQLExceptionDialog(SQLException e) {
-    e.printStackTrace();
-    // Display the SQLException in a dialog box
-    JOptionPane.showMessageDialog(
-      JobsFrame.this,
-      new String[] {
-        e.getClass().getName() + ": ",
-        e.getMessage()
-      }
-    );
-  }
-
   private void createNewTableModel() {
     jobsTableModel = new JobsTableModel();
     jobsTableModel.addEventHandlersToRowSet(this);
