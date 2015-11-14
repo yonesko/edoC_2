@@ -1,4 +1,4 @@
-truncate table jobs_test; insert into jobs_test select * from jobs;
+truncate table jobs_test; insert into jobs_test select * from jobs; commit;
 
 select * from
 jobs_test

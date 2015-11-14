@@ -35,16 +35,6 @@ public class DataSource {
         return oracleDS;
     }
 
-    public static void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            LoGGer.log(Level.SEVERE, null, e);
-        }
-    }
-    public static Connection getConnection() {
-        return connection;
-    }
     public static OracleDataSource getOraDS() {
         return oraDS;
     }

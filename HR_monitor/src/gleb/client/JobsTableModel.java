@@ -1,20 +1,19 @@
 package gleb.client;
 
 import gleb.server.JobsTable;
+
+import javax.sql.RowSetEvent;
 import javax.sql.RowSetListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-public class JobsTableModel implements TableModel {
+public class JobsTableModel implements TableModel, RowSetListener {
 
     private JobsTable table;
 
     public JobsTableModel() {
         table = new JobsTable();
-    }
-
-    public void addEventHandlersToRowSet(RowSetListener listener) {
-        table.addRowSetListener(listener);
+        table.addRowSetListener(this);
     }
 
     public void insertRow(int job_id, String job_title, int min_salary, int max_salary) {
@@ -63,4 +62,18 @@ public class JobsTableModel implements TableModel {
         table.acceptChanges();
     }
 
+    @Override
+    public void rowSetChanged(RowSetEvent event) {
+        System.out.println("rowSetChanged");
+    }
+
+    @Override
+    public void rowChanged(RowSetEvent event) {
+        System.out.println("rowChanged");
+    }
+
+    @Override
+    public void cursorMoved(RowSetEvent event) {
+//        System.out.println("cursorMoved");
+    }
 }

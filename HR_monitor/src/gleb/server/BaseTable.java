@@ -13,7 +13,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-public class BaseTable {
+public abstract class BaseTable {
     protected CachedRowSet crs;
     /**
      * column_inxex - column_name map; arbitrary case of letters

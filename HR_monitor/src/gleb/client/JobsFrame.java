@@ -38,7 +38,7 @@ import java.awt.event.*;
 import java.sql.SQLException;
 import javax.sql.RowSetListener;
 
-public class JobsFrame extends JFrame implements RowSetListener {
+public class JobsFrame extends JFrame {
   
   JTable table;
 
@@ -68,7 +68,7 @@ public class JobsFrame extends JFrame implements RowSetListener {
     });
 
     jobsTableModel = new JobsTableModel();
-    jobsTableModel.addEventHandlersToRowSet(this);
+    jobsTableModel.addTableModelListener(table);
 
     table = new JTable();
     table.setModel(jobsTableModel);
@@ -245,6 +245,7 @@ public class JobsFrame extends JFrame implements RowSetListener {
     button_UPDATE_DATABASE.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             jobsTableModel.acceptChanges();
+            createNewTableModel();
         }
       });
 
@@ -253,11 +254,17 @@ public class JobsFrame extends JFrame implements RowSetListener {
           createNewTableModel();
         }
       });
+
+    table.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        System.out.println(5);
+      }
+    });
   }
 
   private void createNewTableModel() {
+    System.out.println("refresh");
     jobsTableModel = new JobsTableModel();
-    jobsTableModel.addEventHandlersToRowSet(this);
     table.setModel(jobsTableModel);
   }
 
@@ -267,12 +274,4 @@ public class JobsFrame extends JFrame implements RowSetListener {
       qf.setVisible(true);
   }
 
-  public void rowSetChanged(RowSetEvent event) {  }
-
-  public void rowChanged(RowSetEvent event) {
-    jobsTableModel = new JobsTableModel();
-    table.setModel(jobsTableModel);
-  }
-
-  public void cursorMoved(RowSetEvent event) {  }
 }
