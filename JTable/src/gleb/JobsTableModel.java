@@ -39,6 +39,6 @@ public class JobsTableModel extends AbstractTableModel {
         l.add(a);
         l.add(b);
         data.add(l);
-        fireTableRowsInserted(data.size() - 1, data.size() - 1);
+//        fireTableRowsInserted(data.size() - 1, data.size() - 1);
     }
 }

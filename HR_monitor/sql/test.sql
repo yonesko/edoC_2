@@ -6,6 +6,7 @@ jobs_test
 delete jobs_test
 where job_id = '101'
 ;
+commit;
 
 update jobs_test
 set job_title = 'PRIVET'

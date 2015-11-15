@@ -21,7 +21,12 @@ public abstract class BaseTable {
     protected ArrayList<String> cols;
     protected ArrayList<String> colsNotEditable;
     private ResultSetMetaData meta;
-    private int rowsCount = 0;
+
+    public ArrayList<String> getCols() {
+        return (ArrayList<String>) cols.clone();
+    }
+
+    protected int rowsCount = 0;
 
     private void initRowsCount() throws SQLException {
         crs.beforeFirst();
@@ -53,10 +58,6 @@ public abstract class BaseTable {
             colsNotEditable.remove(col);
     }
 
-
-    public void addRowSetListener(RowSetListener listener) {
-        crs.addRowSetListener(listener);
-    }
     public Object getValueAt(int rowIndex, int columnIndex) {
         try {
             crs.absolute(rowIndex + 1);
@@ -71,6 +72,7 @@ public abstract class BaseTable {
         return null;
     }
     public void setValueAt(Object value, int row, int column) {
+        LoGGer.info("setValueAt(" + value + ", " + row + ", " + column + ")");
         column++;
         try {
             int type = crs.getMetaData().getColumnType(column);

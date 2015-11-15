@@ -26,6 +26,7 @@ public class JobsTable extends BaseTable {
             crs.updateInt("MIN_SALARY", min_salary);
             crs.updateInt("MAX_SALARY", max_salary);
             crs.insertRow();
+            rowsCount++;
             crs.moveToCurrentRow();
         } catch (SQLException e) {
             LoGGer.log(Level.SEVERE, null, e);

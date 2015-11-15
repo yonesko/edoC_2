@@ -67,11 +67,8 @@ public class JobsFrame extends JFrame {
       }
     });
 
-    jobsTableModel = new JobsTableModel();
-    jobsTableModel.addTableModelListener(table);
-
     table = new JTable();
-    table.setModel(jobsTableModel);
+    createNewTableModel();
 
     label_job_title = new JLabel();
     label_job_id = new JLabel();
@@ -231,13 +228,13 @@ public class JobsFrame extends JFrame {
                   Integer.parseInt(tf_min_salary.getText()),
                   Integer.parseInt(tf_max_salary.getText())
           );
-          JOptionPane.showMessageDialog(JobsFrame.this,
-            new String[] {
-                    "Adding the following row:",
-                    "job_id name: [" + tf_job_id.getText() + "]",
-                    "job_title ID: [" + tf_job_title.getText() + "]",
-                    "min_salary: [" + tf_min_salary.getText() + "]",
-                    "max_salary: [" + tf_max_salary.getText() + "]" });
+//          JOptionPane.showMessageDialog(JobsFrame.this,
+//            new String[] {
+//                    "Adding the following row:",
+//                    "job_id name: [" + tf_job_id.getText() + "]",
+//                    "job_title ID: [" + tf_job_title.getText() + "]",
+//                    "min_salary: [" + tf_min_salary.getText() + "]",
+//                    "max_salary: [" + tf_max_salary.getText() + "]" });
         }
       }
       });
@@ -257,13 +254,11 @@ public class JobsFrame extends JFrame {
 
     table.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent e) {
-        System.out.println(5);
       }
     });
   }
 
   private void createNewTableModel() {
-    System.out.println("refresh");
     jobsTableModel = new JobsTableModel();
     table.setModel(jobsTableModel);
   }
