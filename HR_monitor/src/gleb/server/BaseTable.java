@@ -51,7 +51,7 @@ public abstract class BaseTable {
             LoGGer.log(Level.SEVERE, null, e);
         }
     }
-    protected void setDisabled(String col, boolean a) {
+    protected void setEnabled(String col, boolean a) {
         if (a)
             colsNotEditable.add(col);
         else

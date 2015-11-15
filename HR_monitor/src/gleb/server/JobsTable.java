@@ -3,7 +3,6 @@ package gleb.server;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.logging.Level;
 
 public class JobsTable extends BaseTable {
@@ -16,7 +15,7 @@ public class JobsTable extends BaseTable {
                 ,"max_salary"));
 
         initCachedRowSet("SELECT " + String.join(", ", cols) + " FROM jobs_test");
-        setDisabled("job_id", true);
+        setEnabled("job_id", true);
     }
     public void insertRow(int job_id, String job_title, int min_salary, int max_salary) {
         try {
