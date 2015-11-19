@@ -230,7 +230,11 @@ public class JobsFrame extends JFrame {
     button_DELETE_ROW.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        int anchorRow = table.getSelectedRow();
+        if(anchorRow == -1)
+          return;
         jobsTableModel.deleteRow();
+        table.setRowSelectionInterval(anchorRow, anchorRow);
       }
     });
 
