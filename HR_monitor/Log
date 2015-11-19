@@ -1,0 +1,12 @@
+Nov 18, 2015 9:38:38 PM gleb.server.LoGGer info
+INFO: SELECT job_id, job_title, min_salary, max_salary FROM jobs_test
+Nov 18, 2015 9:38:40 PM gleb.server.LoGGer info
+INFO: deleteRow job_id 101; job_title omg
+Nov 18, 2015 9:38:44 PM gleb.server.LoGGer info
+INFO: deleteRow job_id 101; job_title omg
+Nov 18, 2015 9:38:46 PM gleb.server.LoGGer info
+INFO: insertRow job_title=omg job_id=101
+Nov 18, 2015 9:38:48 PM gleb.server.LoGGer info
+INFO: insertRow job_title=omg2 job_id=101
+Nov 18, 2015 9:38:49 PM gleb.server.LoGGer info
+INFO: SELECT job_id, job_title, min_salary, max_salary FROM jobs_test
