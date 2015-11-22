@@ -69,6 +69,7 @@ public class JobsFrame extends JFrame {
     });
 
     table = new JTable();
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     createNewTableModel();
 
     label_job_title = new JLabel();
@@ -231,10 +232,12 @@ public class JobsFrame extends JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         int anchorRow = table.getSelectedRow();
+        System.out.println("anchorRow " + anchorRow);
         if(anchorRow == -1)
           return;
+
         jobsTableModel.deleteRow();
-        table.setRowSelectionInterval(anchorRow, anchorRow);
+//        table.setRowSelectionInterval(anchorRow, anchorRow);
       }
     });
 

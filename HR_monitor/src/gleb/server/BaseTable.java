@@ -6,6 +6,7 @@ import javax.sql.RowSetListener;
 import javax.sql.RowSetMetaData;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.spi.SyncProviderException;
+import javax.sql.rowset.spi.SyncResolver;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -41,6 +42,7 @@ public abstract class BaseTable {
             crs.setConcurrency(ResultSet.CONCUR_UPDATABLE);
             crs.setUrl(DataSource.getOraDS().getURL());
 
+            crs.setKeyColumns(new int[] {1});
             crs.setCommand(Query);
             crs.execute();
             meta = crs.getMetaData();
@@ -108,7 +110,33 @@ public abstract class BaseTable {
         try {
             crs.acceptChanges();
         } catch (SyncProviderException e) {
-            e.printStackTrace();
+            SyncResolver res = e.getSyncResolver();
+            LoGGer.log(Level.SEVERE, e.getMessage(), e);
+
+            Object crsValue;  // value in the RowSet object
+            Object resolverValue;  // value in the SyncResolver object
+            Object resolvedValue;  // value to be persisted
+
+            try {
+                while (res.nextConflict()) {
+                    if (res.getStatus() == SyncResolver.DELETE_ROW_CONFLICT) {
+                        int row = res.getRow();
+                        crs.absolute(row);
+
+                        int colCount = meta.getColumnCount();
+                        for (int i = 1; i <= colCount; i++) {
+                            if (res.getConflictValue(i) != null) {
+                                crsValue = crs.getObject(i);
+                                resolverValue = res.getConflictValue(i);
+                                LoGGer.info("conf" + (String) crsValue);
+                                res.setResolvedValue(i, crsValue);
+                            }
+                        }
+                    }
+                }
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         }
     }
     public int getColCount() {
@@ -124,7 +152,7 @@ public abstract class BaseTable {
     }
     public void deleteRow() {
         try {
-            LoGGer.info("deleteRow " + cols.get(1 - 1) + " " + crs.getString(1)
+            LoGGer.info("deleteRow crs=" + crs.getRow() + cols.get(1 - 1) + " " + crs.getString(1)
                     + "; " + cols.get(2 - 1) + " " + crs.getString(2));
             crs.deleteRow();
             rowsCount--;
