@@ -1,0 +1,4 @@
+Nov 15, 2015 8:38:10 PM gleb.server.LoGGer info
+INFO: SELECT job_id, job_title, min_salary, max_salary FROM jobs_test
+Nov 15, 2015 8:38:38 PM gleb.server.LoGGer info
+INFO: SELECT job_id, job_title, min_salary, max_salary FROM jobs_test
