@@ -249,7 +249,7 @@ public class JobsFrame extends JFrame {
           return;
 
         jobsTableModel.deleteRow();
-//        table.setRowSelectionInterval(anchorRow, anchorRow);
+        table.setRowSelectionInterval(anchorRow, anchorRow);
       }
     });
 
