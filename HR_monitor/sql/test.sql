@@ -22,7 +22,8 @@ where job_id = '101'
 ;
 commit;
 
-
+select * from user_objects
+;
 
 
 select SYS.DBMS_METADATA.GET_DDL('TABLE', 'JOBS_TEST', 'HR') from dual;
@@ -32,4 +33,6 @@ LISTAGG(column_name, ', ') WITHIN GROUP (ORDER BY column_name)
 from all_tab_cols
 where table_name = 'JOBS_TEST'
 ;
+
+select HIBERNATE_SEQUENCE.currval from dual;
 

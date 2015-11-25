@@ -11,13 +11,11 @@ import java.util.Locale;
 import java.util.logging.Level;
 
 public class DataSource {
-    private static Connection connection;
     private static OracleDataSource oraDS;
 
     static {
         try {
             oraDS = DataSource.getOracleDataSource("hr", "hr");
-            connection = oraDS.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }

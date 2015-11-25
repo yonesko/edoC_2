@@ -62,9 +62,21 @@ public class JobsFrame extends JFrame {
   public JobsFrame() {
     super("Должности");
 
+      Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+          public void uncaughtException(Thread t, Throwable e) {
+              if (e instanceof NumberFormatException) {
+                  JOptionPane.showMessageDialog(JobsFrame.this,
+                          "Incorrect format",
+                          "Ты ванючей пёс!",
+                          JOptionPane.ERROR_MESSAGE);
+              }
+          }
+      });
+
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
-        System.exit(0);
+
+          System.exit(0);
       }
     });
 

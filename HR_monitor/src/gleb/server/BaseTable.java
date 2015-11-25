@@ -2,11 +2,8 @@ package gleb.server;
 
 import com.sun.rowset.CachedRowSetImpl;
 
-import javax.sql.RowSetListener;
-import javax.sql.RowSetMetaData;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.spi.SyncProviderException;
-import javax.sql.rowset.spi.SyncResolver;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -55,9 +52,10 @@ public abstract class BaseTable {
     }
     protected void setEnabled(String col, boolean a) {
         if (a)
-            colsNotEditable.add(col);
-        else
             colsNotEditable.remove(col);
+        else
+            colsNotEditable.add(col);
+
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -110,33 +108,7 @@ public abstract class BaseTable {
         try {
             crs.acceptChanges();
         } catch (SyncProviderException e) {
-            SyncResolver res = e.getSyncResolver();
-            LoGGer.log(Level.SEVERE, e.getMessage(), e);
-
-            Object crsValue;  // value in the RowSet object
-            Object resolverValue;  // value in the SyncResolver object
-            Object resolvedValue;  // value to be persisted
-
-            try {
-                while (res.nextConflict()) {
-                    if (res.getStatus() == SyncResolver.DELETE_ROW_CONFLICT) {
-                        int row = res.getRow();
-                        crs.absolute(row);
-
-                        int colCount = meta.getColumnCount();
-                        for (int i = 1; i <= colCount; i++) {
-                            if (res.getConflictValue(i) != null) {
-                                crsValue = crs.getObject(i);
-                                resolverValue = res.getConflictValue(i);
-                                LoGGer.info("conf" + (String) crsValue);
-                                res.setResolvedValue(i, crsValue);
-                            }
-                        }
-                    }
-                }
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
+            LoGGer.log(Level.SEVERE, null, e);
         }
     }
     public int getColCount() {
