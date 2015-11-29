@@ -31,12 +31,9 @@
 
 package gleb.client;
 
-import javax.sql.RowSetEvent;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.SQLException;
-import javax.sql.RowSetListener;
 
 public class JobsFrame extends JFrame {
   
@@ -278,7 +275,6 @@ public class JobsFrame extends JFrame {
 
     button_UPDATE_DATABASE.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            jobsTableModel.acceptChanges();
             createNewTableModel();
         }
       });

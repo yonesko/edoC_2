@@ -1,14 +1,9 @@
-package gleb.server;
+package gleb.server.dao;
 
-import com.sun.rowset.CachedRowSetImpl;
 import oracle.jdbc.pool.OracleDataSource;
 
-import javax.sql.rowset.CachedRowSet;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Locale;
-import java.util.logging.Level;
 
 public class DataSource {
     private static OracleDataSource oraDS;

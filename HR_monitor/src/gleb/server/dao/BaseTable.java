@@ -1,6 +1,7 @@
-package gleb.server;
+package gleb.server.dao;
 
 import com.sun.rowset.CachedRowSetImpl;
+import gleb.server.LoGGer;
 
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.spi.SyncProviderException;
