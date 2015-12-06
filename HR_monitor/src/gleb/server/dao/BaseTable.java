@@ -94,7 +94,7 @@ public abstract class BaseTable {
         }
     }
     public ArrayList<Integer> getDisabled() {
-        ArrayList<Integer> res = new ArrayList<>();
+        ArrayList<Integer> res = new ArrayList<Integer>();
 
         for (String s : colsNotEditable) {
             for (int i = 0; i < cols.size(); i++) {

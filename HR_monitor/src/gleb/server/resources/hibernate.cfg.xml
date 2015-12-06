@@ -34,7 +34,7 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">update</property>
 
-        <mapping resource="Jobs.hbm.xml"/>
+        <mapping resource="gleb/server/resources/Jobs.hbm.xml"/>
 
     </session-factory>
 

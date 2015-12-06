@@ -22,12 +22,10 @@ public class JobsTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    @Override
     public int getRowCount() {
         return table.size();
     }
 
-    @Override
     public int getColumnCount() {
         return 4;
     }

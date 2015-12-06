@@ -14,8 +14,8 @@ import java.util.logging.Level;
 public class JobsTable extends BaseTable {
 
     public JobsTable() {
-        colsNotEditable = new ArrayList<>();
-        cols = new ArrayList<>(Arrays.asList(
+        colsNotEditable = new ArrayList<String>();
+        cols = new ArrayList<String>(Arrays.asList(
                 "job_id"
                 ,"job_title"
                 ,"min_salary"
