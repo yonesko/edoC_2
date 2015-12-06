@@ -118,6 +118,12 @@ public class JobsFrame extends JFrame implements
       button_DISCARD_CHANGES.addActionListener(this);
       button_ADD_ROW.addActionListener(this);
 
+      button_ADD_ROW.setName("button_ADD_ROW");
+      button_UPDATE_DATABASE.setName("button_UPDATE_DATABASE");
+      button_DISCARD_CHANGES.setName("button_DISCARD_CHANGES");
+      button_DELETE_ROW.setName("button_DELETE_ROW");
+      table.setName("jobs_table");
+
     // Place the components within the container contentPane; use GridBagLayout
     // as the layout.
 
@@ -246,7 +252,7 @@ public class JobsFrame extends JFrame implements
 
   private void createNewTableModel() {
     jobsTableModel = new JobsTableModel();
-    table.setModel(jobsTableModel);
+      table.setModel(jobsTableModel);
   }
 
   public static void main(String[] args) throws Exception {
