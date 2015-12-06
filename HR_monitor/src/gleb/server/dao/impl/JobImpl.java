@@ -34,12 +34,7 @@ public class JobImpl implements Jobs {
         return jobs;
     }
 
-    /**
-     * invokes getter of i-th field and returns a value of this field
-     * @param i index of a class field
-     * @return value of i-th field
-     */
-    public static Object getColValue(Job job, int i) {
+    public static Object getFieldValue(Job job, int i) {
         if (i == 0)
             return job.getId();
         return meta.getPropertyValue(job, meta.getPropertyNames()[i - 1]);

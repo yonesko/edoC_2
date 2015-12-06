@@ -45,7 +45,7 @@ public class JobsTableModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return JobImpl.getColValue(table.get(rowIndex), columnIndex);
+        return JobImpl.getFieldValue(table.get(rowIndex), columnIndex);
     }
 
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
