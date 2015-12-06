@@ -1,27 +1,19 @@
 package gleb.server.dao.entity;
 
 import gleb.server.LoGGer;
+import gleb.server.dao.Sess;
+import org.hibernate.metadata.ClassMetadata;
 
-public class Job extends AbstractEntity {
+public class Job {
     private long id;
     private String title;
     private int minSalary;
     private int maxSalary;
 
-    static {
-        try {
-            thisClass = (Class<? extends AbstractEntity>) Class.forName("gleb.server.dao.entity.Job");
-        } catch (ClassNotFoundException e) {
-            LoGGer.printException(e);
-        }
-        fields = thisClass.getDeclaredFields();
-    }
-
     public Job() {
     }
 
     public Job(String title, int minSalary, int maxSalary) {
-        System.out.println("Job(");
         this.title = title;
         this.minSalary = minSalary;
         this.maxSalary = maxSalary;
@@ -57,5 +49,22 @@ public class Job extends AbstractEntity {
 
     public void setMaxSalary(int maxSalary) {
         this.maxSalary = maxSalary;
+    }
+
+    public Object getColValue(int i) {
+        ClassMetadata meta = Sess.getFactory().getClassMetadata(Job.class);
+        if (i == 0)
+            return this.getId();
+        return meta.getPropertyValue(this, meta.getPropertyNames()[i - 1]);
+    }
+
+    public static String getColName(int i) {
+        if (i == 0)
+            return "id";
+        return Sess.getFactory().getClassMetadata(Job.class).getPropertyNames()[i - 1];
+    }
+
+    public static int getColCount() {
+        return Sess.getFactory().getClassMetadata(Job.class).getPropertyNames().length + 1;
     }
 }

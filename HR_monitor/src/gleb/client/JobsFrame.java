@@ -31,6 +31,8 @@
 
 package gleb.client;
 
+import gleb.server.dao.Sess;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -258,13 +260,18 @@ public class JobsFrame extends JFrame implements
             System.out.println("button_DELETE_ROW");
         }
         if (e.getSource() == button_ADD_ROW) {
-            System.out.println("button_ADD_ROW");
+            jobsTableModel.insertRow(
+                    tf_job_title.getText(),
+                    Integer.valueOf(tf_min_salary.getText()),
+                    Integer.valueOf(tf_max_salary.getText())
+            );
         }
         if (e.getSource() == button_DISCARD_CHANGES) {
-            System.out.println("button_DISCARD_CHANGES");
+            jobsTableModel.rollback();
+            createNewTableModel();
         }
         if (e.getSource() == button_UPDATE_DATABASE) {
-            System.out.println("button_UPDATE_DATABASE");
+            jobsTableModel.commit();
         }
     }
 }

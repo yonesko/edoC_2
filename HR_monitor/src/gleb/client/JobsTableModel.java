@@ -1,6 +1,8 @@
 package gleb.client;
 
+import gleb.server.dao.Sess;
 import gleb.server.dao.entity.Job;
+import gleb.server.dao.impl.Factory;
 import gleb.server.dao.impl.JobImpl;
 
 import javax.swing.table.AbstractTableModel;
@@ -11,12 +13,19 @@ public class JobsTableModel extends AbstractTableModel {
     private List<Job> table;
 
     public JobsTableModel() {
-        table = new JobImpl().getAllJobs();
+        table = Factory.getJobImpl().getAllJobs();
     }
 
-    public void insertRow(int job_id, String job_title, int min_salary, int max_salary) {
-//        table.insertRow(job_id, job_title, min_salary, max_salary);
+    public void insertRow(String job_title, int min_salary, int max_salary) {
+        table.add(Factory.getJobImpl().insertJob(new Job(job_title, min_salary, max_salary)));
         fireTableDataChanged();
+    }
+
+    public void commit() {
+        Sess.commit();
+    }
+    public void rollback() {
+        Sess.rollback();
     }
 
     public int getRowCount() {
