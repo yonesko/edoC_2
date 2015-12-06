@@ -35,7 +35,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class JobsFrame extends JFrame {
+public class JobsFrame extends JFrame implements
+        ActionListener {
   
   JTable table;
 
@@ -109,6 +110,11 @@ public class JobsFrame extends JFrame {
     button_UPDATE_DATABASE.setText("Update database");
     button_DISCARD_CHANGES.setText("Discard changes");
     button_DELETE_ROW.setText("Delete selected row");
+
+      button_DELETE_ROW.addActionListener(this);
+      button_UPDATE_DATABASE.addActionListener(this);
+      button_DISCARD_CHANGES.addActionListener(this);
+      button_ADD_ROW.addActionListener(this);
 
     // Place the components within the container contentPane; use GridBagLayout
     // as the layout.
@@ -234,59 +240,6 @@ public class JobsFrame extends JFrame {
     c.gridy = 7;
     c.gridwidth = 1;
     contentPane.add(button_DELETE_ROW, c);
-
-    // Add listeners for the buttons in the application
-    button_DELETE_ROW.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        int anchorRow = table.getSelectedRow();
-        System.out.println("anchorRow " + anchorRow);
-        if(anchorRow == -1)
-          return;
-
-        jobsTableModel.deleteRow();
-        table.setRowSelectionInterval(anchorRow, anchorRow);
-      }
-    });
-
-    button_ADD_ROW.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        //check constraints
-        if (tf_job_title.getText().length() == 0) {
-          JOptionPane.showMessageDialog(JobsFrame.this, "job_title cant be empty");
-        } else {
-          jobsTableModel.insertRow(
-                  Integer.parseInt(tf_job_id.getText()),
-                  tf_job_title.getText(),
-                  Integer.parseInt(tf_min_salary.getText()),
-                  Integer.parseInt(tf_max_salary.getText())
-          );
-//          JOptionPane.showMessageDialog(JobsFrame.this,
-//            new String[] {
-//                    "Adding the following row:",
-//                    "job_id name: [" + tf_job_id.getText() + "]",
-//                    "job_title ID: [" + tf_job_title.getText() + "]",
-//                    "min_salary: [" + tf_min_salary.getText() + "]",
-//                    "max_salary: [" + tf_max_salary.getText() + "]" });
-        }
-      }
-      });
-
-    button_UPDATE_DATABASE.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            createNewTableModel();
-        }
-      });
-
-    button_DISCARD_CHANGES.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          createNewTableModel();
-        }
-      });
-
-    table.addMouseListener(new MouseAdapter() {
-      public void mouseClicked(MouseEvent e) {
-      }
-    });
   }
 
   private void createNewTableModel() {
@@ -300,4 +253,18 @@ public class JobsFrame extends JFrame {
       qf.setVisible(true);
   }
 
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == button_DELETE_ROW) {
+            System.out.println("button_DELETE_ROW");
+        }
+        if (e.getSource() == button_ADD_ROW) {
+            System.out.println("button_ADD_ROW");
+        }
+        if (e.getSource() == button_DISCARD_CHANGES) {
+            System.out.println("button_DISCARD_CHANGES");
+        }
+        if (e.getSource() == button_UPDATE_DATABASE) {
+            System.out.println("button_UPDATE_DATABASE");
+        }
+    }
 }

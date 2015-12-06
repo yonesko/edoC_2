@@ -24,7 +24,6 @@ public class JobsTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        System.out.println("getColumnCount");
         return Job.getColCount();
     }
 
