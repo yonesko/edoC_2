@@ -1,8 +1,7 @@
 package gleb.server.dao;
 
-import gleb.server.dao.entity.Job;
+import gleb.server.model.Job;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface Jobs {

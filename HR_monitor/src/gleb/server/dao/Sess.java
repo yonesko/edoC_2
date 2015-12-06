@@ -1,16 +1,10 @@
 package gleb.server.dao;
 
-import gleb.server.dao.entity.Job;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.MetadataSource;
-import org.hibernate.metadata.ClassMetadata;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Locale;
 
 public abstract class Sess {

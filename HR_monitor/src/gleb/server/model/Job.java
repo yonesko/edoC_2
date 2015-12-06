@@ -1,6 +1,5 @@
-package gleb.server.dao.entity;
+package gleb.server.model;
 
-import gleb.server.LoGGer;
 import gleb.server.dao.Sess;
 import org.hibernate.metadata.ClassMetadata;
 
@@ -49,22 +48,5 @@ public class Job {
 
     public void setMaxSalary(int maxSalary) {
         this.maxSalary = maxSalary;
-    }
-
-    public Object getColValue(int i) {
-        ClassMetadata meta = Sess.getFactory().getClassMetadata(Job.class);
-        if (i == 0)
-            return this.getId();
-        return meta.getPropertyValue(this, meta.getPropertyNames()[i - 1]);
-    }
-
-    public static String getColName(int i) {
-        if (i == 0)
-            return "id";
-        return Sess.getFactory().getClassMetadata(Job.class).getPropertyNames()[i - 1];
-    }
-
-    public static int getColCount() {
-        return Sess.getFactory().getClassMetadata(Job.class).getPropertyNames().length + 1;
     }
 }

@@ -2,15 +2,16 @@ package gleb.server.dao.impl;
 
 import gleb.server.dao.Sess;
 import gleb.server.dao.Jobs;
-import gleb.server.dao.entity.Job;
+import gleb.server.model.Job;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.metadata.ClassMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class JobImpl implements Jobs {
-
+    static ClassMetadata meta = Sess.getFactory().getClassMetadata(Job.class);
+    
     public void deleteJob(Job job) {
 
     }
@@ -31,5 +32,26 @@ public class JobImpl implements Jobs {
             e.printStackTrace();
         }
         return jobs;
+    }
+
+    /**
+     * invokes getter of i-th field and returns a value of this field
+     * @param i index of a class field
+     * @return value of i-th field
+     */
+    public static Object getColValue(Job job, int i) {
+        if (i == 0)
+            return job.getId();
+        return meta.getPropertyValue(job, meta.getPropertyNames()[i - 1]);
+    }
+
+    public static String getColName(int i) {
+        if (i == 0)
+            return "id";
+        return meta.getPropertyNames()[i - 1];
+    }
+
+    public static int getColCount() {
+        return meta.getPropertyNames().length + 1;
     }
 }

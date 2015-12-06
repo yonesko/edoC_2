@@ -1,9 +1,9 @@
 package gleb.client;
 
 import gleb.server.dao.Sess;
-import gleb.server.dao.entity.Job;
-import gleb.server.dao.impl.Factory;
 import gleb.server.dao.impl.JobImpl;
+import gleb.server.model.Job;
+import gleb.server.dao.impl.Factory;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
@@ -33,11 +33,11 @@ public class JobsTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return Job.getColCount();
+        return JobImpl.getColCount();
     }
 
     public String getColumnName(int columnIndex) {
-        return Job.getColName(columnIndex);
+        return JobImpl.getColName(columnIndex);
     }
 
     public Class getColumnClass(int column) {
@@ -45,7 +45,7 @@ public class JobsTableModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return table.get(rowIndex).getColValue(columnIndex);
+        return JobImpl.getColValue(table.get(rowIndex), columnIndex);
     }
 
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
