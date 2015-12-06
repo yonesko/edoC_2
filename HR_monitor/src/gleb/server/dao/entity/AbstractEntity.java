@@ -6,12 +6,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 
-public class AbstractEntity {
-    static Class<? extends AbstractEntity> thisClass;
-    static Field[] fields;
-
-    public AbstractEntity() {
-    }
+public abstract class AbstractEntity {
+    protected static Class<? extends AbstractEntity> thisClass;
+    protected static Field[] fields;
 
     public Object getColValue(int i) {
         Field fld = fields[i];
