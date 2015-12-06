@@ -21,6 +21,9 @@ public class LoGGer {
     public static void log(Level level, String msg, Throwable thrown) {
         logger.log(level, msg, thrown);
     }
+    public static void printException(Throwable thrown) {
+        logger.log(Level.SEVERE, null, thrown);
+    }
 
     public static void severe(String msg) {
         logger.severe(msg);

@@ -2,15 +2,12 @@ package gleb.client;
 
 import gleb.server.dao.entity.Job;
 import gleb.server.dao.impl.JobImpl;
-import gleb.server.dao.impl.JobsTable;
+
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class JobsTableModel extends AbstractTableModel {
 
-//    private JobsTable table;
     private List<Job> table;
 
     public JobsTableModel() {
@@ -27,13 +24,12 @@ public class JobsTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 4;
+        System.out.println("getColumnCount");
+        return Job.getColCount();
     }
 
-    @Override
     public String getColumnName(int columnIndex) {
-//        return table.getCols().get(columnIndex);
-        return String.valueOf(columnIndex);
+        return Job.getColName(columnIndex);
     }
 
     public Class getColumnClass(int column) {
@@ -41,21 +37,9 @@ public class JobsTableModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-                return table.get(rowIndex).getId();
-            case 1:
-                return table.get(rowIndex).getTitle();
-            case 2:
-                return table.get(rowIndex).getMinSalary();
-            case 3:
-                return table.get(rowIndex).getMaxSalary();
-            default:
-                return null;
-        }
+        return table.get(rowIndex).getColValue(columnIndex);
     }
 
-    @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0:

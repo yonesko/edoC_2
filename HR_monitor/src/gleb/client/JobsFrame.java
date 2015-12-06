@@ -72,7 +72,6 @@ public class JobsFrame extends JFrame {
 
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
-
           System.exit(0);
       }
     });
@@ -238,7 +237,6 @@ public class JobsFrame extends JFrame {
 
     // Add listeners for the buttons in the application
     button_DELETE_ROW.addActionListener(new ActionListener() {
-      @Override
       public void actionPerformed(ActionEvent e) {
         int anchorRow = table.getSelectedRow();
         System.out.println("anchorRow " + anchorRow);

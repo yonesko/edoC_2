@@ -1,6 +1,6 @@
 package gleb.server.dao.impl;
 
-import gleb.server.Sess;
+import gleb.server.dao.Sess;
 import gleb.server.dao.Jobs;
 import gleb.server.dao.entity.Job;
 import org.hibernate.Session;
