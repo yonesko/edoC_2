@@ -72,10 +72,10 @@ public class JobsTableModel extends AbstractTableModel {
     public void deleteRow(int index) {
         if (index == -1)
             return;
-
+        //delete from base
         Job deletedJob = table.get(index);
-
         Factory.getJobImpl().deleteJob(deletedJob);
+        //delete from view
         table.remove(index);
 
         fireTableDataChanged();

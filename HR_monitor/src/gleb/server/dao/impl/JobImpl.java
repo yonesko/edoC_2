@@ -24,7 +24,7 @@ public class JobImpl implements Jobs {
         session.save(job);
     }
 
-    public List getAllJobs() {
+    public List<Job> getAllJobs() {
         Session session = Sess.getSess();
         List jobs = new ArrayList<Job>();
         try {
