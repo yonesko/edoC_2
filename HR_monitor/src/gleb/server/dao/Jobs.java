@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface Jobs {
     void deleteJob(Job job);
-    Job insertJob(Job job);
+    void insertJob(Job job);
     List getAllJobs();
 }

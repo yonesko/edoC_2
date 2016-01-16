@@ -13,14 +13,15 @@ public class JobImpl implements Jobs {
     static ClassMetadata meta = Sess.getFactory().getClassMetadata(Job.class);
     
     public void deleteJob(Job job) {
-
+        Sess.beginTransaction();
+        Session session = Sess.getSess();
+        session.delete(job);
     }
 
-    public Job insertJob(Job job) {
+    public void insertJob(Job job) {
         Sess.beginTransaction();
         Session session = Sess.getSess();
         session.save(job);
-        return job;
     }
 
     public List getAllJobs() {

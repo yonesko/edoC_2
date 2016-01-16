@@ -17,7 +17,11 @@ public class JobsTableModel extends AbstractTableModel {
     }
 
     public void insertRow(String job_title, int min_salary, int max_salary) {
-        table.add(Factory.getJobImpl().insertJob(new Job(job_title, min_salary, max_salary)));
+        Job newJob = new Job(job_title, min_salary, max_salary);
+
+        Factory.getJobImpl().insertJob(newJob);
+        table.add(newJob);
+
         fireTableDataChanged();
     }
 
@@ -65,8 +69,15 @@ public class JobsTableModel extends AbstractTableModel {
             return false;
         return true;
     }
-    public void deleteRow() {
-//        table.deleteRow();
+    public void deleteRow(int index) {
+        if (index == -1)
+            return;
+
+        Job deletedJob = table.get(index);
+
+        Factory.getJobImpl().deleteJob(deletedJob);
+        table.remove(index);
+
         fireTableDataChanged();
     }
 }

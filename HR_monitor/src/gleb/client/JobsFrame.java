@@ -263,7 +263,7 @@ public class JobsFrame extends JFrame implements
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button_DELETE_ROW) {
-            System.out.println("button_DELETE_ROW");
+            jobsTableModel.deleteRow(table.getSelectedRow());
         }
         if (e.getSource() == button_ADD_ROW) {
             jobsTableModel.insertRow(
