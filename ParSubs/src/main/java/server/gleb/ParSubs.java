@@ -1,10 +1,12 @@
+package server.gleb;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class ParSubs {
-    public static void main(String...atgs) throws Exception {
-        Scanner in = new Scanner(System.in);
+    public static String subs(String SQL) throws Exception {
+        Scanner in = new Scanner(SQL);
         String query = "";
         Map<String, String> parToVal = new HashMap<String, String>();
 
@@ -32,7 +34,6 @@ public class ParSubs {
             query = query.replaceAll(entry.getKey(), val);
         }
         //show rsult
-        System.out.println("--- Result ---");
-        System.out.println(query);
+        return query;
     }
 }

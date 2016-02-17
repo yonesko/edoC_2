@@ -14,13 +14,11 @@ import java.util.Map;
 public class MyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, Object> vars = MyServlet.createPageVariables(req);
-        vars.put("message", "");
-
-        PrintWriter out = resp.getWriter();
-        out.print(req.getParameter("key"));
 
         resp.setContentType("text/html;charset=utf-8");
+        PrintWriter out = resp.getWriter();
+        out.print("ты БРАТИШКА");
+
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 
@@ -36,7 +34,7 @@ public class MyServlet extends HttpServlet {
 
         vars.put("message", login);
 
-        resp.getWriter().println(MyGenerator.getInstance().getPage("page.html", vars));
+        resp.getWriter().println("ты гавно");
     }
 
     private static Map<String, Object> createPageVariables(HttpServletRequest request) {
