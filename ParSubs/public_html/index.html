@@ -7,11 +7,13 @@
 </head>
 <body>
 <dev align="middle">
-<form action="/trans" method="POST" align="middle">
-    <textarea rows="20" cols="90" name="SQLtext" type="text">
-    </textarea>
-    <input type="submit" value="Перевод" class="btn btn-primary btn-lg btn-block" style="width:200px;" >
-    <INPUT value="Смыв" type="reset" onclick="document.getElementById('SQLtext').value='';" class="btn btn-primary btn-lg btn-block" style="width:200px;">
+<form action="/trans" method="POST">
+    <div class="form-group">
+        <label for="SQL-Query">Выражение на структурированном языке запросов:</label>
+        <textarea rows="20" cols="90" name="SQLtext" type="text" class="form-control"></textarea>
+    </div>
+    <input type="submit" value="Перевод" class="btn btn-primary"  >
+    <INPUT value="Смыв" type="reset" onclick="document.getElementById('SQLtext').value='';" class="btn btn-primary">
 </form>
 </dev>
     <div>

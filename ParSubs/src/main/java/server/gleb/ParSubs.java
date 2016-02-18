@@ -29,9 +29,11 @@ public class ParSubs {
         String val;
         for (Map.Entry<String, String> entry : parToVal.entrySet()) {
             val = entry.getValue();
-            if (val.equals("null") == false)
-                val = '\'' + val + '\'';
-            query = query.replaceAll(entry.getKey(), val);
+            if (val != null && entry.getKey() != null) {
+                if (val.equals("null") == false)
+                    val = '\'' + val + '\'';
+                query = query.replaceAll(entry.getKey(), val);
+            }
         }
         //show rsult
         return query;
