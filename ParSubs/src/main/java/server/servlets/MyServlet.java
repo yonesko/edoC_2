@@ -19,7 +19,7 @@ public class MyServlet extends HttpServlet {
         try {
             resp.getWriter().println(ParSubs.subs(req.getParameter("SQLtext")));
         } catch (Exception e) {
-            resp.getWriter().println(e.getMessage());
+            e.printStackTrace(resp.getWriter());
         }
         resp.setStatus(HttpServletResponse.SC_OK);
     }

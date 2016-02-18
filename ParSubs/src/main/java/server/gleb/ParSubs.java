@@ -18,10 +18,13 @@ public class ParSubs {
         if (query.length() == 0)
             throw new Exception("Empty query");
         //read params
-        String e[];
+        String e[], line;
         while (in.hasNext()) {
-            e = in.nextLine().split("\\s+");
-            parToVal.put(e[0], e[1]);
+            line = in.nextLine();
+            if (line.isEmpty() == false) {
+                e = line.split("\\s+");
+                parToVal.put(e[0], e[1]);
+            }
         }
         if (parToVal.size() == 0)
             throw new Exception("Empty parameters");
