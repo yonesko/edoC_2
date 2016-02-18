@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>SQL Parameter Substitute</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
 <body>
-
-<form action="/trans" method="POST">
-<input type="submit" value="Перевод">
-<textarea rows="20" cols="90" name="SQLtext" type="text">
-</textarea>
+<dev align="middle">
+<form action="/trans" method="POST" align="middle">
+    <textarea rows="20" cols="90" name="SQLtext" type="text">
+    </textarea>
+    <input type="submit" value="Перевод" class="btn btn-primary btn-lg btn-block" style="width:200px;" >
+    <INPUT value="Смыв" type="reset" onclick="document.getElementById('SQLtext').value='';" class="btn btn-primary btn-lg btn-block" style="width:200px;">
 </form>
-<div>
-<img align="right" src="tanets.gif" alt="Танцующий кот" width="300" height="250">
-</div>
+</dev>
+    <div>
+        <iframe src="http://tv.giphy.com/cat" align="right" class="img-rounded"></iframe>
+    </div>
 </body>
 </html>
