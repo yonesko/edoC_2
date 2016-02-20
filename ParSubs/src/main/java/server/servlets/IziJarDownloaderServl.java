@@ -8,7 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class Script extends HttpServlet {
+public class IziJarDownloaderServl extends HttpServlet {
     static String path = "/home/gleb/bin/IziJar.bash";
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

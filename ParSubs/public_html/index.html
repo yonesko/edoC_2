@@ -14,16 +14,16 @@
 </script>
 </head>
 <body>
-<dev align="middle">
+<div align="middle">
 <form action="/trans" method="POST">
     <div class="form-group">
         <label for="SQL-Query">Выражение на структурированном языке запросов:</label>
         <textarea rows="20" cols="90" name="SQLtext" type="text" class="form-control"></textarea>
     </div>
     <input type="submit" value="Перевод" class="btn btn-primary"  >
-    <INPUT value="Смыв" type="reset" onclick="document.getElementById('SQLtext').value='';" class="btn btn-primary">
+    <input type="reset" value="Убрать" onclick="document.getElementById('SQLtext').value='';" class="btn btn-primary">
 </form>
-</dev>
+</div>
     <div align="right">
         <iframe src="http://tv.giphy.com/cat" class="img-rounded" id="cooot"></iframe><br><br>
     </div>

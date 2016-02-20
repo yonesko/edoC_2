@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class ParSubs {
-    public static String subs(String SQL) throws Exception {
+public class ProcessSQL {
+    public static String substituteParams(String SQL) {
         Scanner in = new Scanner(SQL);
         String query = "";
         Map<String, String> parToVal = new HashMap<String, String>();
@@ -16,7 +16,7 @@ public class ParSubs {
             query += s + '\n';
         }
         if (query.length() == 0)
-            throw new Exception("Empty query");
+            return "Empty query";
         //read params
         String e[], line;
         while (in.hasNext()) {
@@ -27,7 +27,7 @@ public class ParSubs {
             }
         }
         if (parToVal.size() == 0)
-            throw new Exception("Empty parameters");
+            return "Empty parameters";
         //substitute params in query with values
         String val;
         for (Map.Entry<String, String> entry : parToVal.entrySet()) {
@@ -38,7 +38,7 @@ public class ParSubs {
                 query = query.replaceAll(entry.getKey(), val);
             }
         }
-        //show rsult
+        //show result
         return query;
     }
 }

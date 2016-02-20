@@ -19,5 +19,8 @@
         <fileSet>
             <directory>public_html</directory>
         </fileSet>
+        <fileSet>
+            <directory>templates</directory>
+        </fileSet>
     </fileSets>
 </assembly>
