@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <title>SQL Parameter Substitute</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<script type="text/javascript">
+    <link rel="stylesheet" href="/path/to/styles/default.css">
+    <script src="/path/to/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript">
   var iframe = document.getElementById('cooot'),src = iframe.src;
   iframe.src = '';
   document.onload =  function(){iframe.src = src;}
@@ -27,9 +30,19 @@
     <div align="middle">
         Надоело ставить джарки руками?<br>
         Устал получать от разрабов?<br>
-        Предоставь рутину безопасной bash-утилите!<br>
-        Просто закачай её и патч на сервер и введи <a href="/IziJar.bash">IziJar.bash</a> PATCH<br>
-        и она раскидает все джарки из патча по соответсвующим дирикториям, сделав backup.<br>
+        Предоставь рутину безопасной <a href="/IziJar.bash">bash-утилите!</a><br>
+        Просто закачай её и патч на сервер и введи<br>
+        <pre><code class="bash">IziJar.bash PATCH</code></pre>
+        и она раскидает все джарки из патча по соответсвующим дирикториям, сделав backup.
+        Example:
+        <div style="text-align: left"><pre><code class="bash">bash-3.2$ ./IziJar.bash CEN510-SP16JUL15-20160218172851-MLS4554.tar.gz
+gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.general.jar ->
+/gold_space/ts510s5/gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.general.jar
+(backup /gold_space/ts510s5/gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.general.jar~)
+
+gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.jar ->
+/gold_space/ts510s5/gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.jar
+(backup /gold_space/ts510s5/gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.jar~)</code></pre></div>
     </div>
 </body>
 </html>

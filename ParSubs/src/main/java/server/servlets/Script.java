@@ -9,11 +9,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class Script extends HttpServlet {
+    static String path = "/home/gleb/bin/IziJar.bash";
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("send " + path);
         resp.setContentType("application/x-tar");
         OutputStream out = resp.getOutputStream();
-        FileInputStream in = new FileInputStream("/home/gleb/bin/IziJar.bash");
+        FileInputStream in = new FileInputStream(path);
         byte[] buffer = new byte[4096];
         int length;
         while ((length = in.read(buffer)) > 0){
