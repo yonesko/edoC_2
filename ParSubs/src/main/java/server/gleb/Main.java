@@ -10,7 +10,10 @@ import server.servlets.TransServl;
 import server.servlets.IziJarDownloaderServl;
 
 public class Main {
-    public static void main(String...args) throws Exception {
+    private static final int PORT_POSITION = 0;
+    public static void main(String...argv) throws Exception {
+        System.out.println("Working Directory = " +
+                System.getProperty("user.dir"));
         TransServl transServl = new TransServl();
         IziJarDownloaderServl scriptServlet = new IziJarDownloaderServl();
 
@@ -25,7 +28,7 @@ public class Main {
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{resource_handler, context});
 
-        Server server = new Server(8080);
+        Server server = new Server(Integer.parseInt(argv[Main.PORT_POSITION]));
         server.setHandler(handlers);
 
         server.start();
