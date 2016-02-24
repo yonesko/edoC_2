@@ -27,6 +27,7 @@ public class MyGenerator {
 
         try {
             Template template = this.cfg.getTemplate(MyGenerator.HTML_DIR + File.separator + filename);
+            System.out.println(cfg.getTemplateLoader().toString());
             template.process(data, stream);
         } catch (IOException e) {
             e.printStackTrace();

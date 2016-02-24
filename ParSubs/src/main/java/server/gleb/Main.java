@@ -12,8 +12,6 @@ import server.servlets.IziJarDownloaderServl;
 public class Main {
     private static final int PORT_POSITION = 0;
     public static void main(String...argv) throws Exception {
-        System.out.println("Working Directory = " +
-                System.getProperty("user.dir"));
         TransServl transServl = new TransServl();
         IziJarDownloaderServl scriptServlet = new IziJarDownloaderServl();
 
@@ -28,7 +26,9 @@ public class Main {
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{resource_handler, context});
 
-        Server server = new Server(Integer.parseInt(argv[Main.PORT_POSITION]));
+        int port = Integer.parseInt(argv[Main.PORT_POSITION]);
+        System.out.println("port=" + port);
+        Server server = new Server(port);
         server.setHandler(handlers);
 
         server.start();
