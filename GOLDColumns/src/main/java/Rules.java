@@ -3,11 +3,10 @@ import java.util.List;
 public class Rules {
     public static String showError(Rule rule, List<Column> cols) {
         StringBuilder sb = new StringBuilder();
-        String val = rule.getVal();
+        String val = rule.getVal().toLowerCase();
         //beginning of the messege
         sb.append("cja.showErrorMessage(\"Condition violation \\n\"+");
         //body of the messege
-        val = val.toLowerCase();
         val = val.replaceAll("\\+", "\\+\" + \"\\+");
         val = val.replaceAll("-", "\\+\" - \"\\+");
         val = val.replaceAll("=", "\\+\" = \"\\+");
@@ -19,16 +18,15 @@ public class Rules {
         sb.append(");");
         return sb.toString();
     }
-    public static String condition(List<Rule> rules) {
+    public static String condition(Rule rule, List<Column> cols) {
         StringBuilder sb = new StringBuilder();
-
+        String val = rule.getVal().toLowerCase();
+        for (Column col : cols) {
+            val = val.replaceAll(col.getServName().toLowerCase(), col.OISRowVal());
+        }
+        sb.append(val);
         return sb.toString();
     }
-//    public static String showError(List<Rule> rules) {
-//        StringBuilder sb = new StringBuilder();
-//
-//        return sb.toString();
-//    }
     /*
     if (r.toBigDecimal("RASHOD_ITOGO").compareTo(
                 r.toBigDecimal("POSTAV_ITOGO")
@@ -41,4 +39,9 @@ public class Rules {
             return false;
 
      */
+//    public static String showError(List<Rule> rules111) {
+//        StringBuilder sb = new StringBuilder();
+//
+//        return sb.toString();
+//    }
 }

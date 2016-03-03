@@ -33,6 +33,15 @@ public class Columns {
         }
         return  sb.toString();
     }
+    public static String clientServCallParams(List<Column> cols) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < cols.size(); i++) {
+            sb.append(cols.get(i).OISRowVal());
+            if (i != cols.size() - 1)
+                sb.append(", ");
+        }
+        return sb.toString();
+    }
     public static String servUpdateSetClause(String tablePrefix, List<Column> cols) {
         StringBuilder sb = new StringBuilder();
         String colName;

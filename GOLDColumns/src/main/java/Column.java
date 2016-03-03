@@ -1,12 +1,12 @@
 public class Column {
     //database column name without table prefix
     private final String servName;
-    private final String cliName;
+    private final String JTableName;
     private final ColType type;
     private final int label;
 
-    public String getCliName() {
-        return this.cliName;
+    public String getJTableName() {
+        return this.JTableName;
     }
 
     public int getLabel() {
@@ -23,7 +23,7 @@ public class Column {
 
     public Column(String servName, String cliName, ColType type, int label) {
         this.servName = servName;
-        this.cliName = cliName;
+        this.JTableName = cliName;
         this.type = type;
         this.label = label;
     }
@@ -38,5 +38,8 @@ public class Column {
     }
     public String getOISSQLName() {
         return ":" + servName + ":";
+    }
+    public String OISRowVal() {
+        return "r.to" + getType().getCoreType() + "(\"" + getJTableName() + "\")";
     }
 }
