@@ -30,6 +30,12 @@
           <artifactId>json</artifactId>
           <version>20140107</version>
       </dependency>
+
+      <dependency>
+          <groupId>org.rauschig</groupId>
+          <artifactId>jarchivelib</artifactId>
+          <version>0.5.0</version>
+      </dependency>
     </dependencies>
 
 

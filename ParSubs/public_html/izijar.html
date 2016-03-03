@@ -10,18 +10,19 @@
 </head>
 <body>
 <div align="middle">
-    Просто закачай её и патч на сервер и введи<br>
-    <pre><code class="bash">IziJar.bash PATCH</code></pre>
-    и она раскидает все джарки из патча по соответсвующим дирикториям, сделав backup.
-    Example:
-    <div align="left" width="500px"><pre><code class="bash">bash-3.2$ ./IziJar.bash CEN510-SP16JUL15-20160218172851-MLS4554.tar.gz
-        gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.general.jar ->
-        /gold_space/ts510s5/gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.general.jar
-        (backup /gold_space/ts510s5/gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.general.jar~)
+    Закачай патч прямиком из почты на сервер и скорми его утилите.<br>
+    Она раскидает все джарки из архива по по нужным местам.<br>
+    Пример:
+    <div align="left" width="500px"><pre><code class="bash">bash-3.2$ ./iZiPatch.bash CEN510-SP16JUL15-20160303112156-MLS4474_hf1
+        /gold_space/ts510s6/patch/CEN510-SP16JUL15-20160303112156-MLS4474_hf1:
 
-        gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.jar ->
-        /gold_space/ts510s5/gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.jar
-        (backup /gold_space/ts510s5/gaia/deploy/DEFAULT/web/eretail/ois.cir.client.article.jar~)</code></pre></div>
+        gaia/deploy/DEFAULT/resource/eretail/lib/ois.cir.server.prixachat.jar ->
+        /gold_space/ts510s6/gaia/deploy/DEFAULT/resource/eretail/lib/ois.cir.server.prixachat.jar
+
+        gaia/deploy/DEFAULT/web/eretail/ois.cir.client.prixachat.jar ->
+        /gold_space/ts510s6/gaia/deploy/DEFAULT/web/eretail/ois.cir.client.prixachat.jar
+
+    </code></pre></div>
     <a href="/IziJar.bash"><button class="btn btn-primary" formaction="/IziJar.bash">Скачать</button></a>
     <a href="index.html"><button class="btn btn-primary">Назад</button></a>
 </div>
