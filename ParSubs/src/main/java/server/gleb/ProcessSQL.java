@@ -12,32 +12,34 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class ProcessSQL {
-    public static String substituteParams(String SQL) throws IOException {
+    static final String SECTION_DELIMITER = "Query parameters";
+    public static String substituteParams(String SQL) throws Exception {
         Scanner in = new Scanner(SQL);
-        String query = "";
-        Map<String, String> parToVal = new HashMap<String, String>();
+        String query = new String();
+        Map<String, String> mParToVal = new HashMap<String, String>();
 
         //read query
-        String s;
-        while (in.hasNext() && !(s=in.nextLine()).contains("Query parameters")) {
-            query += s + '\n';
-        }
+        String line;
+        while (in.hasNext() && !(line=in.nextLine()).contains(SECTION_DELIMITER))
+            if (!line.matches("\\s*"))
+                query += line + '\n';
+
         if (query.length() == 0)
             return "Empty query";
         //read params
-        String e[], line;
+        String sParToVal[];
         while (in.hasNext()) {
             line = in.nextLine();
-            if (line.isEmpty() == false) {
-                e = line.split("\\s+");
-                parToVal.put(e[0], e[1]);
+            if (!line.matches("\\s*")) {
+                sParToVal = line.split("\\s+");
+                mParToVal.put(sParToVal[0], sParToVal[1]);
             }
         }
-        if (parToVal.size() == 0)
-            return "Empty parameters";
+        if (mParToVal.size() == 0)
+            return String.format("Empty parameters or absent \"%s\" string", SECTION_DELIMITER);
         //substitute params in query with values
         String val;
-        for (Map.Entry<String, String> entry : parToVal.entrySet()) {
+        for (Map.Entry<String, String> entry : mParToVal.entrySet()) {
             val = entry.getValue();
             if (val != null && entry.getKey() != null) {
                 if (val.equals("null") == false)
@@ -46,9 +48,14 @@ public class ProcessSQL {
             }
         }
         //show result
-        return formatSQL(query);
+        try {
+            query = formatSQL(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return query;
     }
-    private static String formatSQL(String query) throws IOException {
+    private static String formatSQL(String query) throws Exception {
         String url = "http://sqlformat.org/api/v1/format";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -67,14 +74,8 @@ public class ProcessSQL {
         wr.flush();
         wr.close();
 
-        int responseCode = con.getResponseCode();
-        if (responseCode != 200) {
-            System.err.println("sqlformat.org query not OK");
-        return query;
-    }
-//        System.out.println("\nSending 'POST' request to URL : " + url);
-//        System.out.println("Post parameters : " + urlParameters);
-//        System.out.println("Response Code : " + responseCode);
+        if (con.getResponseCode() != 200)
+            throw new Exception("sqlformat.org query not OK");
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));

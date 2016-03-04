@@ -21,7 +21,11 @@ public class TransServl extends HttpServlet {
         String page = new String();
         Map<String, Object> mSQLParams = new HashMap<String, Object>();
         //do work
-        resultSQL = ProcessSQL.substituteParams(req.getParameter("SQLtext"));
+        try {
+            resultSQL = ProcessSQL.substituteParams(req.getParameter("SQLtext"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //proccess template
         mSQLParams.put("resultSQL", resultSQL);
         page = MyGenerator.getInstance().getPage("result.html", mSQLParams);

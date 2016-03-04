@@ -1,7 +1,9 @@
 import org.rauschig.jarchivelib.*;
 
 import java.io.*;
-
+/**
+dat shit extracts jars frim gzip archive to the corresponding dirictories
+ */
 public class IziPatch {
     static final String PROBLEM_ARCH_READING = "Cant read archive";
     static final String HOME_UNSET = "HOME environment vriable is not set";
