@@ -19,7 +19,7 @@ public class Main {
         ResourceHandler resource_handler = new ResourceHandler();
 
         context.addServlet(new ServletHolder(transServl), "/trans");
-        context.addServlet(new ServletHolder(scriptServlet), "/IziJar.bash");
+        context.addServlet(new ServletHolder(scriptServlet), "/iZiPatch.zip");
 
         resource_handler.setResourceBase("public_html");
 
