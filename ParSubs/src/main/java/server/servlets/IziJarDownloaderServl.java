@@ -19,7 +19,7 @@ import java.util.List;
 
 public class IziJarDownloaderServl extends HttpServlet {
     static String source[] = {
-            "/home/gleb/Documents/codingGame/iZiPatch/target/IziPatch.jar",
+            "/home/gleb/Documents/codingGame/iZiPatch/target/iZiPatch.jar",
             "/home/gleb/bin/iZiPatch.bash"
     };
     static String archiveName = "iZiPatch";

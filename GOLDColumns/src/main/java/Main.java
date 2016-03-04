@@ -5,6 +5,9 @@ import java.util.List;
 public class Main {
     static List<Column> cols111 = new ArrayList<Column>();
     static List<Rule> rules111 = new ArrayList<Rule>();
+
+    static List<Column> cols121 = new ArrayList<Column>();
+    static List<Rule> rules121 = new ArrayList<Rule>();
     static ColType type = ColType.NUMBER;
 
     public static void main(String...args) {
@@ -29,29 +32,78 @@ public class Main {
         rules111.add(new Rule("conque = congros + conautre + conret + conmov"));
         rules111.add(new Rule("qtedeb = 0 and entque = 0 and conque = 0 and qtefin = 0"));
 
-        System.out.println(cols111.size());
+        rules121 = Rules.parseRules("qtefin = qtedeb + entque – conque \n" +
+                "enttotal = entprod + entgros\n" +
+                "entque = enttotal + entret + entautre\n" +
+                "conque = enttotal + conautre + conret\n" +
+                "qtedeb = 0 entque = 0 conque = 0 qtefin = 0");
 
-        for (Column col : cols111) {
+//        System.out.println(cols111.size());
+//
+//        for (Column col : cols111) {
+//            System.out.println("ojtDecl.setColumnEditor(\""+col.getJTableName()+"\", "+col.getCliEditorName()+");");
+//        }
+//
+//        System.out.println(Columns.clientJavaDeclaration(cols111));
+//
+//        System.out.println(Columns.servUpdateSetClause("DF111", cols111));
+//
+//        System.out.println(Columns.servOISSQLParams(cols111));
+//
+//        System.out.println(Columns.servJavaArgs(cols111));
+//
+//        System.out.println(Columns.servInsertClause("DF111", cols111));
+//
+//        System.out.println(Columns.clientReflectionInvoke(cols111));
+//
+//        System.out.println(Columns.clientServCallParams(cols111));
+//
+//        for (Rule rule : rules111) {
+//            System.out.println("if (" + Rules.condition(rule, cols111) + ")");
+//            System.out.println("{" + Rules.showError(rule, cols111) + "}");
+//        }
+
+
+        cols121 = Columns.parseColumns("QTEDEB\tOST_NACH_PERIOD\t-1582\n" +
+                "ENTPROD\tPOSTUP_PROIZV\t-1583\n" +
+                "ENTGROS\tPOSTUP_OPT_TORG\t-1584\n" +
+                "ENTTOTAL\tPOSTUP_ITOGO\t-1534\n" +
+                "ENTRET\tVOZVRAT_POKUP\t-1535\n" +
+                "ENTAUTRE\tPROCH_POSTUP\t-1536\n" +
+                "ENTQUE\tPOSTUP_VSEGO\t-1586\n" +
+                "CONGROS\tOBEM_ROZN_PROD\t-1575\n" +
+                "CONAUTRE\tPROCHII_RASHOD\t-1542\n" +
+                "CONRET\tVOZVRAT_POSTAVSHIKU\t-1543\n" +
+                "CONQUE\tRASHOD_VSEGO\t-1578\n" +
+                "QTEFIN\tOSTATOK_OTCH_PERIOD\t-1546");
+
+        System.out.println(cols121.size());
+
+        for (Column col : cols121) {
             System.out.println("ojtDecl.setColumnEditor(\""+col.getJTableName()+"\", "+col.getCliEditorName()+");");
         }
 
-        System.out.println(Columns.clientJavaDeclaration(cols111));
+        System.out.println(Columns.clientJavaDeclaration(cols121));
 
-        System.out.println(Columns.servUpdateSetClause("DF111", cols111));
+        System.out.println(Columns.servUpdateSetClause("DF121", cols121));
 
-        System.out.println(Columns.servOISSQLParams(cols111));
+        System.out.println(Columns.servOISSQLParams(cols121));
 
-        System.out.println(Columns.servServJavaArgs(cols111));
+        System.out.println(Columns.servJavaArgs(cols121));
 
-        System.out.println(Columns.servInsertClause("DF111", cols111));
+        System.out.println(Columns.servInsertClause("DF121", cols121));
 
-        System.out.println(Columns.clientReflectionInvoke(cols111));
+        System.out.println(Columns.clientReflectionInvoke(cols121));
 
-        System.out.println(Columns.clientServCallParams(cols111));
+        System.out.println(Columns.clientServCallParams(cols121));
 
-        for (Rule rule : rules111) {
-            System.out.println("if (" + Rules.condition(rule, cols111) + ")");
-            System.out.println("{" + Rules.showError(rule, cols111) + "}");
+        System.out.println(Columns.clientVarInit(cols121, true));
+
+        System.out.println(Columns.clienSetColumnsEditableClause(cols121));
+
+        for (Rule rule : rules121) {
+            System.out.println("if (" + Rules.condition(rule, cols121) + ")");
+            System.out.println("{" + Rules.showError(rule, cols121) + "}");
         }
     }
 }

@@ -1,4 +1,7 @@
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Rules {
     public static String showError(Rule rule, List<Column> cols) {
@@ -27,21 +30,12 @@ public class Rules {
         sb.append(val);
         return sb.toString();
     }
-    /*
-    if (r.toBigDecimal("RASHOD_ITOGO").compareTo(
-                r.toBigDecimal("POSTAV_ITOGO")
-                        .add(r.toBigDecimal("PROCH_RASHOD"))
-                        .add(r.toBigDecimal("VOZVRAT_POST"))
-                        .add(r.toBigDecimal("RASHOD_PEREMESH_V_ORG"))
-        ) != 0)
-        {
-            cja.showErrorMessage("Not equal \n" + cja.getLabel(-1545)+" = "+cja.getLabel(-1541)+" + "+cja.getLabel(-1542)+" + "+cja.getLabel(-1543)+" + "+cja.getLabel(-1544));
-            return false;
-
-     */
-//    public static String showError(List<Rule> rules111) {
-//        StringBuilder sb = new StringBuilder();
-//
-//        return sb.toString();
-//    }
+    public static List<Rule> parseRules(String text) {
+        System.out.println("---"+new Object(){}.getClass().getEnclosingMethod().getName()+"---");
+        Scanner sc = new Scanner(text);
+        List<Rule> rules = new ArrayList<Rule>();
+        while (sc.hasNextLine())
+            rules.add(new Rule(sc.nextLine()));
+        return rules;
+    }
 }
