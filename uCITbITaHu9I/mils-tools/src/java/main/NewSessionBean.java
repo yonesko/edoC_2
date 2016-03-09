@@ -7,6 +7,7 @@ package main;
 
 import java.io.Serializable;
 import javax.ejb.Stateless;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
 
 /**
@@ -14,6 +15,7 @@ import javax.inject.Named;
  * @author gleb
  */
 @Stateless
+@ViewScoped
 @Named
 public class NewSessionBean implements Serializable{
     private String incomingText = new String();
