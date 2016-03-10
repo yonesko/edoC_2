@@ -21,7 +21,7 @@ public class Main {
         context.addServlet(new ServletHolder(transServl), "/trans");
         context.addServlet(new ServletHolder(scriptServlet), "/iZiPatch.zip");
 
-        resource_handler.setResourceBase("public_html");
+        resource_handler.setResourceBase("/home/gleb/Documents/codingGame/ParSubs/public_html");
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{resource_handler, context});

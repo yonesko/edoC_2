@@ -17,6 +17,11 @@ public class MyGenerator {
 
     private MyGenerator() {
         this.cfg = new Configuration();
+        try {
+            cfg.setDirectoryForTemplateLoading(new File("/home/gleb/Documents/codingGame/ParSubs/templates"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static MyGenerator getInstance() {
@@ -26,7 +31,7 @@ public class MyGenerator {
         Writer stream = new StringWriter();
 
         try {
-            Template template = this.cfg.getTemplate(MyGenerator.HTML_DIR + File.separator + filename);
+            Template template = this.cfg.getTemplate(File.separator + filename);
             template.process(data, stream);
         } catch (IOException e) {
             e.printStackTrace();
