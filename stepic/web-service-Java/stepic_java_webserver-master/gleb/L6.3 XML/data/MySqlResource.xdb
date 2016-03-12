@@ -1,0 +1,5 @@
+<class name="models.DBCred">
+<name>db_example</name>
+<pass>tully</pass>
+<user>tully</user>
+</class>
