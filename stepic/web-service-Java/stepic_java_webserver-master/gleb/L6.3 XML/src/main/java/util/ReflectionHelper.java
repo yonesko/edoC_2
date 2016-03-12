@@ -3,9 +3,9 @@ package util;
 import java.lang.reflect.Field;
 
 public class ReflectionHelper {
-    public static Object createInstance(String sClaName) {
+    public static <T> T createInstance(String sClaName) {
         try {
-            return Class.forName(sClaName).newInstance();
+            return (T) Class.forName(sClaName).newInstance();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {

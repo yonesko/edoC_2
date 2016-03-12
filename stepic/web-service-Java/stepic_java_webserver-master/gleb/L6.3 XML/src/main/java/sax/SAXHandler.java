@@ -6,8 +6,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import util.ReflectionHelper;
 
-public class SAXHandler extends DefaultHandler {
-    private Object classObj;
+public class SAXHandler<T> extends DefaultHandler {
+    private T classObj;
     private String element;
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
@@ -15,7 +15,7 @@ public class SAXHandler extends DefaultHandler {
             ReflectionHelper.setField(classObj, element, new String(ch, start, length));
     }
 
-    public Object getClassObj() {
+    public T getClassObj() {
         return classObj;
     }
 
