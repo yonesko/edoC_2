@@ -34,7 +34,7 @@ public class Main {
 
         AccountServerControllerMBean serverStat = new AccountServerController(accountServer);
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        ObjectName objectName = new ObjectName("ServerManager:type=AccountServerController");
+        ObjectName objectName = new ObjectName("L5.1:type=AccountServerController");
         mbs.registerMBean(serverStat, objectName);
 
         Server server = new Server(port);
