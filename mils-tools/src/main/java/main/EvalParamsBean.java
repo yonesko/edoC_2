@@ -31,7 +31,7 @@ public class EvalParamsBean {
         if (query.length() == 0)
             query = "Empty query";
         else {
-            //read params
+        //read params
             String sParToVal[];
             while (in.hasNext()) {
                 line = in.nextLine();
