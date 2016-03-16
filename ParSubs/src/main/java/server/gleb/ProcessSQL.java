@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 public class ProcessSQL {
     static final String SECTION_DELIMITER = "Query parameters";
+    static final String PARAM_STRING_REGEX = "\\S+\\s+\\S+";
     public static String substituteParams(String SQL) throws Exception {
         Scanner in = new Scanner(SQL);
         String query = new String();
@@ -30,7 +31,7 @@ public class ProcessSQL {
         String sParToVal[];
         while (in.hasNext()) {
             line = in.nextLine();
-            if (!line.matches("\\s*")) {
+            if (line.matches(PARAM_STRING_REGEX)) {
                 sParToVal = line.split("\\s+");
                 mParToVal.put(sParToVal[0], sParToVal[1]);
             }

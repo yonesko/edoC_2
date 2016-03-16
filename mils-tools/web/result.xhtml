@@ -13,14 +13,14 @@
       xmlns:h="http://java.sun.com/jsf/html">
 
 <h:head>
-    <title>Result</title>
+    <title>#{labels.resultTitle}</title>
 </h:head>
 
 <h:body>
     <div align="middle">
-        <h:outputText value="OLLO"/>
+        <h:outputText value="#{evalParamsBean.SQLtext}"/>
         <h:form>
-            <h:commandButton value="В начало" action="index"/>
+            <h:commandButton value="#{labels.toHome}" action="index"/>
         </h:form>
     </div>
 </h:body>

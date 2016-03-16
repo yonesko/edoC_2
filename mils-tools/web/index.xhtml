@@ -6,15 +6,16 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
    <h:head>
-       <title>Mils Tools</title>
+       <title>${labels.indexTitle}</title>
+       <h:outputScript library="scripts" name="index.js"/>
    </h:head>
     <h:body>
         <div align="middle">
-            <h:form>
-                <h:inputTextarea rows="20" cols="90"/>
-                <h:commandButton value="Перевод" action="result"/>
-                <h:commandButton value="Utilit" action="izipatch"/>
-                <h:commandButton value="Убрать"/>
+            <h:form prependId="false">
+                <h:inputTextarea id="SQLtext" rows="20" cols="90" value="#{evalParamsBean.SQLtext}"/>
+                <h:commandButton value="#{labels.eval}" action="result"/>
+                <h:commandButton value="#{labels.izipatch}" action="izipatch"/>
+                <h:button value="#{labels.clear}" onclick="clearFields()"/>
             </h:form>
         </div>
     </h:body>
