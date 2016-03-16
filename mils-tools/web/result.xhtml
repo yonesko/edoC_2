@@ -18,7 +18,7 @@
 
 <h:body>
     <div align="middle">
-        <h:outputText value="#{evalParamsBean.SQLtext}"/>
+        <h:inputTextarea value="#{evalParamsBean.SQLtext}" rows="20" cols="90" readonly="true"/>
         <h:form>
             <h:commandButton value="#{labels.toHome}" action="index"/>
         </h:form>

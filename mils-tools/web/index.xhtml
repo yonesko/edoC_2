@@ -16,7 +16,7 @@
             <h:panelGroup >
                 <h:commandButton value="#{labels.eval}" action="result"/>
                 <h:commandButton value="#{labels.izipatch}" action="izipatch"/>
-                <h:button value="#{labels.clear}" onclick="clearFields()"/>
+                <h:commandButton type="reset" value="#{labels.clear}" onclick="clearFields()"/>
             </h:panelGroup>
         </h:panelGrid>
     </h:form>
