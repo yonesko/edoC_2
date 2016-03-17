@@ -10,7 +10,7 @@
     <h:outputStylesheet library="styles" name="styles.css"/>
 </h:head>
 <h:body>
-    <ui:composition template="masterLayout.xhtml">
+    <ui:composition template="template/masterLayout.xhtml">
         <ui:define name="content">
             <h:form prependId="false">
                 <h:panelGrid>
@@ -22,7 +22,6 @@
                     </h:panelGroup>
                 </h:panelGrid>
             </h:form>
-            <h:link value="#{labels.izipatch}" outcome="izipatch" />
         </ui:define>
     </ui:composition>
 </h:body>

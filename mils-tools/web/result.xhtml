@@ -18,13 +18,10 @@
 </h:head>
 
 <h:body>
-    <ui:composition template="masterLayout.xhtml">
+    <ui:composition template="template/masterLayout.xhtml">
         <ui:define name="content">
             <div align="middle">
                 <h:inputTextarea value="#{evalParamsBean.SQLtext}" rows="20" cols="90" readonly="true"/>
-                <h:form>
-                    <h:commandButton value="#{labels.toHome}" action="index"/>
-                </h:form>
             </div>
         </ui:define>
     </ui:composition>

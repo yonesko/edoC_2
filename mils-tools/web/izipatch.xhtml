@@ -18,10 +18,9 @@
 </h:head>
 
 <h:body>
-    <ui:composition template="masterLayout.xhtml">
+    <ui:composition template="template/masterLayout.xhtml">
         <ui:define name="content">
             <h:form>
-                <h:commandButton value="#{labels.toHome}" action="index"/>
                 <h:commandButton value="#{labels.download}" action="#{giveUtilitBean.download}"/>
             </h:form>
         </ui:define>
