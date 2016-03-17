@@ -10,19 +10,24 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
     <title>#{labels.resultTitle}</title>
 </h:head>
 
 <h:body>
-    <div align="middle">
-        <h:inputTextarea value="#{evalParamsBean.SQLtext}" rows="20" cols="90" readonly="true"/>
-        <h:form>
-            <h:commandButton value="#{labels.toHome}" action="index"/>
-        </h:form>
-    </div>
+    <ui:composition template="masterLayout.xhtml">
+        <ui:define name="content">
+            <div align="middle">
+                <h:inputTextarea value="#{evalParamsBean.SQLtext}" rows="20" cols="90" readonly="true"/>
+                <h:form>
+                    <h:commandButton value="#{labels.toHome}" action="index"/>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
 </h:body>
 
 </html>

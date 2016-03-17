@@ -3,23 +3,27 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
->
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
     <title>${labels.indexTitle}</title>
     <h:outputScript library="scripts" name="index.js"/>
     <h:outputStylesheet library="styles" name="styles.css"/>
 </h:head>
 <h:body>
-    <h:form prependId="false">
-        <h:panelGrid>
-            <h:inputTextarea id="SQLtext" rows="20" cols="90" value="#{evalParamsBean.SQLtext}" required="true" label="SQL"/>
-            <h:message for="SQLtext" showSummary="false" errorClass="errors"/>
-            <h:panelGroup>
-                <h:commandButton value="#{labels.eval}" action="result"/>
-                <h:commandButton value="#{labels.izipatch}" action="izipatch"/>
-                <h:commandButton type="reset" value="#{labels.clear}" onclick="clearFields()"/>
-            </h:panelGroup>
-        </h:panelGrid>
-    </h:form>
+    <ui:composition template="masterLayout.xhtml">
+        <ui:define name="content">
+            <h:form prependId="false">
+                <h:panelGrid>
+                    <h:inputTextarea id="SQLtext" rows="20" cols="90" value="#{evalParamsBean.SQLtext}" required="true" label="SQL"/>
+                    <h:message for="SQLtext" showSummary="false" errorClass="errors"/>
+                    <h:panelGroup>
+                        <h:commandButton value="#{labels.eval}" action="result"/>
+                        <h:commandButton type="reset" value="#{labels.clear}" onclick="clearFields()"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </h:form>
+            <h:link value="#{labels.izipatch}" outcome="izipatch" />
+        </ui:define>
+    </ui:composition>
 </h:body>
 </html>

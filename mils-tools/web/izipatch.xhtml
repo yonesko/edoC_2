@@ -10,17 +10,22 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
     <title>#{labels.izipatchTitle}</title>
 </h:head>
 
 <h:body>
-    <h:form>
-        <h:commandButton value="#{labels.toHome}" action="index"/>
-        <h:commandButton value="#{labels.download}" action="#{giveUtilitBean.download}"/>
-    </h:form>
+    <ui:composition template="masterLayout.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <h:commandButton value="#{labels.toHome}" action="index"/>
+                <h:commandButton value="#{labels.download}" action="#{giveUtilitBean.download}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
 </h:body>
 
 </html>
