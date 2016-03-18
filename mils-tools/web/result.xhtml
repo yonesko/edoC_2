@@ -19,6 +19,9 @@
 
 <h:body>
     <ui:composition template="template/masterLayout.xhtml">
+        <ui:define name="windowTitle">
+            #{labels.resultTitle}
+        </ui:define>
         <ui:define name="content">
             <div align="middle">
                 <h:inputTextarea value="#{evalParamsBean.SQLtext}" rows="20" cols="90" readonly="true"/>

@@ -11,6 +11,9 @@
 </h:head>
 <h:body>
     <ui:composition template="template/masterLayout.xhtml">
+        <ui:define name="windowTitle">
+            #{labels.indexTitle}
+        </ui:define>
         <ui:define name="content">
             <h:form prependId="false">
                 <h:panelGrid>

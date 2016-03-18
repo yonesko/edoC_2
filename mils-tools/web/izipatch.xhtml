@@ -19,6 +19,9 @@
 
 <h:body>
     <ui:composition template="template/masterLayout.xhtml">
+        <ui:define name="windowTitle">
+            #{labels.izipatchTitle}
+        </ui:define>
         <ui:define name="content">
             <h:form>
                 <h:commandButton value="#{labels.download}" action="#{giveUtilitBean.download}"/>

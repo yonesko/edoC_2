@@ -19,11 +19,14 @@
 </h:head>
 
 <h:body>
-    <ui:insert name="heading">
-        <ui:include src="section/heading.xhtml"/>
-    </ui:insert>
-    <ui:insert name="sidebarLeft"/>
-    <ui:insert name="content"/>
+    <!--<ui:debug hotkey="U"/>-->
+    <div align="middle">
+        <ui:insert name="heading">
+            <ui:include src="section/heading.xhtml"/>
+        </ui:insert>
+        <ui:insert name="sidebarLeft"/>
+        <ui:insert name="content"/>
+    </div>
 </h:body>
 
 </html>

@@ -5,11 +5,12 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-<f:view>
-    <h:panelGrid columns="3" border="1">
-        Gleb-tools
-        <h:link value="#{labels.izipatch}" outcome="izipatch" />
-        <h:link value="#{labels.toHome}" outcome="index" />
-    </h:panelGrid>
-</f:view>
+<ui:composition>
+    <div align="middle">
+        <h:panelGrid columns="3" cellspacing="10px">
+            <h:link value="#{labels.indexTitle}" outcome="index" />
+            <h:link value="#{labels.izipatch}" outcome="izipatch" />
+        </h:panelGrid>
+    </div>
+</ui:composition>
 </html>
