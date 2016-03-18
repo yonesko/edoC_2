@@ -18,6 +18,10 @@ public class EvalParamsBean {
     }
 
     public void setSQLtext(String SQLtext) {
+        StringBuilder logMsg = new StringBuilder();
+        logMsg.append("\n---------------got---------------\n");
+        logMsg.append(SQLtext);
+
         Scanner in = new Scanner(SQLtext);
         String query = "";
         Map<String, String> mParToVal = new HashMap<String, String>();
@@ -56,6 +60,10 @@ public class EvalParamsBean {
             }
         }
         //show result
+        logMsg.append("\n--------------sent---------------\n");
+        logMsg.append(query);
+        logMsg.append("\n---------------------------------\n");
+        Logger.getInstance().info(logMsg);
         this.SQLtext = query;
     }
 }
