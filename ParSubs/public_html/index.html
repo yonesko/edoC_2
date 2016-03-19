@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>SQL Parameter Substitute</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script type="text/javascript">
+  var iframe = document.getElementById('cooot'),src = iframe.src;
+  iframe.src = '';
+  document.onload =  function(){iframe.src = src;}
+    </script>
+</head>
+<body>
+<div align="middle">
+<form action="/trans" method="POST">
+    <div class="form-group">
+        <label for="SQL-Query">SQL из GAIA-лога c параметрами:</label>
+        <textarea rows="20" cols="90" name="SQLtext" type="text" class="form-control"></textarea>
+    </div>
+    <input type="submit" value="Перевод" class="btn btn-primary"  >
+    <input type="reset" value="Убрать" onclick="document.getElementById('SQLtext').value='';" class="btn btn-primary">
+</form>
+</div>
+    <div align="right">
+        <iframe src="http://tv.giphy.com/cat" class="img-rounded" id="cooot"></iframe><br><br>
+    </div>
+    <div align="middle">
+        Надоело ставить джарки из патча руками?<br>
+        Устал получать от разрабов?<br>
+        Предоставь рутину безопасной <a href=izijar.html>утилите!</a><br>
+    </div>
+</body>
+</html>

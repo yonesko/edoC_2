@@ -1,0 +1,4 @@
+./cppapplication_2 <<EOF
+trvec
+rwb
+EOF
