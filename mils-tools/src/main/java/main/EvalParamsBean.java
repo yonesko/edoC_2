@@ -1,8 +1,10 @@
 package main;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -10,6 +12,7 @@ import java.util.Scanner;
 @ManagedBean
 @RequestScoped
 public class EvalParamsBean {
+    private static final Logger logger = LogManager.getLogger();
     private static final String SECTION_DELIMITER = "Query parameters";
     private String SQLtext;
 
@@ -18,10 +21,6 @@ public class EvalParamsBean {
     }
 
     public void setSQLtext(String SQLtext) {
-        StringBuilder logMsg = new StringBuilder();
-        logMsg.append("\n---------------got---------------\n");
-        logMsg.append(SQLtext);
-
         Scanner in = new Scanner(SQLtext);
         String query = "";
         Map<String, String> mParToVal = new HashMap<String, String>();
@@ -60,10 +59,8 @@ public class EvalParamsBean {
             }
         }
         //show result
-        logMsg.append("\n--------------sent---------------\n");
-        logMsg.append(query);
-        logMsg.append("\n---------------------------------\n");
-        Logger.getInstance().info(logMsg);
         this.SQLtext = query;
+
+        logger.info("\nbefore\n {} \nafter\n {}", SQLtext, this.SQLtext);
     }
 }

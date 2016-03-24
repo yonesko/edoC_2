@@ -1,5 +1,7 @@
 package main;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.rauschig.jarchivelib.ArchiveFormat;
 import org.rauschig.jarchivelib.Archiver;
 import org.rauschig.jarchivelib.ArchiverFactory;
@@ -18,6 +20,7 @@ import java.util.List;
 @ManagedBean
 @RequestScoped
 public class GiveUtilitBean {
+    private static final Logger logger = LogManager.getLogger();
     static String source[] = {
             "/home/gleb/Documents/codingGame/iZiPatch/target/iZiPatch.jar",
             "/home/gleb/bin/iZiPatch.bash"
@@ -46,6 +49,7 @@ public class GiveUtilitBean {
         output.flush();
 
         fc.responseComplete(); // Important! Otherwise JSF will attempt to render the response which obviously will fail since it's already written with a file and closed.
+        logger.info("sent {} {} bytes", archive.getName(), archive.length());
     }
 
     private File makeArchive() throws IOException {
@@ -54,7 +58,6 @@ public class GiveUtilitBean {
             src.add(new File(s));
 
         Archiver archiver = ArchiverFactory.createArchiver(ArchiveFormat.ZIP);
-        File archive = archiver.create(archiveName, new File(archivePath), src.toArray(new File[src.size()]));
-        return archive;
+        return archiver.create(archiveName, new File(archivePath), src.toArray(new File[src.size()]));
     }
 }
