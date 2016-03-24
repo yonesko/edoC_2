@@ -55,7 +55,7 @@ public class IziPatch {
         ArchiveEntry entry;
         //read archive
         //extract .jar to the corresponding directory
-        System.out.println();
+        System.out.println(pArch);
         try {
             while((entry = stream.getNextEntry()) != null) {
                 backUpExistingJar(entry);
