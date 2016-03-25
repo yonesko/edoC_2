@@ -7,16 +7,14 @@
 <h:body>
     <ui:composition template="template/masterLayout.xhtml">
         <ui:define name="windowTitle">
-            #{labels.indexTitle}
+            #{labels.recallTitle}
         </ui:define>
         <ui:define name="content">
             <h:form prependId="false">
                 <h:panelGrid>
-                    <h:inputTextarea id="SQLtext" rows="20" cols="90" value="#{evalParamsBean.SQLtext}" required="true" label="SQL"/>
-                    <h:message for="SQLtext" showSummary="false" errorClass="errors"/>
+                    <h:inputTextarea rows="20" cols="90" value="#{recallBean.recallText}"/>
                     <h:panelGroup>
-                        <h:commandButton value="#{labels.eval}" action="result"/>
-                        <h:commandButton type="reset" value="#{labels.clear}" onclick="clearFields()"/>
+                        <h:commandButton value="#{labels.recallSend}"/>
                     </h:panelGroup>
                 </h:panelGrid>
             </h:form>
