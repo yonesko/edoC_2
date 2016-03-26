@@ -1,5 +1,6 @@
 package main;
 
+import org.hibernate.engine.jdbc.internal.BasicFormatterImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,26 +32,25 @@ public class EvalParamsBeanTest {
     @Test
     public void setSQLtext() throws Exception {
         String q, expected;
-
+        //1
         bean.setSQLtext("");
         assertEquals(FAIL_MSG, bean.getSQLtext());
-
+        //2
         bean.setSQLtext(null);
         assertEquals(FAIL_MSG, bean.getSQLtext());
-
+        //3
         bean.setSQLtext("   \t\n\t");
         assertEquals(FAIL_MSG, bean.getSQLtext());
-
+        //4
         bean.setSQLtext("    ");
         assertEquals(FAIL_MSG, bean.getSQLtext());
-
+        //5
         bean.setSQLtext("\n\n\n\n\n");
         assertEquals(FAIL_MSG, bean.getSQLtext());
-
-
+        //6
         bean.setSQLtext("tu,mrntd45y\nerg445445\n");
         assertEquals(FAIL_MSG, bean.getSQLtext());
-
+        //7
         q = String.format("SELECCV * FROM :POROPR:  , :POROPR: %s%s%s  :POROPR:  678 35 OVOVERDI%s",
                         BLANCK_SHIT,
                         SECTION_DELIMITER,
@@ -62,7 +62,7 @@ public class EvalParamsBeanTest {
                 "    '678 35 OVOVERDI'";
         bean.setSQLtext(q);
         assertEquals(expected, bean.getSQLtext());
-
+        //8
         q = String.format("%sSELECCV * %sFROM :POROPR:  , :POROPR: %s%s%s  :POROPR:  678 35 OVOVERDI%s",
                         BLANCK_SHIT,
                         BLANCK_SHIT,
@@ -76,7 +76,7 @@ public class EvalParamsBeanTest {
                 "    '678 35 OVOVERDI'";
         bean.setSQLtext(q);
         assertEquals(expected, bean.getSQLtext());
-
+        //9
         q = "select * from jopa, tab where x(+) = y(+) and :p1: = :P222: and :olobo: is not NuLl";
         q += SECTION_DELIMITER;
         q += "  :p1:  3456789\n\n\n\n";
@@ -93,6 +93,26 @@ public class EvalParamsBeanTest {
                 "        and '3456789' = 'NE, NU A CHO' \n" +
                 "        and null is not NuLl";
 
+        bean.setSQLtext(q);
+        assertEquals(expected, bean.getSQLtext());
+        //10
+        bean.setSQLtext(SECTION_DELIMITER);
+        assertEquals("", bean.getSQLtext());
+        //11
+        bean.setSQLtext(BLANCK_SHIT + SECTION_DELIMITER + BLANCK_SHIT);
+        assertEquals("", bean.getSQLtext());
+        //12
+        q = BLANCK_SHIT + SECTION_DELIMITER + BLANCK_SHIT;
+        q += ":olol:";
+        q += "rhrhrh PORTUMEYA";
+        bean.setSQLtext(q);
+        assertEquals("", bean.getSQLtext());
+        //13
+        q = "hz cho";
+        q += BLANCK_SHIT + SECTION_DELIMITER + BLANCK_SHIT;
+        q += ":olol:";
+        q += "rhrhrh PORTUMEYA";
+        expected = "hz cho";
         bean.setSQLtext(q);
         assertEquals(expected, bean.getSQLtext());
     }
