@@ -1,6 +1,9 @@
 package main;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import java.lang.reflect.Field;
 
 import static org.junit.Assert.*;
 
@@ -9,11 +12,24 @@ import static org.junit.Assert.*;
  */
 public class EvalParamsBeanTest {
     private final String BLANCK_SHIT = "\n\t\n\t  \n\t\n\n \t";
-    private static final String SECTION_DELIMITER = "Query parameters";
-    private static final String FAIL_MSG = String.format("Cant find \"%s\" delimiter string", SECTION_DELIMITER);
+    private static String SECTION_DELIMITER;
+    private static String FAIL_MSG;
+    private EvalParamsBean bean;
+
+    @Before
+    public void setUp() throws Exception {
+        bean = new EvalParamsBean();
+        Class<EvalParamsBean> beanClass = EvalParamsBean.class;
+        Field secDelim = beanClass.getDeclaredField("SECTION_DELIMITER");
+        secDelim.setAccessible(true);
+
+        SECTION_DELIMITER = String.valueOf((secDelim.get(bean)));
+        FAIL_MSG = String.format("Cant find \"%s\" delimiter string", SECTION_DELIMITER);
+        secDelim.setAccessible(false);
+    }
+
     @Test
     public void setSQLtext() throws Exception {
-        EvalParamsBean bean = new EvalParamsBean();
         String q, expected;
 
         bean.setSQLtext("");
