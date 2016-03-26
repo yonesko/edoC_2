@@ -20,8 +20,14 @@ public class EvalParamsBean {
         return SQLtext;
     }
 
+    /**
+     разделитель строка с "Query parameters"
+     разделитель строки параметров - пробел
+     пробельные символы срезаются с конца и начала у:
+     входного текста, строки параметров, значении параметра
+     */
     public void setSQLtext(String SQLtext) {
-        Scanner in = new Scanner(SQLtext);
+        Scanner in = new Scanner(SQLtext.trim());
         String query = "";
         Map<String, String> mParToVal = new HashMap<String, String>();
 
@@ -37,10 +43,10 @@ public class EvalParamsBean {
         //read params
             String sParToVal[];
             while (in.hasNext()) {
-                line = in.nextLine();
-                if (!line.matches("\\s*")) {
-                    sParToVal = line.split("\\s+");
-                    mParToVal.put(sParToVal[0], sParToVal[1]);
+                line = in.nextLine().trim();
+                sParToVal = line.split(" ", 2);
+                if (sParToVal.length == 2) {
+                    mParToVal.put(sParToVal[0], sParToVal[1].trim());
                 }
             }
             if (mParToVal.size() == 0)
@@ -59,7 +65,7 @@ public class EvalParamsBean {
             }
         }
         //show result
-        this.SQLtext = query;
+        this.SQLtext = query.trim();
 
         logger.info("\nbefore\n {} \nafter\n {}", SQLtext, this.SQLtext);
     }
