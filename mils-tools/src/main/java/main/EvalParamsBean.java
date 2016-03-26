@@ -2,6 +2,7 @@ package main;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.engine.jdbc.internal.BasicFormatterImpl;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -17,56 +18,55 @@ public class EvalParamsBean {
     private String SQLtext;
 
     public String getSQLtext() {
+        logger.info("getSQLtext:" + this.SQLtext);
         return SQLtext;
     }
 
     /**
      разделитель строка с "Query parameters"
      разделитель строки параметров - пробел
+     разделитель параметров - \n
      пробельные символы срезаются с конца и начала у:
-     входного текста, строки параметров, значении параметра
+     входного текста, строки параметров, значении параметра.
      */
-    public void setSQLtext(String SQLtext) {
-        Scanner in = new Scanner(SQLtext.trim());
-        String query = "";
+    public void setSQLtext(String text) {
+        logger.info("setSQLtext:" + text);
         Map<String, String> mParToVal = new HashMap<String, String>();
+        String queryAndPars[];
+        String paramLines[];
+        String parToVal[];
+        String result;
 
-        //read query
-        String line;
-        while (in.hasNext() && !(line=in.nextLine()).contains(SECTION_DELIMITER))
-            if (!line.matches("\\s*"))
-                query += line + '\n';
+        if (text == null) {
+            SQLtext = String.format("Cant find \"%s\" delimiter string", SECTION_DELIMITER);
+            return;
+        }
+        //collect params
+        queryAndPars = text.split(SECTION_DELIMITER, 2);
+        if (queryAndPars.length != 2) {
+            SQLtext = String.format("Cant find \"%s\" delimiter string", SECTION_DELIMITER);
+            return;
+        }
+        for (int i = 0; i < queryAndPars.length; i++)
+            queryAndPars[i] = queryAndPars[i].trim();
 
-        if (query.length() == 0)
-            query = "Empty query";
-        else {
-        //read params
-            String sParToVal[];
-            while (in.hasNext()) {
-                line = in.nextLine().trim();
-                sParToVal = line.split(" ", 2);
-                if (sParToVal.length == 2) {
-                    mParToVal.put(sParToVal[0], sParToVal[1].trim());
-                }
-            }
-            if (mParToVal.size() == 0)
-                query = String.format("Empty parameters or absent \"%s\" string", SECTION_DELIMITER);
-            else {
-                //substitute params in query with values
-                String val;
-                for (Map.Entry<String, String> entry : mParToVal.entrySet()) {
-                    val = entry.getValue();
-                    if (val != null && entry.getKey() != null) {
-                        if (!val.equals("null"))
-                            val = '\'' + val + '\'';
-                        query = query.replaceAll(entry.getKey(), val);
-                    }
-                }
+        paramLines = queryAndPars[1].split("\n");
+        for (int i = 0; i < paramLines.length; i++) {
+            paramLines[i] = paramLines[i].trim();
+            parToVal = paramLines[i].split(" ", 2);
+            if (parToVal.length == 2) {
+                parToVal[1] = parToVal[1].trim();
+                if  (!parToVal[1].equals("null"))
+                    parToVal[1] = String.format("'%s'", parToVal[1]);
+                mParToVal.put(parToVal[0], parToVal[1]);
             }
         }
-        //show result
-        this.SQLtext = query.trim();
+        //decode text
+        result = queryAndPars[0];
+        for (Map.Entry<String, String> ent : mParToVal.entrySet())
+            result = result.replaceAll(ent.getKey(), ent.getValue());
 
-        logger.info("\nbefore\n {} \nafter\n {}", SQLtext, this.SQLtext);
+        result = new BasicFormatterImpl().format(result).trim();
+        SQLtext = result;
     }
 }
