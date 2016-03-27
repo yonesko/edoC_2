@@ -24,34 +24,39 @@ public class RecallDAO {
     }
 
     public Recall getRecall(final long id) throws SQLException {
-        return executor.execQuery("SELECT id, text FROM recalls WHERE id=" + id, new ResultHandler<Recall>() {
+        return executor.execQuery("SELECT id, text, created FROM recalls WHERE id=" + id, new ResultHandler<Recall>() {
             public Recall handle(ResultSet rs) throws SQLException {
-                return new Recall(id, rs.getString("text"));
+                return new Recall(id, rs.getString("text"), rs.getTimestamp("created"));
             }
         });
     }
     
     public List<Recall> getAllRecalls() throws SQLException {
-        return executor.execQuery("SELECT id, text FROM recalls", new ResultHandler<List<Recall>>() {
+        return executor.execQuery("SELECT id, text, created FROM recalls", new ResultHandler<List<Recall>>() {
             public List<Recall> handle(ResultSet rs) throws SQLException {
                 List<Recall> recalls = new ArrayList<Recall>();
                 while (rs.next())
-                    recalls.add(new Recall(rs.getLong("id"), rs.getString("text")));
-                return null;
+                    recalls.add(new Recall(rs.getLong("id"), rs.getString("text"), rs.getTimestamp("created")));
+                return recalls;
             }
         });
     }
     
     public int addRecall(String text) throws SQLException {
-        return executor.execUpdate(String.format("INSERT INTO recalls(text) VALUES (%s)", text));
+        return executor.execUpdate(String.format("INSERT INTO recalls(text) VALUES ('%s')", text));
     }
 
     private void createTable() throws SQLException {
         executor.execUpdate(
                 "create table if not exists recalls " +
-                "(id bigint identity, " +
-                "text VARCHAR2(1000), " +
-                "created DATE)"
+                "(created TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                 "id bigint identity, " +
+                "text VARCHAR2(1000) " +
+                ")"
         );
+    }
+
+    public void dropRecalls() throws SQLException {
+        executor.execUpdate("drop table recalls");
     }
 }

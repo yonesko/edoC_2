@@ -7,12 +7,12 @@ import org.h2.jdbcx.JdbcDataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 public class DBService {
-    private static DBService dbService = new DBService();
     private final Connection connection;
 
-    private DBService() {
+    public DBService() {
         this.connection = getH2Connection();
     }
 
@@ -31,5 +31,26 @@ public class DBService {
         return null;
     }
 
+    public void saveRecall(String text) {
+        RecallDAO recallDAO = new RecallDAO(connection);
+        try {
+            recallDAO.addRecall(text);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public List<Recall> getAllRecalls() throws SQLException {
+        RecallDAO dao = new RecallDAO(connection);
+        return dao.getAllRecalls();
+    }
+
+    public void cleanUp() {
+        RecallDAO dao = new RecallDAO(connection);
+        try {
+            dao.dropRecalls();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

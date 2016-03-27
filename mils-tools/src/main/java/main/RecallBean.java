@@ -1,6 +1,6 @@
 package main;
 
-import main.dao.RecallSave;
+import dbService.DBService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,12 +14,15 @@ public class RecallBean {
     private String recallText;
 
     public String getRecallText() {
-        return null;
+        logger.info("getRecallText:{}", recallText);
+        return recallText;
     }
 
     public void setRecallText(String recallText) {
-        logger.info("recall:\n {}", recallText);;
+        logger.info("setRecallText:{}", recallText);
         this.recallText = recallText;
-        RecallSave.saveRecall(this.recallText);
+
+        DBService dbService = new DBService();
+        dbService.saveRecall(recallText);
     }
 }
