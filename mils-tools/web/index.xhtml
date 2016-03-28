@@ -10,6 +10,11 @@
             #{labels.indexTitle}
         </ui:define>
         <ui:define name="content">
+            <script type="text/javascript">
+                var iframe = document.getElementById('cooot'),src = iframe.src;
+                iframe.src = '';
+                document.onload =  function(){iframe.src = src;}
+            </script>
             <h:form prependId="false">
                 <h:panelGrid>
                     <h:inputTextarea id="SQLtext" rows="20" cols="90" value="#{evalParamsBean.SQLtext}" required="true" label="SQL"/>
@@ -20,6 +25,9 @@
                     </h:panelGroup>
                 </h:panelGrid>
             </h:form>
+            <div align="right">
+                <iframe src="http://tv.giphy.com/cat" class="img-rounded" id="cooot"></iframe>
+            </div>
         </ui:define>
     </ui:composition>
 </h:body>

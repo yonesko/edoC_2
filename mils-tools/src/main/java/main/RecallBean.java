@@ -15,7 +15,7 @@ public class RecallBean {
 
     public String getRecallText() {
         logger.info("getRecallText:{}", recallText);
-        return recallText;
+        return null;
     }
 
     public void setRecallText(String recallText) {

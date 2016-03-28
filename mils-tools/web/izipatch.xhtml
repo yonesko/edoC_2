@@ -22,6 +22,18 @@
                 <h:commandButton value="#{labels.download}" action="#{giveUtilitBean.download}"/>
             </h:form>
             <h:button value="#{labels.toHome}" outcome="index"/>
+            <div align="left">
+            <pre>
+                Как пользовать утилиту?
+                1. Закинь iZiPatch.jar и iZiPatch.bash на сервер, вместе с архивом патча прямо из почты в любую директорию.
+                2. Дай права на выполнение командой "chmod +x iZiPatch.bash"
+                3. Запусти командой "./iZiPatch.bash АРХИВ_ПАТЧА"
+                Примичание: указать можно любое количество архивов за раз.
+                Пример запуска:
+                После второго прогона утилиты, появляются back-up версии джарника.
+            </pre>
+            </div>
+            <h:graphicImage alt="Пример запуска утилиты" library="pictures" name="iziPatchExample.png"/>
         </ui:define>
     </ui:composition>
 </h:body>

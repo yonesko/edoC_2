@@ -2,7 +2,7 @@ package dbService;
 
 import dbService.dao.RecallDAO;
 import dbService.models.Recall;
-import org.h2.jdbcx.JdbcDataSource;
+import org.h2.Driver;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,11 +20,11 @@ public class DBService {
         try {
             String url = "jdbc:h2:~/gleb-mils-tools";
 
-            JdbcDataSource ds = new JdbcDataSource();
-            ds.setURL(url);
+//            JdbcDataSource ds = new JdbcDataSource();
+//            ds.setURL(url);
+            DriverManager.registerDriver(new Driver());
 
-            Connection connection = DriverManager.getConnection(url);
-            return connection;
+            return DriverManager.getConnection(url);
         } catch (SQLException e) {
             e.printStackTrace();
         }

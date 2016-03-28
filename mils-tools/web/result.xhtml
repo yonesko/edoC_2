@@ -19,8 +19,10 @@
             #{labels.resultTitle}
         </ui:define>
         <ui:define name="content">
-            <h:inputTextarea value="#{evalParamsBean.SQLtext}" rows="20" cols="90" readonly="true"/>
-            <h:button value="#{labels.toHome}" outcome="index"/>
+            <h:panelGrid>
+                <h:inputTextarea value="#{evalParamsBean.SQLtext}" rows="20" cols="90" readonly="true"/>
+                <h:button value="#{labels.toHome}" outcome="index"/>
+            </h:panelGrid>
         </ui:define>
     </ui:composition>
 </h:body>
