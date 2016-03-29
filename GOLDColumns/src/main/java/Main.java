@@ -1,4 +1,5 @@
 //dat shit generate intermediate column names basing on names in database and client JTable names
+//dat shit dont have any logic, only text proccessing for convenience and speed
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,5 +106,22 @@ public class Main {
             System.out.println("if (" + Rules.condition(rule, cols121) + ")");
             System.out.println("{" + Rules.showError(rule, cols121) + "}");
         }
+    }
+    private static void m6() {
+        List<Column> cols = new ArrayList<Column>();
+        List<Rule> rules = new ArrayList<Rule>();
+
+        cols = Columns.parseColumns("QTEDEB\tOST_NACH_PERIOD\t-1582\n" +
+                "ENTPROD\tPOSTUP_PROIZV\t-1583\n" +
+                "ENTGROS\tPOSTUP_OPT_TORG\t-1584\n" +
+                "ENTTOTAL\tPOSTUP_ITOGO\t-1534\n" +
+                "ENTRET\tVOZVRAT_POKUP\t-1535\n" +
+                "ENTAUTRE\tPROCH_POSTUP\t-1536\n" +
+                "ENTQUE\tPOSTUP_VSEGO\t-1586\n" +
+                "CONGROS\tOBEM_ROZN_PROD\t-1575\n" +
+                "CONAUTRE\tPROCHII_RASHOD\t-1542\n" +
+                "CONRET\tVOZVRAT_POSTAVSHIKU\t-1543\n" +
+                "CONQUE\tRASHOD_VSEGO\t-1578\n" +
+                "QTEFIN\tOSTATOK_OTCH_PERIOD\t-1546");
     }
 }

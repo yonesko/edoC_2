@@ -23,7 +23,7 @@ public class EvalParamsBean {
     }
 
     /**
-     разделитель строка с "Query parameters"
+     разделитель строка с "Query parameters" (должна занимать всю строку, которая вырезается из запроса)
      разделитель строки параметров - пробел
      разделитель параметров - \n
      пробельные символы срезаются с конца и начала у:
@@ -36,13 +36,16 @@ public class EvalParamsBean {
         String paramLines[];
         String parToVal[];
         String result;
+        String partsDelimiter;
 
         if (text == null) {
             SQLtext = String.format("Cant find \"%s\" delimiter string", SECTION_DELIMITER);
             return;
         }
         //collect params
-        queryAndPars = text.split(SECTION_DELIMITER, 2);
+        //try to find line delimiter, if fails find just delimiter
+        partsDelimiter = String.format("(?m)^.*%s.*$", SECTION_DELIMITER);
+        queryAndPars = text.split(partsDelimiter, 2);
         if (queryAndPars.length != 2) {
             SQLtext = String.format("Cant find \"%s\" delimiter string", SECTION_DELIMITER);
             return;
@@ -53,7 +56,7 @@ public class EvalParamsBean {
         paramLines = queryAndPars[1].split("\n");
         for (int i = 0; i < paramLines.length; i++) {
             paramLines[i] = paramLines[i].trim();
-            parToVal = paramLines[i].split(" ", 2);
+            parToVal = paramLines[i].split("\\p{Blank}", 2);
             if (parToVal.length == 2) {
                 parToVal[1] = parToVal[1].trim();
                 if  (!parToVal[1].equals("null"))
