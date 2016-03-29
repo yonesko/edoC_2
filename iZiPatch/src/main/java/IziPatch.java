@@ -1,22 +1,19 @@
 import org.rauschig.jarchivelib.*;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 /**
 dat shit extracts jars frim gzip archive to the corresponding dirictories
  */
 public class IziPatch {
     static final ArchiveFormat ARCH_TYPE = ArchiveFormat.TAR;
-    private Path pArch;
-    private Path pHome;
+    private File fArch;
+    private File fHome;
 
-    public IziPatch(Path pArch, Path pHome) {
-        this.pArch = pArch;
-        this.pHome = pHome;
+    public IziPatch(File fArch, File fHome) {
+        this.fArch = fArch;
+        this.fHome = fHome;
     }
 
     public static void main(String...args) {
@@ -34,12 +31,14 @@ public class IziPatch {
             System.err.println(FatalErrs.HOME_UNSET);
             System.exit(1);
         }
-        if (Files.notExists(Paths.get(sArch))) {
+        File fArch = new File(sArch);
+        File fHome = new File(sHome);
+        if (!fArch.exists() || !fArch.isFile()) {
             System.err.println(String.format("%s %s",FatalErrs.NO_FILE, sArch));
             System.exit(1);
         }
 
-        iziPatch = new IziPatch(Paths.get(sArch), Paths.get(sHome));
+        iziPatch = new IziPatch(fArch, fHome);
         iziPatch.scatterJars();
     }
 
@@ -47,7 +46,7 @@ public class IziPatch {
         Archiver archiver = ArchiverFactory.createArchiver(ArchiveFormat.TAR, CompressionType.GZIP);
         ArchiveStream stream = null;
         try {
-            stream = archiver.stream(pArch.toFile());
+            stream = archiver.stream(fArch);
         } catch (IOException e) {
             System.err.println(FatalErrs.PROBLEM_ARCH_READING);
             System.exit(1);
@@ -55,7 +54,7 @@ public class IziPatch {
         ArchiveEntry entry;
         //read archive
         //extract .jar to the corresponding directory
-        System.out.println(pArch);
+        System.out.println(fArch);
         try {
             while((entry = stream.getNextEntry()) != null) {
                 backUpExistingJar(entry);
@@ -69,19 +68,19 @@ public class IziPatch {
     }
 
     private void backUpExistingJar(ArchiveEntry entry) throws IOException {
-        Path destJar = pHome.resolve(entry.getName());
+        File destJar = new File(fHome, entry.getName());
         String newName;
-        if (Files.exists(destJar) && Files.isRegularFile(destJar)) {
-            newName = String.format("%s.before.%s", destJar.getFileName(), pArch.getFileName());
-            Files.move(destJar, Paths.get(destJar.getParent().toString(), newName), StandardCopyOption.REPLACE_EXISTING);
+        if (destJar.exists() && destJar.isFile()) {
+            newName = String.format("%s.before.%s", destJar.getName(), fArch.getName());
+            destJar.renameTo(new File(destJar + newName));
         }
     }
 
     private void throwJar(ArchiveEntry entry) throws IOException {
         String name = entry.getName();
-        Path destJar;
+        File destJar;
         if (name.endsWith(".jar") && !entry.isDirectory()) {
-            destJar = Paths.get(entry.extract(pHome.toFile()).getAbsolutePath());
+            destJar = entry.extract(fHome);
             System.out.println(name + " ->");
             System.out.println(destJar);
             System.out.println();
