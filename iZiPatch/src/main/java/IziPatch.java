@@ -72,7 +72,7 @@ public class IziPatch {
         String newName;
         if (destJar.exists() && destJar.isFile()) {
             newName = String.format("%s.before.%s", destJar.getName(), fArch.getName());
-            destJar.renameTo(new File(destJar + newName));
+            destJar.renameTo(new File(destJar.getParent(), newName));
         }
     }
 

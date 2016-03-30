@@ -20,12 +20,14 @@ public class EvalParamsBeanTest {
     public void setUp() throws Exception {
         bean = new EvalParamsBean();
         Class<EvalParamsBean> beanClass = EvalParamsBean.class;
-        Field secDelim = beanClass.getDeclaredField("SECTION_DELIMITER");
-        secDelim.setAccessible(true);
+        Field fSecDelim = beanClass.getDeclaredField("SECTION_DELIMITER");
+        fSecDelim.setAccessible(true);
 
-        SECTION_DELIMITER = String.valueOf((secDelim.get(bean)));
+        SECTION_DELIMITER = String.valueOf((fSecDelim.get(bean)));
+
+        fSecDelim.setAccessible(false);
+
         FAIL_MSG = String.format("Cant find \"%s\" delimiter string", SECTION_DELIMITER);
-        secDelim.setAccessible(false);
     }
 
     @Test
