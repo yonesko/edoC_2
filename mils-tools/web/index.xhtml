@@ -28,6 +28,14 @@
             <div align="right">
                 <iframe src="http://tv.giphy.com/cat" class="img-rounded" id="cooot"></iframe>
             </div>
+            <pre>
+                #{chatBean.chatHistory}
+            </pre>
+            <h:form>
+                <h:inputText value="#{chatBean.msg}" label="mgs"/>
+                <h:inputText value="#{chatBean.author}" label="aut"/>
+                <h:commandButton value="send"/>
+            </h:form>
         </ui:define>
     </ui:composition>
 </h:body>
