@@ -2,13 +2,13 @@ package main.beans;
 
 import dbService.DBService;
 import dbService.models.ChatMessage;
+import main.ChatEndpoint;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.websocket.Session;
 import java.util.List;
 
 @ManagedBean
-@RequestScoped
 public class ChatBean {
 
 //    @PostConstruct
@@ -60,9 +60,21 @@ public class ChatBean {
 
     public void submit() {
         DBService.addMessage(new ChatMessage(msg, author));
+        sendMessage("MSG FROM SERVER HAX " + new ChatMessage(msg, author));
     }
 
     public List<ChatMessage> getChatHistory() {
         return DBService.getChatHistory();
+    }
+
+    public static void sendMessage(String message) {
+        List<Session> list = ChatEndpoint.getSessions();
+        System.out.println("Notification list size: " + list.size());
+        for (Session s : list) {
+            if (s.isOpen()) {
+                System.out.println("Sending Notification To: " + s.getId());
+                s.getAsyncRemote().sendText(message);
+            }
+        }
     }
 }

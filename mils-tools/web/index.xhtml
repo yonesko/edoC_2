@@ -15,6 +15,44 @@
                 iframe.src = '';
                 document.onload =  function(){iframe.src = src;}
             </script>
+            <script type="text/javascript">
+                var host = "ws://localhost:8081/ChatEndpoint";
+                var wSocket = new WebSocket(host);
+                var browserSupport = ("WebSocket" in window) ? true : false;
+
+                // called  body onLoad()
+                function initializeReception()
+                {
+                    if (browserSupport)
+                    {
+                        wSocket.onopen = function()
+                        {
+                            console.log(" Web Socket is connected, sending data");
+                            wSocket.send("ping");
+                        };
+                    }
+                    else
+                    {
+                        // The browser doesn't support WebSocket
+                        alert("WebSocket is NOT supported by your Browser!");
+                    }
+                }
+
+                // called when a message is received
+                wSocket.onmessage = function(event)
+                {
+                    var received_msg = event.data;
+//                    console.log(received_msg);
+                    mojarra.ab(this,event,'action','@form','chat');
+                };
+
+                // called when socket closes
+                wSocket.onclose = function()
+                {
+                    // websocket is closed.
+                    //alert("Connection is closed...");
+                };
+            </script>
             <h:form prependId="false">
                 <h:panelGrid>
                     <h:inputTextarea id="SQLtext" rows="20" cols="90" value="#{evalParamsBean.SQLtext}" required="true"/>
