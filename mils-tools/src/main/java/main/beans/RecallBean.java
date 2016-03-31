@@ -1,4 +1,4 @@
-package main;
+package main.beans;
 
 import dbService.DBService;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +22,6 @@ public class RecallBean {
         logger.info("setRecallText:{}", recallText);
         this.recallText = recallText;
 
-        DBService dbService = new DBService();
-        dbService.saveRecall(recallText);
+        DBService.saveRecall(recallText);
     }
 }

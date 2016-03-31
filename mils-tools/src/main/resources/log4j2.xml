@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" name="MyApp">
     <Appenders>
-        <File name="MyFile" fileName="/tmp/mils-tools-app.log">
+        <File name="MyFile" fileName="/tmp/mils-tools-test.log">
             <PatternLayout>
                 <Pattern>%d %p [%t] %m%n</Pattern>
             </PatternLayout>

@@ -1,5 +1,6 @@
 package main;
 
+import main.beans.EvalParamsBean;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -3,7 +3,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
 <h:body>
     <ui:composition template="template/masterLayout.xhtml">
         <ui:define name="windowTitle">
@@ -17,7 +17,7 @@
             </script>
             <h:form prependId="false">
                 <h:panelGrid>
-                    <h:inputTextarea id="SQLtext" rows="20" cols="90" value="#{evalParamsBean.SQLtext}" required="true" label="SQL"/>
+                    <h:inputTextarea id="SQLtext" rows="20" cols="90" value="#{evalParamsBean.SQLtext}" required="true"/>
                     <h:message for="SQLtext" showSummary="false" errorClass="errors"/>
                     <h:panelGroup>
                         <h:commandButton value="#{labels.eval}" action="result"/>
@@ -28,13 +28,33 @@
             <div align="right">
                 <iframe src="http://tv.giphy.com/cat" class="img-rounded" id="cooot"></iframe>
             </div>
-            <pre>
-                #{chatBean.chatHistory}
-            </pre>
-            <h:form>
-                <h:inputText value="#{chatBean.msg}" label="mgs"/>
-                <h:inputText value="#{chatBean.author}" label="aut"/>
-                <h:commandButton value="send"/>
+            <h:form prependId="false">
+                <div style="overflow: auto; width: 400px; height: 300px; text-align: left" >
+                    <h:dataTable id="chat" value="#{chatBean.chatHistory}" var="msg">
+                        <h:column>
+                            #{msg.author}:
+                        </h:column>
+                        <h:column>
+                            #{msg.content}
+                        </h:column>
+                    </h:dataTable>
+                </div>
+                <h:panelGrid>
+                    <h:panelGroup>
+                        Я:
+                        <h:inputText label="#{labels.author}" id="chatMsgAuthor" value="#{chatBean.author}" required="true">
+                            <f:validateLength minimum="1" maximum="10"/>
+                        </h:inputText>
+                    </h:panelGroup>
+                    <h:message for="chatMsgAuthor"/>
+                    <h:inputTextarea label="#{labels.content}" id="chatMsgContent" rows="3" cols="30" value="#{chatBean.msg}" required="true">
+                        <f:validateLength minimum="1" maximum="100"/>
+                    </h:inputTextarea>
+                    <h:message for="chatMsgContent"/>
+                    <h:commandButton value="send" action="#{chatBean.submit}">
+                        <f:ajax render="chat" execute="@form"/>
+                    </h:commandButton>
+                </h:panelGrid>
             </h:form>
         </ui:define>
     </ui:composition>
