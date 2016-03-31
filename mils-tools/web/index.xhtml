@@ -66,7 +66,7 @@
             <div align="right">
                 <iframe src="http://tv.giphy.com/cat" class="img-rounded" id="cooot"></iframe>
             </div>
-            <h:form prependId="false">
+            <h:form prependId="false" onkeypress="if (event.keyCode == 13) { document.getElementById('send').click(); return false; }">
                 <div style="overflow: auto; width: 400px; height: 300px; text-align: left" >
                     <h:dataTable id="chat" value="#{chatBean.chatHistory}" var="msg">
                         <h:column>
@@ -89,7 +89,7 @@
                         <f:validateLength minimum="1" maximum="100"/>
                     </h:inputTextarea>
                     <h:message for="chatMsgContent"/>
-                    <h:commandButton value="send" action="#{chatBean.submit}">
+                    <h:commandButton id="send" value="send" action="#{chatBean.submit}">
                         <f:ajax render="chat" execute="@form"/>
                     </h:commandButton>
                 </h:panelGrid>

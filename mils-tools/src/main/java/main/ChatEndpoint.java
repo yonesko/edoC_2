@@ -21,9 +21,9 @@ public class ChatEndpoint {
 
     @OnOpen
     public void onOpen(Session session) {
-        logger.info("onOpen: " + session.getId());
+        logger.debug("onOpen: " + session.getId());
         sessions.add(session);
-        logger.info("onOpen: Notification list size: " + sessions.size());
+        logger.debug("onOpen: Notification list size: " + sessions.size());
     }
 
     public static ArrayList<Session> getSessions() {
