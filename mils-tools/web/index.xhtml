@@ -3,7 +3,9 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 <h:body>
     <ui:composition template="template/masterLayout.xhtml">
         <ui:define name="windowTitle">
@@ -16,7 +18,7 @@
                 document.onload =  function(){iframe.src = src;}
             </script>
             <script type="text/javascript">
-                var host = "ws://localhost:8081/ChatEndpoint";
+                var host = "ws://" + window.location.host + "/ChatEndpoint";
                 var wSocket = new WebSocket(host);
                 var browserSupport = ("WebSocket" in window) ? true : false;
 
@@ -42,7 +44,7 @@
                 wSocket.onmessage = function(event)
                 {
                     var received_msg = event.data;
-//                    console.log(received_msg);
+                    console.log(received_msg);
                     mojarra.ab(this,event,'action','@form','chat');
                 };
 
@@ -53,9 +55,10 @@
                     //alert("Connection is closed...");
                 };
             </script>
+            <script type="text/javascript"></script>
             <h:form prependId="false">
                 <h:panelGrid>
-                    <h:inputTextarea id="SQLtext" rows="20" cols="90" value="#{evalParamsBean.SQLtext}" required="true"/>
+                    <h:inputTextarea id="SQLtext" rows="20" cols="90" value="#{evalParamsBean.SQLtext}" required="true" a:autofocus="true"/>
                     <h:message for="SQLtext" showSummary="false" errorClass="errors"/>
                     <h:panelGroup>
                         <h:commandButton value="#{labels.eval}" action="result"/>
@@ -66,8 +69,8 @@
             <div align="right">
                 <iframe src="http://tv.giphy.com/cat" class="img-rounded" id="cooot"></iframe>
             </div>
-            <h:form prependId="false" onkeypress="if (event.keyCode == 13) { document.getElementById('send').click(); return false; }">
-                <div style="overflow: auto; width: 400px; height: 300px; text-align: left" >
+            <h:form prependId="false" onkeypress="if (event.keyCode == 13) { document.getElementById('send').click(); document.getElementById('send').focus(); return false; }">
+                <div id="chatDiv" style="overflow: hidden; width: 400px; height: 300px; text-align: left" >
                     <h:dataTable id="chat" value="#{chatBean.chatHistory}" var="msg">
                         <h:column>
                             #{msg.author}:
@@ -79,18 +82,17 @@
                 </div>
                 <h:panelGrid>
                     <h:panelGroup>
-                        Я:
-                        <h:inputText label="#{labels.author}" id="chatMsgAuthor" value="#{chatBean.author}" required="true">
+                        <h:inputText label="#{labels.author}" id="chatMsgAuthor" value="#{chatBean.author}" required="true" a:placeholder="#{labels.author}">
                             <f:validateLength minimum="1" maximum="10"/>
                         </h:inputText>
                     </h:panelGroup>
                     <h:message for="chatMsgAuthor"/>
-                    <h:inputTextarea label="#{labels.content}" id="chatMsgContent" rows="3" cols="30" value="#{chatBean.msg}" required="true">
+                    <h:inputTextarea label="#{labels.content}" id="chatMsgContent" rows="3" cols="30" value="#{chatBean.msg}" required="true" a:placeholder="#{labels.content}">
                         <f:validateLength minimum="1" maximum="100"/>
                     </h:inputTextarea>
                     <h:message for="chatMsgContent"/>
-                    <h:commandButton id="send" value="send" action="#{chatBean.submit}">
-                        <f:ajax render="chat" execute="@form"/>
+                    <h:commandButton id="send" value="#{labels.recallSend}" action="#{chatBean.submit}">
+                        <f:ajax render="chat chatMsgContent" execute="@form"/>
                     </h:commandButton>
                 </h:panelGrid>
             </h:form>

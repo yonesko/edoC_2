@@ -31,6 +31,7 @@ public class ChatBean {
 
     public void submit() {
         DBService.addMessage(new ChatMessage(msg, author));
+        sendMessage("");
     }
 
     public List<ChatMessage> getChatHistory() {

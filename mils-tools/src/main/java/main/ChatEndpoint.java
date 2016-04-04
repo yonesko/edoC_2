@@ -3,6 +3,7 @@ package main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
@@ -24,6 +25,13 @@ public class ChatEndpoint {
         logger.debug("onOpen: " + session.getId());
         sessions.add(session);
         logger.debug("onOpen: Notification list size: " + sessions.size());
+    }
+
+    @OnClose
+    public void OnClose(Session session) {
+        logger.debug("OnClose: " + session.getId());
+        sessions.remove(session);
+        logger.debug("OnClose: Notification list size: " + sessions.size());
     }
 
     public static ArrayList<Session> getSessions() {
