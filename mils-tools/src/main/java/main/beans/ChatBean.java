@@ -32,25 +32,10 @@ public class ChatBean {
 
     public void submit() {
         DBService.addMessage(new ChatMessage(msg, author));
-        sendMessage("");
+        ChatEndpoint.notifyAllSockets();
     }
 
     public List<ChatMessage> getChatHistory() {
         return DBService.getChatHistory();
     }
-
-    public static void sendMessage(String message) {
-        List<Session> list = ChatEndpoint.getSessions();
-        for (Session s : list) {
-            if (s.isOpen()) {
-                s.getAsyncRemote().sendText(message);
-            }
-        }
-    }
-//    @PostConstruct
-//    void f() {
-//        for (int i = 0; i < 15; i++) {
-//            DBService.addMessage(new ChatMessage("msg", "author"));
-//        }
-//    }
 }

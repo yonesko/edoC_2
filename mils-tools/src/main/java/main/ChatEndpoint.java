@@ -9,6 +9,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.util.ArrayList;
+import java.util.List;
 
 @ServerEndpoint("/ChatEndpoint")
 public class ChatEndpoint {
@@ -36,5 +37,12 @@ public class ChatEndpoint {
 
     public static ArrayList<Session> getSessions() {
         return sessions;
+    }
+
+    public static void notifyAllSockets() {
+        List<Session> list = ChatEndpoint.getSessions();
+        for (Session s : list)
+            if (s.isOpen())
+                s.getAsyncRemote().sendText("notification");
     }
 }
