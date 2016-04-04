@@ -4,6 +4,7 @@ import dbService.DBService;
 import dbService.models.ChatMessage;
 import main.ChatEndpoint;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.websocket.Session;
 import java.util.List;
@@ -46,4 +47,10 @@ public class ChatBean {
             }
         }
     }
+//    @PostConstruct
+//    void f() {
+//        for (int i = 0; i < 15; i++) {
+//            DBService.addMessage(new ChatMessage("msg", "author"));
+//        }
+//    }
 }

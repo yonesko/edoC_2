@@ -12,11 +12,14 @@
             #{labels.indexTitle}
         </ui:define>
         <ui:define name="content">
+            <h:outputScript library="scripts" name="index.js"/>
+            <!--load cat gif last!-->
             <script type="text/javascript">
                 var iframe = document.getElementById('cooot'),src = iframe.src;
                 iframe.src = '';
                 document.onload =  function(){iframe.src = src;}
             </script>
+            <!--web socket code!-->
             <script type="text/javascript">
                 var host = "ws://" + window.location.host + "/ChatEndpoint";
                 var wSocket = new WebSocket(host);
@@ -44,8 +47,9 @@
                 wSocket.onmessage = function(event)
                 {
                     var received_msg = event.data;
-                    console.log(received_msg);
+                    console.log('wSocket.onmessage' + received_msg);
                     mojarra.ab(this,event,'action','@form','chat');
+                    setTimeout(scrollchatDiv, 100);
                 };
 
                 // called when socket closes
@@ -55,7 +59,7 @@
                     //alert("Connection is closed...");
                 };
             </script>
-            <script type="text/javascript"></script>
+            <!--SQL form!-->
             <h:form prependId="false">
                 <h:panelGrid>
                     <h:inputTextarea id="SQLtext" rows="20" cols="90" value="#{evalParamsBean.SQLtext}" required="true" a:autofocus="true"/>
@@ -66,11 +70,9 @@
                     </h:panelGroup>
                 </h:panelGrid>
             </h:form>
-            <div align="right">
-                <iframe src="http://tv.giphy.com/cat" class="img-rounded" id="cooot"></iframe>
-            </div>
-            <h:form prependId="false" onkeypress="if (event.keyCode == 13) { document.getElementById('send').click(); document.getElementById('send').focus(); return false; }">
-                <div id="chatDiv" style="overflow: hidden; width: 400px; height: 300px; text-align: left" >
+            <h:panelGrid columns="2" >
+            <h:form prependId="false" onkeypress="sendonkeypress()">
+                <div id="chatDiv" style="overflow: auto; width: 400px; height: 300px; text-align: left" >
                     <h:dataTable id="chat" value="#{chatBean.chatHistory}" var="msg">
                         <h:column>
                             #{msg.author}:
@@ -86,16 +88,24 @@
                             <f:validateLength minimum="1" maximum="10"/>
                         </h:inputText>
                     </h:panelGroup>
-                    <h:message for="chatMsgAuthor"/>
-                    <h:inputTextarea label="#{labels.content}" id="chatMsgContent" rows="3" cols="30" value="#{chatBean.msg}" required="true" a:placeholder="#{labels.content}">
-                        <f:validateLength minimum="1" maximum="100"/>
-                    </h:inputTextarea>
-                    <h:message for="chatMsgContent"/>
-                    <h:commandButton id="send" value="#{labels.recallSend}" action="#{chatBean.submit}">
-                        <f:ajax render="chat chatMsgContent" execute="@form"/>
-                    </h:commandButton>
+                    <h:panelGroup>
+                        <h:message for="chatMsgAuthor"/>
+                        <h:inputTextarea label="#{labels.content}" name="chatMsgContent" id="chatMsgContent" rows="3" cols="30" value="#{chatBean.msg}" required="true" a:placeholder="#{labels.content}">
+                            <f:validateLength minimum="1" maximum="100"/>
+                        </h:inputTextarea>
+                        <h:message for="chatMsgContent"/>
+                        <h:commandButton id="send" value="#{labels.recallSend}" action="#{chatBean.submit}">
+                            <f:ajax render="chat chatMsgContent" execute="@form"/>
+                        </h:commandButton>
+                    </h:panelGroup>
                 </h:panelGrid>
             </h:form>
+            <div align="right">
+                <iframe src="http://tv.giphy.com/cat" class="img-rounded" id="cooot"></iframe>
+            </div>
+            </h:panelGrid>
+            <script type="text/javascript">                scrollchatDiv();
+            </script>
         </ui:define>
     </ui:composition>
 </h:body>
