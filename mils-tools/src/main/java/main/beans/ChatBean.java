@@ -4,14 +4,23 @@ import dbService.DBService;
 import dbService.models.ChatMessage;
 import main.ChatEndpoint;
 
-import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.websocket.Session;
+import javax.faces.bean.RequestScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @ManagedBean
+@RequestScoped
 public class ChatBean {
+    @Size(min = 1, max = 10, message = "Длина от {min} до {max}")
     private String msg;
+    @Size(min = 1, max = 10, message = "Длина от {min} до {max}")
     private String author;
 
     public String getAuthor() {

@@ -82,22 +82,14 @@
                         </h:column>
                     </h:dataTable>
                 </div>
-                <h:panelGrid>
-                    <h:panelGroup>
-                        <h:inputText label="#{labels.author}" id="chatMsgAuthor" value="#{chatBean.author}" required="true" a:placeholder="#{labels.author}">
-                            <f:validateLength minimum="1" maximum="10"/>
-                        </h:inputText>
-                    </h:panelGroup>
-                    <h:panelGroup>
-                        <h:message for="chatMsgAuthor"/>
-                        <h:inputTextarea label="#{labels.content}" name="chatMsgContent" id="chatMsgContent" rows="3" cols="30" value="#{chatBean.msg}" required="true" a:placeholder="#{labels.content}">
-                            <f:validateLength minimum="1" maximum="100"/>
-                        </h:inputTextarea>
-                        <h:message for="chatMsgContent"/>
-                        <h:commandButton id="send" value="#{labels.recallSend}" action="#{chatBean.submit}">
-                            <f:ajax render="chat chatMsgContent" execute="@form"/>
-                        </h:commandButton>
-                    </h:panelGroup>
+                <h:panelGrid columns="2">
+                    <h:message for="chatMsgAuthor"/>
+                    <h:inputText label="#{labels.author}" id="chatMsgAuthor" value="#{chatBean.author}" a:placeholder="#{labels.author}"/>
+                    <h:message for="chatMsgContent"/>
+                    <h:inputTextarea label="#{labels.content}" name="chatMsgContent" id="chatMsgContent" rows="3" cols="30" value="#{chatBean.msg}" a:placeholder="#{labels.content}"/>
+                    <h:commandButton id="send" value="#{labels.recallSend}" action="#{chatBean.submit}">
+                        <f:ajax render="@form" execute="@form"/>
+                    </h:commandButton>
                 </h:panelGrid>
             </h:form>
             <div align="right">
