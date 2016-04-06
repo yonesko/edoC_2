@@ -71,30 +71,30 @@
                 </h:panelGrid>
             </h:form>
             <h:panelGrid columns="2" >
-            <h:form prependId="false" onkeypress="sendonkeypress()">
-                <div id="chatDiv" style="overflow: auto; width: 400px; height: 300px; text-align: left" >
-                    <h:dataTable id="chat" value="#{chatBean.chatHistory}" var="msg">
-                        <h:column>
-                            #{msg.author}:
-                        </h:column>
-                        <h:column>
-                            #{msg.content}
-                        </h:column>
-                    </h:dataTable>
+                <h:form prependId="false" onkeypress="sendonkeypress()">
+                    <div id="chatDiv" style="overflow: auto; width: 400px; height: 300px; text-align: left" >
+                        <h:dataTable id="chat" value="#{chatBean.chatHistory}" var="msg">
+                            <h:column>
+                                #{msg.author}:
+                            </h:column>
+                            <h:column>
+                                #{msg.content}
+                            </h:column>
+                        </h:dataTable>
+                    </div>
+                    <h:panelGrid columns="2">
+                        <h:message for="chatMsgAuthor"/>
+                        <h:inputText label="#{labels.author}" id="chatMsgAuthor" value="#{chatBean.author}" a:placeholder="#{labels.author}"/>
+                        <h:message for="chatMsgContent"/>
+                        <h:inputTextarea label="#{labels.content}" name="chatMsgContent" id="chatMsgContent" rows="3" cols="30" value="#{chatBean.msg}" a:placeholder="#{labels.content}"/>
+                        <h:commandButton id="send" value="#{labels.recallSend}" action="#{chatBean.submit}">
+                            <f:ajax render="@form" execute="@form"/>
+                        </h:commandButton>
+                    </h:panelGrid>
+                </h:form>
+                <div align="right">
+                    <iframe src="http://tv.giphy.com/cat" class="img-rounded" id="cooot"></iframe>
                 </div>
-                <h:panelGrid columns="2">
-                    <h:message for="chatMsgAuthor"/>
-                    <h:inputText label="#{labels.author}" id="chatMsgAuthor" value="#{chatBean.author}" a:placeholder="#{labels.author}"/>
-                    <h:message for="chatMsgContent"/>
-                    <h:inputTextarea label="#{labels.content}" name="chatMsgContent" id="chatMsgContent" rows="3" cols="30" value="#{chatBean.msg}" a:placeholder="#{labels.content}"/>
-                    <h:commandButton id="send" value="#{labels.recallSend}" action="#{chatBean.submit}">
-                        <f:ajax render="@form" execute="@form"/>
-                    </h:commandButton>
-                </h:panelGrid>
-            </h:form>
-            <div align="right">
-                <iframe src="http://tv.giphy.com/cat" class="img-rounded" id="cooot"></iframe>
-            </div>
             </h:panelGrid>
             <script type="text/javascript">scrollchatDiv();</script>
         </ui:define>

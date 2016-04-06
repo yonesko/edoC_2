@@ -1,7 +1,5 @@
 package dbService.models;
 
-import java.io.Serializable;
-
 public class ChatMessage {
     private String content;
     private String author;
