@@ -2,15 +2,14 @@ package routinewriter.server.templater.model;
 
 import old.Column;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represents data for template filling
+ * if there is intersection between primary keys and
+ * setted, sets with new val with _new posfix
  */
-public class InsertMethod {
+public class UpdateMethod {
     //basic information
     private final String table;
     private final List<Column> cols;
@@ -18,15 +17,43 @@ public class InsertMethod {
     private final List<String> colNames;
     private List<String> vals;
     private List<String> params;
+    private List<String> primary;
+    private List<String> setted;
+    private Map<String, String> primaryKey;
+    private Map<String, String> settedCols;
     private Map<String, String> sqlJavaParMap;
     private String prefix;
 
-    public InsertMethod(List<String> colNames, String table) {
-        this.colNames = colNames;
+    public UpdateMethod(List<String> setted, List<String> primary, String table) {
+        this.colNames = new ArrayList<String>();
+        colNames.addAll(setted);
+        colNames.addAll(primary);
         this.table = table;
+        this.primary = primary;
+        this.setted = setted;
         this.cols = new ArrayList<Column>();
         for (String col : this.colNames)
             cols.add(new Column(col));
+    }
+
+    public Map<String, String> getPrimaryKey() {
+        if (primaryKey == null) {
+            primaryKey = new HashMap<String, String>();
+            for (String s : primary) {
+                primaryKey.put(s, getValName(s));
+            }
+        }
+        return primaryKey;
+    }
+
+    public Map<String, String> getSettedCols() {
+        if (settedCols == null) {
+            settedCols = new HashMap<String, String>();
+            for (String col : setted) {
+                settedCols.put(col, getValName(col));
+            }
+        }
+        return settedCols;
     }
 
     public String getTable() {
@@ -49,6 +76,9 @@ public class InsertMethod {
 
     private String getValName(Column col) {
         return String.format(":%s:", col.getDbName().substring(getPrefix().length()).toUpperCase());
+    }
+    private String getValName(String col) {
+        return String.format(":%s:", col.substring(getPrefix().length()).toUpperCase());
     }
 
     public String getPrefix() {
@@ -87,15 +117,18 @@ public class InsertMethod {
         return result;
     }
 
-    private String getOISSQLName(String col) {
-        return ":" + col.toUpperCase() + ":";
-    }
-
     public List<String> getParams() {
+        for (int i = 0; i < cols.size(); i++) {
+            for (int j = i + 1; j < cols.size(); j++) {
+                if (cols.get(i).equals(cols.get(j))) {
+                    cols.set(j, new Column(cols.get(j).getDbName() + "New"));
+                }
+            }
+        }
         if (params == null) {
             params = new ArrayList<String>();
             for (Column col : cols)
-                params.add(col.getType().getCoreType() + ' ' + col.getDbName().substring(getPrefix().length()).toLowerCase());
+                params.add(col.getType().getCoreType() + ' ' + col.getDbName().substring(getPrefix().length()));
         }
         return params;
     }

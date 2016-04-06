@@ -13,16 +13,27 @@ public class Column {
     }
 
     public Column(String dbName) {
-        this.dbName = dbName;
+        if (dbName == null || dbName.length() == 0)
+            throw new IllegalArgumentException();
+        this.dbName = dbName.toLowerCase();
     }
 
-    public String getValName() {
-        return ':' + dbName.toUpperCase() + ':';
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Column column = (Column) o;
+
+        return dbName.equals(column.dbName);
+
     }
 
-    public String getJavaName() {
-        return dbName.toLowerCase();
+    @Override
+    public int hashCode() {
+        return dbName.hashCode();
     }
+
     //Getters
     public String getDbName() {
         return dbName;

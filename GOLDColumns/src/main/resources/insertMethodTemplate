@@ -1,14 +1,13 @@
-public static void insertDecl111Data(<#list params as p>${p}, </#list>)
+public static void insert${table}(<#list params as p>${p}<#sep>, </#list>)
         throws Exception {
     String sql =
-            "INSERT INTO ${table}
-             (<#list colNames as c>${c}, </#list>)
-             VALUES
-             (<#list vals as v>${v}, </#list>")
-            ;
+            "INSERT INTO ${table}\n" +
+             "(<#list colNames as c>${c}<#sep>, </#list>)\n" +
+             "VALUES\n" +
+             "(<#list vals as v>${v}<#sep>, </#list>)\n";
     OISSQL.updateArray(sql, new Object[] {
         <#list sqlJavaParMap?keys as key>
-            ${key}, ${sqlJavaParMap[key]},
+            "${key}", ${sqlJavaParMap[key]}<#sep>,
         </#list>
     });
 }
