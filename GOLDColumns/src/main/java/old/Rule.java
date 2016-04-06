@@ -1,3 +1,5 @@
+package old;
+
 public class Rule {
     private final String val;
 

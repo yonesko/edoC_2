@@ -1,5 +1,11 @@
+package old;
+
 public enum ColType {
-    NUMBER("odecf", "OISDecimalField", "BigDecimal");
+    NUMBER("odecf", "OISDecimalField", "BigDecimal"),
+    STRING("s", "OISStringField", "String"),
+    INTEGER("i", "OISIntegerField", "Integer");
+
+
     private final String OISTypePrefix;
     private final String OISType;
     private final String coreType;

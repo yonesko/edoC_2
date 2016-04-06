@@ -1,4 +1,4 @@
-//dat shit generate intermediate column names basing on names in database and client JTable names
+package old;//dat shit generate intermediate column names basing on names in database and client JTable names
 //dat shit dont have any logic, only text proccessing for convenience and speed
 import java.util.ArrayList;
 import java.util.List;

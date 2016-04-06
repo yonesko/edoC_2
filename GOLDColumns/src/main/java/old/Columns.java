@@ -1,3 +1,5 @@
+package old;
+
 import java.util.*;
 
 public class Columns {
@@ -52,7 +54,7 @@ public class Columns {
         Column col;
         for (int i = 0; i < cols.size(); i++) {
             col = cols.get(i);
-            colName = tablePrefix + col.getServName();
+            colName = tablePrefix + col.getDbName();
             colName = colName.toLowerCase();
             if (i != 0)
                 sb.append(",");
@@ -71,7 +73,7 @@ public class Columns {
         Column col;
         for (int i = 0; i < cols.size(); i++) {
             col = cols.get(i);
-            colName = tablePrefix + col.getServName();
+            colName = tablePrefix + col.getDbName();
             colName = colName.toLowerCase();
 
             sbCols.append(colName);
@@ -99,7 +101,6 @@ public class Columns {
         return sb.toString();
     }
     public static String servJavaArgs(List<Column> cols) {
-        System.out.println("---"+new Object(){}.getClass().getEnclosingMethod().getName()+"---");
         StringBuilder sb = new StringBuilder();
         Column c;
         for (int i = 0; i < cols.size(); i++) {

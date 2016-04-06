@@ -1,0 +1,14 @@
+public static void insertDecl111Data(<#list params as p>${p}, </#list>)
+        throws Exception {
+    String sql =
+            "INSERT INTO ${table}
+             (<#list colNames as c>${c}, </#list>)
+             VALUES
+             (<#list vals as v>${v}, </#list>")
+            ;
+    OISSQL.updateArray(sql, new Object[] {
+        <#list sqlJavaParMap?keys as key>
+            ${key}, ${sqlJavaParMap[key]},
+        </#list>
+    });
+}
