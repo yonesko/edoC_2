@@ -1,7 +1,7 @@
-package routinewriter;
+package routinehandler;
 
 import freemarker.template.TemplateException;
-import routinewriter.server.templater.Generator;
+import routinehandler.server.templater.Generator;
 
 import java.io.IOException;
 
@@ -13,12 +13,13 @@ public class Main {
         String cols = "df6bliv, df6calc, df6contrnumfim, df6contrnumfou, df6creg, df6dcre, df6decnum, df6dliv, df6dmaj, df6gtdnum, df6motf, df6movtype, df6orgnum, df6tmvt, df6util, df6vliv";
         String setted = "df6bliv, df6calc, df6contrnumfim, df6contrnumfou, df6creg, df6dcre, df6decnum, df6dliv, df6dmaj, df6gtdnum, df6motf, df6movtype, df6orgnum, df6tmvt, df6util, df6vliv";
         String primary = "df6calc, df6decnum, df6orgnum, df6contrnumfou";
-        String table = "dixy_dcldecf6";
+        String table = "dixy_dcldecf6", prefix = "df6";
 
-//        String insert = Generator.makeInsert(table, cols.split(", "));
-        String update = Generator.makeUpdate(table, setted.split(", "), primary.split(", "));
+        String insert = Generator.makeInsert(table, prefix, cols.split(", "));
+        String update = Generator.makeUpdate(table, prefix, setted.split(", "), primary.split(", "));
 
 
         System.out.println(update);
+        System.out.println(insert);
     }
 }

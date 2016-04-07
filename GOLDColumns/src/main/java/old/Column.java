@@ -15,7 +15,7 @@ public class Column {
     public Column(String dbName) {
         if (dbName == null || dbName.length() == 0)
             throw new IllegalArgumentException();
-        this.dbName = dbName.toLowerCase();
+        this.dbName = dbName;
     }
 
     @Override
