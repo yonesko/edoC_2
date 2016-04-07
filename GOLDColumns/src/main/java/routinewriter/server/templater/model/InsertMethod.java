@@ -11,21 +11,13 @@ import java.util.Map;
  * Represents data for template filling
  */
 public class InsertMethod {
-    //basic information
     private final String table;
     private final List<Column> cols;
-    //cached generated information
-    private final List<String> colNames;
-    private List<String> vals;
-    private List<String> params;
-    private Map<String, String> sqlJavaParMap;
-    private String prefix;
 
     public InsertMethod(List<String> colNames, String table) {
-        this.colNames = colNames;
         this.table = table;
         this.cols = new ArrayList<Column>();
-        for (String col : this.colNames)
+        for (String col : colNames)
             cols.add(new Column(col));
     }
 
@@ -34,34 +26,27 @@ public class InsertMethod {
     }
 
     public List<String> getColNames() {
+        List<String> colNames = new ArrayList<String>();
+        for (Column col : cols)
+            colNames.add(col.getDbName().toLowerCase());
         return colNames;
     }
 
     public List<String> getVals() {
-        if (vals == null) {
-            vals = new ArrayList<String>();
-            for (Column col : cols) {
-                vals.add(getValName(col));
-            }
-        }
+        List<String> vals = new ArrayList<String>();
+        for (Column col : cols)
+            vals.add(getValName(col));
         return vals;
     }
 
     private String getValName(Column col) {
-        return String.format(":%s:", col.getDbName().substring(getPrefix().length()).toUpperCase());
-    }
-
-    public String getPrefix() {
-        if (prefix == null)
-            prefix = findPrefix();
-        return prefix;
+        return String.format(":%s:", col.getDbName().substring(findPrefix().length()).toUpperCase());
     }
 
     private String findPrefix() {
-        String result = null, a;
+        String result = "", a;
         int minPref = 2;
-        if (colNames == null)
-            return null;
+        List<String> colNames = getColNames();
         for (int i = minPref; i < minLength(); i++) {
             if (!isPrefix(colNames.get(0).substring(0, i)) && i != minPref)
                 return colNames.get(0).substring(0, i - 1);
@@ -70,6 +55,7 @@ public class InsertMethod {
     }
 
     private int minLength() {
+        List<String> colNames = getColNames();
         int result = colNames.get(0).length();
         for (int i = 1; i < colNames.size(); i++)
             if (colNames.get(i).length() < result)
@@ -78,6 +64,7 @@ public class InsertMethod {
     }
 
     private boolean isPrefix(String pre) {
+        List<String> colNames = getColNames();
         boolean result = true;
         for (String col : colNames)
             if (!col.startsWith(pre)) {
@@ -87,34 +74,17 @@ public class InsertMethod {
         return result;
     }
 
-    private String getOISSQLName(String col) {
-        return ":" + col.toUpperCase() + ":";
-    }
-
     public List<String> getParams() {
-        if (params == null) {
-            params = new ArrayList<String>();
-            for (Column col : cols)
-                params.add(col.getType().getCoreType() + ' ' + col.getDbName().substring(getPrefix().length()).toLowerCase());
-        }
+        List<String> params = new ArrayList<String>();
+        for (Column col : cols)
+            params.add(col.getType().getCoreType() + ' ' + col.getDbName().substring(findPrefix().length()).toLowerCase());
         return params;
     }
 
     public Map<String, String> getSqlJavaParMap() {
-        if (this.sqlJavaParMap == null) {
-            this.sqlJavaParMap = new HashMap<String, String>();
-            for (Column col : cols)
-                sqlJavaParMap.put(getValName(col), col.getDbName().toLowerCase().substring(getPrefix().length()));
-        }
-        return this.sqlJavaParMap;
-    }
-
-    @Override
-    public String toString() {
-        return "InsertMethod{" +
-                "table='" + table + '\'' +
-                ", colNames=" + colNames +
-                ", vals=" + vals +
-                '}';
+        Map<String, String> sqlJavaParMap = new HashMap<String, String>();
+        for (Column col : cols)
+            sqlJavaParMap.put(getValName(col), col.getDbName().toLowerCase().substring(findPrefix().length()));
+        return sqlJavaParMap;
     }
 }

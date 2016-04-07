@@ -12,9 +12,9 @@ import java.util.List;
 @ManagedBean
 @RequestScoped
 public class ChatBean {
-    @Size(min = 1, max = 10, message = "Длина от {min} до {max}")
-    private String msg;
     @Size(min = 1, max = 100, message = "Длина от {min} до {max}")
+    private String msg;
+    @Size(min = 1, max = 10, message = "Длина от {min} до {max}")
     private String author;
 
     public String getAuthor() {
