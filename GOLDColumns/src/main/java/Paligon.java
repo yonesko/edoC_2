@@ -15,15 +15,11 @@ public class Paligon {
                         "df6motf = :MOTF:,\n" +
                         "df6dmaj = :DMAJ:,\n" +
                         "df6contrnumfim = :CONTRNUMFIM:,\n" +
-                        "df6decnumnew = :DECNUMNEW:,\n" +
-                        "df6orgnumnew = :ORGNUMNEW:,\n" +
                         "df6orgnum = :ORGNUM:,\n" +
                         "df6tmvt = :TMVT:,\n" +
                         "df6dcre = :DCRE:,\n" +
-                        "df6calcnew = :CALCNEW:,\n" +
                         "df6gtdnum = :GTDNUM:,\n" +
-                        "df6bliv = :BLIV:,\n" +
-                        "df6contrnumfounew = :CONTRNUMFOUNEW:" +
+                        "df6bliv = :BLIV:" +
                         "WHERE\n" +
                         "df6calc = :CALC: AND\n" +
                         "df6decnum = :DECNUM: AND\n" +
