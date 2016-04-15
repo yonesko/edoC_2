@@ -1,6 +1,6 @@
 package old;
 
-public class Column {
+public class Column implements Comparable {
     //database column name without table prefix
     private final String dbName;
     private String JTableName;
@@ -25,7 +25,7 @@ public class Column {
 
         Column column = (Column) o;
 
-        return dbName.equals(column.dbName);
+        return dbName.equalsIgnoreCase(column.dbName);
 
     }
 
@@ -62,5 +62,9 @@ public class Column {
 
     public void setLabel(int label) {
         this.label = label;
+    }
+
+    public int compareTo(Object o) {
+        return dbName.compareToIgnoreCase(((Column) o).getDbName());
     }
 }

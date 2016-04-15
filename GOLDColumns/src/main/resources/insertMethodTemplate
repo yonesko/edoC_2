@@ -1,13 +1,14 @@
-public static void insert${table}(<#list params as p>${p}<#sep>, </#list>)
-        throws Exception {
+public static void insert${table}(<#list params as p>${p}<#sep>, </#list>) {
     String sql =
             "INSERT INTO ${table}\n" +
              "(<#list colNames as c>${c}<#sep>, </#list>)\n" +
              "VALUES\n" +
              "(<#list vals as v>${v}<#sep>, </#list>)\n";
-    OISSQL.updateArray(sql, new Object[] {
-        <#list sqlJavaParMap?keys as key>
-            "${key}", ${sqlJavaParMap[key]}<#sep>,
-        </#list>
-    });
+    try {
+        OISSQL.updateArray(sql, new Object[] {
+            <#list sqlJavaParMap?keys as key>"${key}", ${sqlJavaParMap[key]}<#sep>,
+            </#list>});
+    } catch (Exception e) {
+     e.printStackTrace();
+    }
 }

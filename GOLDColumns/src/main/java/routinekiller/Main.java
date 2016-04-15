@@ -45,7 +45,7 @@ public class Main {
     private static void do7() throws IOException, TemplateException {
         String cols = "df7bliv, df7calc, df7contrnumfim, df7contrnumfou, df7creg, df7dcre, df7decnum, df7dliv, df7dmaj, df7gtdnum, df7motf, df7movtype, df7orgnum, df7tmvt, df7util, df7vliv";
         String setted = "df7bliv, df7calc, df7contrnumfim, df7contrnumfou, df7creg, df7decnum, df7dliv, df7dmaj, df7gtdnum, df7motf, df7movtype, df7orgnum, df7tmvt, df7util, df7vliv";
-        String primary = "rowid";
+        String primary = "rowid, df7bliv";
         String table = "dixy_dcldecf7", prefix = "df7";
         String colTypeText = "DF7BLIV\tVARCHAR2\n" +
                 "DF7CALC\tNUMBER\n" +
@@ -70,6 +70,7 @@ public class Main {
 
         System.out.println(update);
         System.out.println(insert);
+
     }
 }
 

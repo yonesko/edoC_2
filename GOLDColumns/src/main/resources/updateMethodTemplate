@@ -14,9 +14,11 @@ public static void update${table}(<#list params as p>${p}<#sep>, </#list>)
             <#list primaryKey?keys as key>
             "${key} = ${primaryKey[key]}<#sep> AND\n" +
             </#list>";
-    OISSQL.updateArray(sql, new Object[] {
-        <#list sqlJavaParMap?keys as key>
-            "${key}", ${sqlJavaParMap[key]}<#sep>,
-        </#list>
-    });
+    try {
+        OISSQL.updateArray(sql, new Object[] {
+            <#list sqlJavaParMap?keys as key>"${key}", ${sqlJavaParMap[key]}<#sep>,
+            </#list>});
+    } catch (Exception e) {
+     e.printStackTrace();
+    }
 }

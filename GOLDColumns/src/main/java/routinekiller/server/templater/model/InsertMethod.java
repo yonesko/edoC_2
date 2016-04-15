@@ -3,10 +3,7 @@ package routinekiller.server.templater.model;
 import old.ColType;
 import old.Column;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Generates data for template filling
@@ -14,11 +11,8 @@ import java.util.Map;
 public class InsertMethod extends AbstractMethod {
     private final List<Column> cols;
     /**
-     *
+     * @see #AbstractMethod(String, String, String)
      * @param colNames Names of columns from database to be inserted.
-     * @param table Table to be inserted.
-     * @param prefix Common for all columns prefix if exists. Default is "". Cutted from Java and insert values parameters.
-     * @param colTypeText If null then ColType.NUMBER is default.
      */
     public InsertMethod(List<String> colNames, String table, String prefix, String colTypeText) {
         super(table, prefix, colTypeText);
@@ -32,7 +26,7 @@ public class InsertMethod extends AbstractMethod {
                     col.setType(ColType.valueOf(e.getValue()));
     }
     /**
-     * For example evaluets in template into "String bliv, BigDecimal calc, String contrnumfim, String contrnumfou".
+     * For example evaluets in template into: <pre>String bliv, BigDecimal calc, String contrnumfim, String contrnumfou</pre>
      */
     public List<String> getParams() {
         List<String> params = new ArrayList<String>();
@@ -40,9 +34,8 @@ public class InsertMethod extends AbstractMethod {
             params.add(col.getType().getJavaType() + ' ' + getJavaName(col));
         return params;
     }
-
     /**
-     * For example evaluets in template into "df7bliv, df7calc, df7contrnumfim, df7contrnumfou".
+     * For example evaluets in template into: <pre>df7bliv, df7calc, df7contrnumfim, df7contrnumfou</pre>
      */
     public List<String> getColNames() {
         List<String> colNames = new ArrayList<String>();
@@ -50,9 +43,8 @@ public class InsertMethod extends AbstractMethod {
             colNames.add(col.getDbName().toLowerCase());
         return colNames;
     }
-
     /**
-     * For example evaluets in template into ":BLIV:, :CALC:, :CONTRNUMFIM:, :CONTRNUMFOU:".
+     * For example evaluets in template into: <pre>:BLIV:, :CALC:, :CONTRNUMFIM:, :CONTRNUMFOU:</pre>
      */
     public List<String> getVals() {
         List<String> vals = new ArrayList<String>();
@@ -61,6 +53,12 @@ public class InsertMethod extends AbstractMethod {
         return vals;
     }
 
+    /**
+     * For example evaluets in template into:<pre>
+     *":BLIV:", bliv,
+      ":CALC:", calc,
+      ":CONTRNUMFIM:", contrnumfim</pre>
+     */
     public Map<String, String> getSqlJavaParMap() {
         Map<String, String> sqlJavaParMap = new LinkedHashMap<String, String>();
         for (Column col : cols)
