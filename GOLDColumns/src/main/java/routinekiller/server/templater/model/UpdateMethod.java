@@ -1,5 +1,6 @@
-package routinehandler.server.templater.model;
+package routinekiller.server.templater.model;
 
+import old.ColType;
 import old.Column;
 
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ public class UpdateMethod extends AbstractMethod{
     private final List<Column> setted;
     private final List<Column> primary;
 
-    public UpdateMethod(List<String> setted, List<String> primary, String table, String prefix) {
-        super(table, prefix);
+    public UpdateMethod(List<String> setted, List<String> primary, String table, String prefix, String colTypeText) {
+        super(table, prefix, colTypeText);
         this.primary = new ArrayList<Column>();
         for (String s : primary)
             this.primary.add(new Column(s));
@@ -27,16 +28,22 @@ public class UpdateMethod extends AbstractMethod{
         this.setted = new ArrayList<Column>();
         for (String s : setted)
             this.setted.add(new Column(s));
-//            if (primary.contains(s))
-//                this.setted.add(new Column(s + "New"));
-//            else
-//                this.setted.add(new Column(s));
+
+        for (Map.Entry<String, String> e : getColTypeMap().entrySet())
+            for (Column col : this.primary)
+                if (col.getDbName().equalsIgnoreCase(e.getKey()))
+                    col.setType(ColType.valueOf(e.getValue()));
+
+        for (Map.Entry<String, String> e : getColTypeMap().entrySet())
+            for (Column col : this.setted)
+                if (col.getDbName().equalsIgnoreCase(e.getKey()))
+                    col.setType(ColType.valueOf(e.getValue()));
     }
 
     public Map<String, String> getPrimaryKey() {
         Map<String, String> primaryKey = new LinkedHashMap<String, String>();
         for (Column c : primary)
-            primaryKey.put(c.getDbName(), getValName(c.getDbName()));
+            primaryKey.put(c.getDbName(), getValName(c));
 
         return primaryKey;
     }
@@ -49,9 +56,9 @@ public class UpdateMethod extends AbstractMethod{
 
         for (Column col : setted)
             if (primaryNames.contains(col.getDbName()))
-                settedCols.put(col.getDbName(), getValName(col.getDbName() + "_NEW"));
+                settedCols.put(col.getDbName(), getValName(col, "_NEW"));
             else
-                settedCols.put(col.getDbName(), getValName(col.getDbName()));
+                settedCols.put(col.getDbName(), getValName(col));
         return settedCols;
     }
 
@@ -64,12 +71,12 @@ public class UpdateMethod extends AbstractMethod{
 
         for (Column col : setted)
             if (primaryNames.contains(col.getDbName()))
-                params.add(col.getType().getCoreType() + ' ' + (col.getDbName() + "New").substring(getPrefix().length()));
+                params.add(col.getType().getJavaType() + ' ' + (col.getDbName() + "New").substring(getPrefix().length()));
             else
-                params.add(col.getType().getCoreType() + ' ' + col.getDbName().substring(getPrefix().length()));
+                params.add(col.getType().getJavaType() + ' ' + col.getDbName().substring(getPrefix().length()));
 
         for (Column col : primary)
-            params.add(col.getType().getCoreType() + ' ' + col.getDbName().substring(getPrefix().length()));
+            params.add(col.getType().getJavaType() + ' ' + col.getDbName().substring(getPrefix().length()));
         return params;
     }
 
@@ -81,7 +88,7 @@ public class UpdateMethod extends AbstractMethod{
 
         for (Column col : setted)
             if (primaryNames.contains(col.getDbName()))
-                sqlJavaParMap.put(getValName(col.getDbName() + "_NEW"), (col.getDbName() + "New").substring(getPrefix().length()));
+                sqlJavaParMap.put(getValName(col, "_NEW"), (col.getDbName() + "New").substring(getPrefix().length()));
             else
                 sqlJavaParMap.put(getValName(col), col.getDbName().substring(getPrefix().length()));
 

@@ -1,30 +1,17 @@
 package old;
 
 public enum ColType {
-    NUMBER("odecf", "OISDecimalField", "BigDecimal"),
-    STRING("s", "OISStringField", "String"),
-    INTEGER("i", "OISIntegerField", "Integer");
+    NUMBER("BigDecimal"),
+    VARCHAR2("String"),
+    DATE("String");
 
+    private final String javaType;
 
-    private final String OISTypePrefix;
-    private final String OISType;
-    private final String coreType;
-
-    public String getOISTypePrefix() {
-        return this.OISTypePrefix;
+    public String getJavaType() {
+        return this.javaType;
     }
 
-    public String getCoreType() {
-        return this.coreType;
-    }
-
-    public String getOISType() {
-        return this.OISType;
-    }
-
-    ColType(String prefix, String oisType, String coreType) {
-        this.OISTypePrefix = prefix;
-        this.OISType = oisType;
-        this.coreType = coreType;
+    ColType(String javaType) {
+        this.javaType = javaType;
     }
 }

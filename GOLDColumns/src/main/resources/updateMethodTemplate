@@ -1,3 +1,7 @@
+update${table}(cja,
+    <#list params as p>null<#sep>,
+    </#list>);
+
 public static void update${table}(<#list params as p>${p}<#sep>, </#list>)
         throws Exception {
     String sql =
@@ -5,7 +9,7 @@ public static void update${table}(<#list params as p>${p}<#sep>, </#list>)
             "SET\n" +
             <#list settedCols?keys as key>
             "${key} = ${settedCols[key]}<#sep>,\n" +
-            </#list>" +
+            </#list>\n" +
             "WHERE\n" +
             <#list primaryKey?keys as key>
             "${key} = ${primaryKey[key]}<#sep> AND\n" +

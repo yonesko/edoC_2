@@ -1,4 +1,4 @@
-package routinehandler;
+package routinekiller;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;

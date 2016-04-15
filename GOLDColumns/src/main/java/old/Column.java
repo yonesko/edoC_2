@@ -9,7 +9,7 @@ public class Column {
 
     //default values
     {
-        type = ColType.INTEGER;
+        type = ColType.NUMBER;
     }
 
     public Column(String dbName) {
