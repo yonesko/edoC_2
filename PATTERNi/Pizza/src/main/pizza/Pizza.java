@@ -1,25 +1,25 @@
 package main.pizza;
 
-import java.util.ArrayList;
+import main.ingredients.cheese.Cheese;
+import main.ingredients.clam.Clams;
+import main.ingredients.dough.Dough;
+import main.ingredients.pepperoni.Pepperoni;
+import main.ingredients.sauce.Sauce;
+import main.ingredients.veggies.Veggies;
 
 /**
  * Created by gleb on 11.05.16.
  */
 public abstract class Pizza {
     String name;
-    String dough;
-    String sauce;
-    ArrayList toppings = new ArrayList();
+    Dough dough;
+    Sauce sauce;
+    Veggies veggies[];
+    Cheese cheese;
+    Pepperoni pepperoni;
+    Clams clam;
 
-    public void prepare() {
-        System.out.println("Preparing..." + name);
-        System.out.println("Tossing dough...");
-        System.out.println("Adding sauce...");
-        System.out.println("Adding toppings: ");
-        for (int i = 0; i < toppings.size(); i++) {
-            System.out.println(" " + toppings.get(i));
-        }
-    }
+    public abstract void prepare();
 
     public void bake() {
         System.out.println("Bake for 25 min at 350");

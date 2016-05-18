@@ -1,36 +1,36 @@
 package main.ingredients;
 
 import main.ingredients.cheese.Cheese;
-import main.ingredients.cheese.ReggianoCheese;
+import main.ingredients.cheese.Mozzarella;
 import main.ingredients.clam.Clams;
-import main.ingredients.clam.FreshClams;
+import main.ingredients.clam.FrozenClams;
 import main.ingredients.dough.Dough;
-import main.ingredients.dough.ThinCrustDough;
+import main.ingredients.dough.ThickCrustDough;
 import main.ingredients.pepperoni.Pepperoni;
 import main.ingredients.pepperoni.SlicedPepperoni;
-import main.ingredients.sauce.MarinaraSauce;
+import main.ingredients.sauce.PlumTomatoSauce;
 import main.ingredients.sauce.Sauce;
 import main.ingredients.veggies.*;
 
-public class NYPizzaIngredientFactory implements PizzaIngredientFactory {
+public class ChicagoPizzaIngredientFactory implements PizzaIngredientFactory {
     @Override
     public Dough createDough() {
-        return new ThinCrustDough();
+        return new ThickCrustDough();
     }
 
     @Override
     public Sauce createSauce() {
-        return new MarinaraSauce();
+        return new PlumTomatoSauce();
     }
 
     @Override
     public Cheese createCheese() {
-        return new ReggianoCheese();
+        return new Mozzarella();
     }
 
     @Override
     public Veggies[] createVeggies() {
-        return new Veggies[]{new Garlic(), new Onion(), new Mushroom(), new RedPepper()};
+        return new Veggies[]{new Spinach(), new EggPlant(), new BlackOlives(), new RedPepper()};
     }
 
     @Override
@@ -40,6 +40,6 @@ public class NYPizzaIngredientFactory implements PizzaIngredientFactory {
 
     @Override
     public Clams createClams() {
-        return new FreshClams();
+        return new FrozenClams();
     }
 }
