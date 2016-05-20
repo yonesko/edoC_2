@@ -1,6 +1,9 @@
 package gleb;
 
 import gleb.command.Command;
+import gleb.command.NoCommand;
+
+import java.util.Arrays;
 
 public class RemoteControl {
     private static final int BUTT_NO = 7;
@@ -10,6 +13,8 @@ public class RemoteControl {
     public RemoteControl() {
         onCommands = new Command[BUTT_NO];
         offCommands = new Command[BUTT_NO];
+        Arrays.fill(onCommands, new NoCommand());
+        Arrays.fill(offCommands, new NoCommand());
     }
 
     public void setCommand(int slot, Command onCommand, Command offCommand) {

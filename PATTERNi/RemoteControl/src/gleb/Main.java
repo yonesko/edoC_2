@@ -1,6 +1,5 @@
 package gleb;
 
-import gleb.command.GarageDoorOpenCommand;
 import gleb.command.LightOffCommand;
 import gleb.command.LightOnCommand;
 import gleb.devices.GarageDoor;
