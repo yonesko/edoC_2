@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 public class RemoteControl {
     private static final int BUTT_NO = 7;
+    private Command lastCmd;
     private Command onCommands[];
     private Command offCommands[];
 
@@ -24,9 +25,15 @@ public class RemoteControl {
 
     public void pressKeyOn(int i) {
         onCommands[i].execute();
+        lastCmd = onCommands[i];
     }
 
     public void pressKeyOff(int i) {
         offCommands[i].execute();
+        lastCmd = offCommands[i];
+    }
+
+    public void pressUndo() {
+        lastCmd.undo();
     }
 }

@@ -18,8 +18,12 @@ public class Main {
         remoteControl.pressKeyOn(0);
         remoteControl.pressKeyOff(0);
 
+        remoteControl.pressUndo();
+
         remoteControl.pressKeyOn(1);
         remoteControl.pressKeyOff(1);
+
+        remoteControl.pressUndo();
 
     }
 }

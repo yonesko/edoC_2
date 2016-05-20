@@ -7,4 +7,9 @@ public class NoCommand implements Command {
     public void execute() {
         Util.log();
     }
+
+    @Override
+    public void undo() {
+        Util.log();
+    }
 }
