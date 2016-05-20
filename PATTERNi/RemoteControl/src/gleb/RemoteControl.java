@@ -12,10 +12,13 @@ public class RemoteControl {
     private Command offCommands[];
 
     public RemoteControl() {
+        NoCommand noCommand = new NoCommand();
+
         onCommands = new Command[BUTT_NO];
         offCommands = new Command[BUTT_NO];
-        Arrays.fill(onCommands, new NoCommand());
-        Arrays.fill(offCommands, new NoCommand());
+        lastCmd = noCommand;
+        Arrays.fill(onCommands, noCommand);
+        Arrays.fill(offCommands, noCommand);
     }
 
     public void setCommand(int slot, Command onCommand, Command offCommand) {
