@@ -1,15 +1,14 @@
 package gleb.devices;
 
+import gleb.Util;
+
 public class Light {
     public void on() {
-        System.out.println(new Object() {
-        }.getClass().getEnclosingMethod().getName());
-
+        Util.log();
     }
 
     public void off() {
-        System.out.println(new Object() {
-        }.getClass().getEnclosingMethod().getName());
+        Util.log();
 
     }
 }

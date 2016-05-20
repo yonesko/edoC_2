@@ -1,28 +1,25 @@
 package gleb.devices;
 
+import gleb.Util;
+
 public class GarageDoor {
     public void up() {
-        System.out.println(new Object() {
-        }.getClass().getEnclosingMethod().getName());
+        Util.log();
     }
     public void down() {
-        System.out.println(new Object() {
-        }.getClass().getEnclosingMethod().getName());
+        Util.log();
 
     }
     public void stop() {
-        System.out.println(new Object() {
-        }.getClass().getEnclosingMethod().getName());
+        Util.log();
 
     }
     public void lightOn() {
-        System.out.println(new Object() {
-        }.getClass().getEnclosingMethod().getName());
+        Util.log();
 
     }
     public void lightOff() {
-        System.out.println(new Object() {
-        }.getClass().getEnclosingMethod().getName());
+        Util.log();
 
     }
 }

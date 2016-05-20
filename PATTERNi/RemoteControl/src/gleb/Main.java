@@ -1,7 +1,7 @@
 package gleb;
 
-import gleb.command.Command;
 import gleb.command.GarageDoorOpenCommand;
+import gleb.command.LightOffCommand;
 import gleb.command.LightOnCommand;
 import gleb.devices.GarageDoor;
 import gleb.devices.Light;
@@ -9,13 +9,18 @@ import gleb.devices.Light;
 public class Main {
 
     public static void main(String[] args) {
-        SimpleRemoteControl simpleRemoteControl = new SimpleRemoteControl();
+        Light light = new Light();
+        GarageDoor garageDoor = new GarageDoor();
 
-        simpleRemoteControl.setCommand(new LightOnCommand(new Light()));
+        RemoteControl remoteControl = new RemoteControl();
 
-        simpleRemoteControl.setCommand(new GarageDoorOpenCommand(new GarageDoor()));
+        remoteControl.setCommand(0, new LightOnCommand(light), new LightOffCommand(light));
 
-        simpleRemoteControl.pressKeyOn();
+        remoteControl.pressKeyOn(0);
+        remoteControl.pressKeyOff(0);
+
+        remoteControl.pressKeyOn(1);
+        remoteControl.pressKeyOff(1);
 
     }
 }
