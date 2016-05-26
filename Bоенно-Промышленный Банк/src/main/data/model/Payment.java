@@ -1,6 +1,4 @@
-package main.model;
-
-import main.PaymentStatus;
+package main.data.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;

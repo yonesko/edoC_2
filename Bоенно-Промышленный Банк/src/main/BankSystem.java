@@ -1,35 +1,89 @@
 package main;
 
-import main.model.Payment;
-import main.symptomatology.*;
+import main.data.PaymentDAO;
+import main.data.model.Payment;
+import main.data.model.PaymentStatus;
+import main.specifications.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalTime;
+import java.util.*;
 
-/**
- * Created by gleb on 06.05.16.
- */
 public class BankSystem {
-    private FraudFactory fraudFactory;
+    private Map<ISpecification<Payment>, FraudSpecRep> mFraudCount;
 
     public BankSystem() {
-        fraudFactory = new FraudFactory();
+        mFraudCount = new HashMap<>();
+        mFraudCount.put(new TotalLargerByPeriodSameProduct(
+                new BigDecimal("5000"),
+                LocalTime.of(9, 0),
+                LocalTime.of(23, 0)), new FraudSpecRep());
+        mFraudCount.put(new TotalLargerByPeriodSameProduct(
+                new BigDecimal("1000"),
+                LocalTime.of(23, 0),
+                LocalTime.of(9, 0)), new FraudSpecRep());
     }
 
     public void proccess(Payment payment) {
         PaymentDAO.getInstance().add(payment);
-        if (isSuspicious(payment)) {
+        if (isFraud(payment)) {
             payment.moveTo(PaymentStatus.Tребует_подтверждения);
         } else {
             payment.moveTo(PaymentStatus.rотов_к_проведению);
         }
     }
 
-    private boolean isSuspicious(Payment payment) {
-        for (PaymentSymptom fraud : fraudFactory.getAllFrauds())
-            if (fraud.test(payment))
+    private boolean isFraud(Payment payment) {
+        for (Map.Entry<ISpecification<Payment>, FraudSpecRep> e : mFraudCount.entrySet())
+            if (e.getKey().isSatisfiedBy(payment)) {
+                e.getValue().increment();
+                e.getValue().add(payment);
                 return true;
+            }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Violators:\n");
+        for (Map.Entry<ISpecification<Payment>, FraudSpecRep> e : mFraudCount.entrySet()) {
+            sb.append(e.getKey());
+            sb.append(":");
+            sb.append(e.getValue().getCount());
+            sb.append('\n');
+            for (Payment payment : e.getValue().getViolators()) {
+                sb.append('\t');
+                sb.append(payment);
+                sb.append('\n');
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+}
+
+class FraudSpecRep {
+    private int count;
+    private List<Payment> violators;
+
+    public int getCount() {
+        return count;
+    }
+
+    public List<Payment> getViolators() {
+        return new ArrayList<>(violators);
+    }
+
+    public FraudSpecRep() {
+        count = 0;
+        violators = new ArrayList<>();
+    }
+    public void increment() {
+        count++;
+    }
+
+    public boolean add(Payment payment) {
+        return violators.add(payment);
     }
 }

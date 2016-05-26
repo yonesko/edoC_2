@@ -1,13 +1,15 @@
-package main;
+package main.data;
 
-import main.model.Client;
-import main.model.Payment;
-import main.model.Product;
+import main.data.model.Client;
+import main.data.model.Payment;
+import main.data.model.Product;
+import main.specifications.ISpecification;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,9 +26,24 @@ public class PaymentDAO {
 
     @Override
     public String toString() {
-        return "PaymentDAO{" +
-                "bd=" + bd +
-                '}';
+        bd.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("%5s|%7s|%10s|%25s|%30s|%15s\n",
+                "#", "Client", "Product", "Status", "Date", "Value"));
+
+        for (int i = 0; i < bd.size(); i++) {
+            Payment p = bd.get(i);
+            sb.append(String.format("%5d|%7d|%10s|%25s|%30s|%15s\n",
+                    i,
+                    p.getClient().getPersonalAccount(),
+                    p.getProduct().getTitle(),
+                    p.getStatus(),
+                    p.getDate(),
+                    p.getValue()));
+        }
+        return sb.toString();
     }
 
     public static PaymentDAO getInstance() {
@@ -38,7 +55,7 @@ public class PaymentDAO {
     }
 
     public List<Payment> byPeriod(Instant a, Instant b) {
-        List<Payment> result = new ArrayList<>();
+        List<Payment> result;
         result = bd.stream()
                 .filter(p -> ChronoUnit.NANOS.between(a, p.getDate()) >= 0)
                 .filter(p -> ChronoUnit.NANOS.between(p.getDate(), b) >= 0)
@@ -62,7 +79,7 @@ public class PaymentDAO {
     }
 
     public List<Payment> byProduct(Product product) {
-        List<Payment> result = new ArrayList<>();
+        List<Payment> result;
         result = bd.stream()
                 .filter(p -> p.getProduct().equals(product))
                 .collect(Collectors.toList());
@@ -77,6 +94,16 @@ public class PaymentDAO {
 
     public List<Payment> sameDay(Payment payment) {
         return bd.stream().filter(p -> isSameDay(p, payment)).collect(Collectors.toList());
+    }
+
+    public List<Payment> filter(ISpecification<Payment> specification) {
+        List<Payment> result = new ArrayList<>();
+
+        for (Payment payment : bd)
+            if (specification.isSatisfiedBy(payment))
+                result.add(payment);
+
+        return result;
     }
 
     private boolean isSameDay(Payment p1, Payment p2) {

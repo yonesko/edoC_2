@@ -1,4 +1,4 @@
-package main.model;
+package main.data.model;
 
 /**
  * Created by gleb on 06.05.16.
@@ -7,6 +7,9 @@ public class Client {
     private final Long personalAccount;
     private static Long count = 0L;
 
+    public Long getPersonalAccount() {
+        return personalAccount;
+    }
 
     public Client() {
         this.personalAccount = count++;

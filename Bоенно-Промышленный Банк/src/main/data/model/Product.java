@@ -1,4 +1,4 @@
-package main.model;
+package main.data.model;
 
 /**
  * Created by gleb on 06.05.16.
