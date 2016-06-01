@@ -3,13 +3,12 @@ package main.data;
 import main.data.model.Client;
 import main.data.model.Payment;
 import main.data.model.Product;
-import main.specifications.ISpecification;
+import main.specifications.core.ISpecification;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,7 +95,7 @@ public class PaymentDAO {
         return bd.stream().filter(p -> isSameDay(p, payment)).collect(Collectors.toList());
     }
 
-    public List<Payment> filter(ISpecification<Payment> specification) {
+    public List<Payment> filter(ISpecification<Payment> specification) {//TODO stream
         List<Payment> result = new ArrayList<>();
 
         for (Payment payment : bd)

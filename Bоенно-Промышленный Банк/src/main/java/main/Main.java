@@ -4,14 +4,16 @@ import main.data.PaymentDAO;
 import main.data.model.Client;
 import main.data.model.Payment;
 import main.data.model.Product;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * В решении задачи нам важно уверенное владение практиками ООП и хорошее знание языка Java, именно по ним мы оцениваем кандидата.
@@ -78,6 +80,13 @@ public class Main {
             new Product("Music"),
     };
 
+//    private static Payment payments[] = new Payment[]{
+//            new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
+//            new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
+//            new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
+//            new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
+//            new Payment(ranValue(), ranTime(), ranProd(), ranCli())
+//    };
     private static Payment payments[] = new Payment[]{
             new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
             new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
@@ -85,6 +94,9 @@ public class Main {
             new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
             new Payment(ranValue(), ranTime(), ranProd(), ranCli())
     };
+
+    private static final Logger logger = LogManager.getLogger();
+    private static final Marker SQL_MARKER = MarkerManager.getMarker("SQL");
 
     public static void main(String[] args) throws InterruptedException {
         BankSystem bankSystem = new BankSystem();
@@ -112,9 +124,8 @@ public class Main {
     private static Instant ranTime() {
         Instant result;
 
-        result = Instant.now()
-                .plus(new Random().nextInt(3), ChronoUnit.DAYS)
-                .plus(new Random().nextInt(24), ChronoUnit.HOURS);
+        Random random = new Random();
+        result = Instant.now().plus(random.nextInt((int) (ChronoUnit.DAYS.getDuration().getSeconds() * 5)), ChronoUnit.SECONDS);
 
         return result;
     }

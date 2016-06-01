@@ -1,7 +1,7 @@
-package main.specifications;
+package main.specifications.payment;
 
 import main.data.model.Payment;
-import main.data.model.Product;
+import main.specifications.core.CompositeSpecification;
 
 
 public class SamePayment extends CompositeSpecification<Payment> {

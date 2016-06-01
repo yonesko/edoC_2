@@ -1,4 +1,4 @@
-package main.specifications;
+package main.specifications.core;
 
 
 public abstract class CompositeSpecification <T> implements ISpecification<T> {

@@ -1,31 +1,37 @@
-package main.specifications;
+package main.specifications.payment;
 
 import main.data.PaymentDAO;
 import main.data.model.Payment;
+import main.specifications.core.CompositeSpecification;
+import main.specifications.core.ISpecification;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
 
-public class TotalLargerByPeriodSamePayment extends CompositeSpecification<Payment> {
+public class TotalLargerByPeriodSameProduct extends CompositeSpecification<Payment> {
+    private PaymentDAO paymentDAO = PaymentDAO.getInstance();
+    private static final Logger logger = LogManager.getLogger();
     private BigDecimal bound;
     private LocalTime from;
     private LocalTime till;
-    private PaymentDAO paymentDAO = PaymentDAO.getInstance();
 
-    public TotalLargerByPeriodSamePayment(BigDecimal bound, LocalTime from, LocalTime till) {
+    public TotalLargerByPeriodSameProduct(BigDecimal bound, LocalTime from, LocalTime till) {
         this.bound = bound;
         this.from = from;
         this.till = till;
     }
 
     @Override
-    public boolean isSatisfiedBy(Payment arg) {
+    public boolean isSatisfiedBy(Payment payment) {
         ISpecification spec;
 
-        spec = new TimeBounds(from, till)
-                .and(new SamePayment(arg));
+        spec = new BetweenTime(from, till)
+                .and(new SameProduct(payment.getProduct()));
 
-        return paymentDAO.sum(paymentDAO.filter(spec)).compareTo(bound) >= 0;
+        logger.entry(payment);
+        return logger.exit(paymentDAO.sum(paymentDAO.filter(spec)).compareTo(bound) >= 0);
     }
 
     @Override
@@ -33,7 +39,7 @@ public class TotalLargerByPeriodSamePayment extends CompositeSpecification<Payme
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TotalLargerByPeriodSamePayment that = (TotalLargerByPeriodSamePayment) o;
+        TotalLargerByPeriodSameProduct that = (TotalLargerByPeriodSameProduct) o;
 
         if (!bound.equals(that.bound)) return false;
         if (!from.equals(that.from)) return false;

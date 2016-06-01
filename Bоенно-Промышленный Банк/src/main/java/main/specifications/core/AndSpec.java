@@ -1,4 +1,4 @@
-package main.specifications;
+package main.specifications.core;
 
 
 public class AndSpec <T> extends CompositeSpecification<T> {

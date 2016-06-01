@@ -1,29 +1,31 @@
-package main.specifications;
+package main.specifications.payment;
 
 import main.data.PaymentDAO;
 import main.data.model.Payment;
+import main.specifications.core.CompositeSpecification;
+import main.specifications.core.ISpecification;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
 
-public class TotalLargerByPeriodSameProduct extends CompositeSpecification<Payment> {
+public class TotalLargerByPeriodSamePayment extends CompositeSpecification<Payment> {
     private BigDecimal bound;
     private LocalTime from;
     private LocalTime till;
     private PaymentDAO paymentDAO = PaymentDAO.getInstance();
 
-    public TotalLargerByPeriodSameProduct(BigDecimal bound, LocalTime from, LocalTime till) {
+    public TotalLargerByPeriodSamePayment(BigDecimal bound, LocalTime from, LocalTime till) {
         this.bound = bound;
         this.from = from;
         this.till = till;
     }
 
     @Override
-    public boolean isSatisfiedBy(Payment payment) {
+    public boolean isSatisfiedBy(Payment arg) {
         ISpecification spec;
 
-        spec = new TimeBounds(from, till)
-                .and(new SameProduct(payment.getProduct()));
+        spec = new BetweenTime(from, till)
+                .and(new SamePayment(arg));
 
         return paymentDAO.sum(paymentDAO.filter(spec)).compareTo(bound) >= 0;
     }
@@ -33,7 +35,7 @@ public class TotalLargerByPeriodSameProduct extends CompositeSpecification<Payme
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TotalLargerByPeriodSameProduct that = (TotalLargerByPeriodSameProduct) o;
+        TotalLargerByPeriodSamePayment that = (TotalLargerByPeriodSamePayment) o;
 
         if (!bound.equals(that.bound)) return false;
         if (!from.equals(that.from)) return false;
@@ -51,7 +53,7 @@ public class TotalLargerByPeriodSameProduct extends CompositeSpecification<Payme
 
     @Override
     public String toString() {
-        return "TotalLargerByPeriodSameProduct{" +
+        return "TotalLargerByPeriodSamePayment{" +
                 "from=" + from +
                 ", till=" + till +
                 ", bound=" + bound +

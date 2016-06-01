@@ -1,4 +1,4 @@
-package main.specifications;
+package main.specifications.core;
 
 public class NotSpec <T> extends CompositeSpecification <T> {
     private ISpecification a;

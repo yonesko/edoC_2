@@ -1,4 +1,4 @@
-package main.specifications;
+package main.specifications.core;
 
 /**
  * Created by gleb on 23.05.16.

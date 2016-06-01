@@ -3,7 +3,8 @@ package main;
 import main.data.PaymentDAO;
 import main.data.model.Payment;
 import main.data.model.PaymentStatus;
-import main.specifications.*;
+import main.specifications.core.ISpecification;
+import main.specifications.payment.TotalLargerByPeriodSameProduct;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
