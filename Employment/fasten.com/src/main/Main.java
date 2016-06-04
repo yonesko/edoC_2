@@ -1,6 +1,6 @@
 package main;
 
-import chat.WebSocketAuthServlet;
+import auth.WebSocketAuthServlet;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -13,7 +13,7 @@ public class Main {
         Server server = new Server(8080);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
-        context.addServlet(new ServletHolder(new WebSocketAuthServlet()), "/chat");
+        context.addServlet(new ServletHolder(new WebSocketAuthServlet()), "/auth");
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);

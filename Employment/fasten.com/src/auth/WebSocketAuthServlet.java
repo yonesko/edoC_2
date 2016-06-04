@@ -1,4 +1,4 @@
-package chat;
+package auth;
 
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import java.util.concurrent.TimeUnit;
 
 
-@WebServlet(name = "WebSocketAuthServlet", urlPatterns = {"/chat"})
+@WebServlet(name = "WebSocketAuthServlet", urlPatterns = {"/auth"})
 public class WebSocketAuthServlet extends WebSocketServlet {
     private final static long LOGOUT_TIME = TimeUnit.MINUTES.toMillis(10);
     private final AuthService authService;

@@ -1,10 +1,10 @@
-package chat;
+package auth;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+//TODO use this class
 public class AuthService {
     private Set<AuthWebSocket> webSockets;
 
