@@ -6,6 +6,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 //TODO use this class
 public class AuthService {
+    public static final String LOGIN_CUSTOMER = "LOGIN_CUSTOMER";
+    public static final String CUSTOMER_ERROR = "CUSTOMER_ERROR";
+    public static final String CUSTOMER_API_TOKEN = "CUSTOMER_API_TOKEN";
+
     private Set<AuthWebSocket> webSockets;
 
     public AuthService() {

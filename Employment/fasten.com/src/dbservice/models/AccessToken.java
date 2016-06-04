@@ -8,10 +8,10 @@ import java.sql.Timestamp;
 public class AccessToken {
     private String val;
     //the number of milliseconds since the epoch of 1970-01-01T00:00:00Z
-    private long expiration;
+    private Timestamp expiration;
 
 
-    public AccessToken(String val, long expiration) {
+    public AccessToken(String val, Timestamp expiration) {
         this.val = val;
         this.expiration = expiration;
     }
@@ -20,7 +20,7 @@ public class AccessToken {
         return val;
     }
 
-    public long getExpiration() {
+    public Timestamp getExpiration() {
         return expiration;
     }
 

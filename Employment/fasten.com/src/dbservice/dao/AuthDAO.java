@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
@@ -39,13 +40,13 @@ public class AuthDAO {
         logger.entry(user);
         String query = String.format(
                 "SELECT token, expiration FROM tokens " +
-                        "WHERE expiration >= %d " +
-                        "AND email = '%s'", Instant.now().toEpochMilli(), user.getEmail());
+                        "WHERE expiration >= '%s' " +
+                        "AND email = '%s'", Timestamp.from(Instant.now()), user.getEmail());
         logger.trace(query);
         return logger.exit(executor.execQuery(query, resultSet -> {
             AccessToken result = null;
             if (resultSet.next()) {
-                result = new AccessToken(resultSet.getString("token"), resultSet.getLong("expiration"));
+                result = new AccessToken(resultSet.getString("token"), resultSet.getTimestamp("expiration"));
             }
             //if more then one active token
             if (resultSet.next())
@@ -61,8 +62,8 @@ public class AuthDAO {
     public void addTokenTo(User user) throws SQLException {
         logger.entry(user);
         String update = String.format("INSERT INTO tokens(email, token, expiration) " +
-                        "VALUES('%s', '%s', %d)",
-                user.getEmail(), UUID.randomUUID(), Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli());
+                        "VALUES('%s', '%s', '%s')",
+                user.getEmail(), UUID.randomUUID(), Timestamp.from(Instant.now().plus(1, ChronoUnit.DAYS)));
         logger.trace(update);
         executor.execUpdate(update);
     }
@@ -73,9 +74,9 @@ public class AuthDAO {
     public void closeToken(AccessToken token) throws SQLException {
         logger.entry(token);
         String update = String.format("UPDATE tokens " +
-                        "SET expiration = %d " +
+                        "SET expiration = '%s' " +
                         "WHERE token = '%s'",
-                Instant.now().toEpochMilli(), token.getVal());
+                Timestamp.from(Instant.now()).toString(), token.getVal());
         logger.trace(update);
         executor.execUpdate(update);
     }

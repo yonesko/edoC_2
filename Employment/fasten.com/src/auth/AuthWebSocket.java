@@ -1,7 +1,9 @@
 package auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import dbservice.DBService;
+import dbservice.MsgHelper;
 import dbservice.models.AccessToken;
 import dbservice.models.Msg;
 import dbservice.models.User;
@@ -39,12 +41,13 @@ public class AuthWebSocket {
         User user;
 
         mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
         msg = mapper.readValue(data, Msg.class);
 
-        if (msg.getType().equals("LOGIN_CUSTOMER")) {
+        if (msg.getType().equals(AuthService.LOGIN_CUSTOMER)) {
             user = new User(
-                    msg.getData().get("email").toString(),
-                    msg.getData().get("password").toString());
+                    msg.getData().get("email"),
+                    msg.getData().get("password"));
 
             boolean userExists = DBService.getDbService().isUserExists(user);
 
@@ -57,9 +60,9 @@ public class AuthWebSocket {
                 DBService.getDbService().addTokenTo(user);
                 usersToken = DBService.getDbService().activeTokenOf(user);
 
-                response = Msg.getAuthOKMsg(usersToken);
+                response = MsgHelper.getAuthOKMsg(usersToken);
             } else {
-                response = Msg.getErrorMsg();
+                response = MsgHelper.getErrorMsg();
             }
 
             sendString(mapper.writeValueAsString(response));

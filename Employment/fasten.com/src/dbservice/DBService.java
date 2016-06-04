@@ -59,7 +59,7 @@ public class DBService {
                 "tokens (" +
                 "email varchar(256), " +
                 "token varchar(256), " +
-                "expiration number," +
+                "expiration TIMESTAMP," +
                 "primary key (token))");
 
         executor.execUpdate("INSERT INTO users(password, email) VALUES('123', 'gleb@mail.ru')");
