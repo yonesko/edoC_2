@@ -80,13 +80,6 @@ public class Main {
             new Product("Music"),
     };
 
-//    private static Payment payments[] = new Payment[]{
-//            new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
-//            new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
-//            new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
-//            new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
-//            new Payment(ranValue(), ranTime(), ranProd(), ranCli())
-//    };
     private static Payment payments[] = new Payment[]{
             new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
             new Payment(ranValue(), ranTime(), ranProd(), ranCli()),
@@ -98,6 +91,11 @@ public class Main {
     private static final Logger logger = LogManager.getLogger();
     private static final Marker SQL_MARKER = MarkerManager.getMarker("SQL");
 
+    //payments arrive in chronological sequence
+    static {
+        Arrays.sort(payments, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+    }
+
     public static void main(String[] args) throws InterruptedException {
         BankSystem bankSystem = new BankSystem();
 
@@ -106,7 +104,6 @@ public class Main {
         System.out.println(PaymentDAO.getInstance());
 
         System.out.println(bankSystem);
-
     }
 
     private static Product ranProd() {

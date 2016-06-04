@@ -25,8 +25,6 @@ public class PaymentDAO {
 
     @Override
     public String toString() {
-        bd.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
-
         StringBuilder sb = new StringBuilder();
 
         sb.append(String.format("%5s|%7s|%10s|%25s|%30s|%15s\n",
@@ -95,7 +93,7 @@ public class PaymentDAO {
         return bd.stream().filter(p -> isSameDay(p, payment)).collect(Collectors.toList());
     }
 
-    public List<Payment> filter(ISpecification<Payment> specification) {//TODO stream
+    public List<Payment> filter(ISpecification<Payment> specification) {
         List<Payment> result = new ArrayList<>();
 
         for (Payment payment : bd)
