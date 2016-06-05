@@ -64,8 +64,8 @@ public class DBService {
 
     private void cleanup() throws SQLException {
         Executor executor = new Executor(connection);
-        executor.execUpdate("drop table users");
-        executor.execUpdate("drop table tokens");
+        executor.execUpdate("drop table if exists users");
+        executor.execUpdate("drop table if exists tokens");
     }
 
     private static Connection getH2Connection() throws SQLException {
