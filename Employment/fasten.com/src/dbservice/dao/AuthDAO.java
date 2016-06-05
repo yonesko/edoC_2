@@ -1,8 +1,8 @@
 package dbservice.dao;
 
 import dbservice.executor.Executor;
-import dbservice.models.AccessToken;
-import dbservice.models.User;
+import main.models.AccessToken;
+import main.models.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

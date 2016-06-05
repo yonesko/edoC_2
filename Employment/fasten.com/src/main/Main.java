@@ -1,6 +1,6 @@
 package main;
 
-import auth.WebSocketAuthServlet;
+import main.auth.WebSocketAuthServlet;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;

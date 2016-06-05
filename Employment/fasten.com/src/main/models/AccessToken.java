@@ -1,4 +1,4 @@
-package dbservice.models;
+package main.models;
 
 import java.sql.Timestamp;
 
@@ -7,7 +7,6 @@ import java.sql.Timestamp;
  */
 public class AccessToken {
     private String val;
-    //the number of milliseconds since the epoch of 1970-01-01T00:00:00Z
     private Timestamp expiration;
 
 

@@ -3,7 +3,7 @@
     <Appenders>
         <File name="MyFile" fileName="output.log" append="false">
             <PatternLayout>
-                <Pattern>%d %p %c{1.} %M %m%n</Pattern>
+                <Pattern>%d %t %p %c{1.} %M %n%m%n</Pattern>
             </PatternLayout>
         </File>
     </Appenders>

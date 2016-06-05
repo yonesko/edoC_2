@@ -2,8 +2,8 @@ package dbservice;
 
 import dbservice.dao.AuthDAO;
 import dbservice.executor.Executor;
-import dbservice.models.AccessToken;
-import dbservice.models.User;
+import main.models.AccessToken;
+import main.models.User;
 import org.h2.jdbcx.JdbcDataSource;
 
 import java.sql.Connection;
