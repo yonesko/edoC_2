@@ -9,8 +9,6 @@ import main.models.User;
 import java.sql.SQLException;
 
 public class AuthService {
-    private DBService dbService = DBService.getDbService();;
-
     /**
      * Checks if the user persists in the database.
      * If the user exists this method closes the user's active token and add new one.
@@ -19,16 +17,18 @@ public class AuthService {
     public Msg authorization(User user) throws SQLException {
         Msg result;
 
+        DBService dbService = DBService.getDbService();
+
         if(dbService.isUserExists(user)) {
-            AccessToken usersToken = DBService.getDbService().activeTokenOf(user);
+            AccessToken usersToken = dbService.activeTokenOf(user);
 
             if (usersToken != null) {
-                DBService.getDbService().closeToken(usersToken);
+                dbService.closeToken(usersToken);
             }
 
-            DBService.getDbService().addTokenTo(user);
+            dbService.addTokenTo(user);
 
-            result = MsgHelper.getAuthOKMsg(DBService.getDbService().activeTokenOf(user));
+            result = MsgHelper.getAuthOKMsg(dbService.activeTokenOf(user));
         } else {
             result = MsgHelper.getAuthErrMsg();
         }

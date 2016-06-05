@@ -55,7 +55,7 @@ public class AuthWebSocket {
 
         }
 
-        sendString(response);
+        sendMsg(response);
     }
 
     @OnWebSocketClose
@@ -63,7 +63,7 @@ public class AuthWebSocket {
         logger.trace("statusCode={}, reason={}", statusCode, reason);
     }
 
-    public void sendString(Msg msg) {
+    public void sendMsg(Msg msg) {
         ObjectMapper mapper;
         mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
