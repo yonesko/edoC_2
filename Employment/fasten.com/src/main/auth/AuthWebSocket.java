@@ -42,11 +42,13 @@ public class AuthWebSocket {
             User user;
 
             user = new User(
-                    msg.getData().get("email"),
+                    msg.getData().get("email").intern(),
                     msg.getData().get("password"));
 
             try {
-                response = authService.authorize(user);
+                synchronized (user.getEmail()) {
+                    response = authService.authorize(user);
+                }
             } catch (Exception e) {
                 logger.catching(e);
             }

@@ -74,7 +74,6 @@ public class DBService {
         JdbcDataSource ds = new JdbcDataSource();
         ds.setURL(url);
 
-        Connection connection = DriverManager.getConnection(url);
-        return connection;
+        return DriverManager.getConnection(url);
     }
 }

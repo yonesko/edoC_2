@@ -1,10 +1,9 @@
 ﻿<html>
 <head>
     <meta charset="UTF-8"/>
-    <title>Auth</title>
+    <title>Ordinary Auth</title>
     <script type="text/javascript">
         var ws;
-        var ws2;
 
         function init() {
             ws = new WebSocket("ws://localhost:8080/auth");
@@ -17,18 +16,7 @@
             };
             ws.onclose = function (event) {
 
-            }
-            ws2 = new WebSocket("ws://localhost:8080/auth");
-            ws2.onopen = function (event) {
-
             };
-            ws2.onmessage = function (event) {
-                var $textarea = document.getElementById("messages");
-                $textarea.value = $textarea.value + event.data + "\n";
-            };
-            ws2.onclose = function (event) {
-
-            }
         }
 
         function sendMessage() {
@@ -42,8 +30,6 @@
             message.data.password = passwordField.value;
 
             ws.send(JSON.stringify(message));
-            ws2.send(JSON.stringify(message));
-//            passwordField.value = '';
         }
     </script>
 </head>
@@ -51,7 +37,7 @@
 <div id="body">
     <div id="menu">
         <p class="welcome">
-            <label for="email">Email:</label><input id="email" value="anonymous" type="email"/>
+            <label for="email">Email:</label><input id="email" value="gleb@mail.ru" type="email"/>
         </p>
 
         <div style="clear: both"></div>
