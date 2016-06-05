@@ -14,19 +14,19 @@ public class MsgHelper {
     private static final Logger logger = LogManager.getLogger();
     private static Msg errorMsg;
 
+    static {
+        HashMap<String, String> respData = new HashMap<>();
+
+        respData.put("error_description", "Customer not found");
+        respData.put("error_code", "customer.notFound");
+
+        errorMsg = new Msg(Msg.Type.CUSTOMER_ERROR, respData);
+    }
+
+    /**
+     * @return cached login fail msg
+     */
     public static Msg getAuthErrMsg() {
-        if (errorMsg == null) {
-            synchronized (Msg.class) {
-                if (errorMsg == null) {
-                    HashMap<String, String> respData = new HashMap<>();
-
-                    respData.put("error_description", "Customer not found");
-                    respData.put("error_code", "customer.notFound");
-
-                    errorMsg = new Msg(Msg.Type.CUSTOMER_ERROR, respData);
-                }
-            }
-        }
         return errorMsg;
     }
 

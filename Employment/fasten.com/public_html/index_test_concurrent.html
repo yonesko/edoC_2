@@ -9,21 +9,18 @@
         var wssBadEmail = new Array(5);
 
         function wsInit(element) {
-            element.onopen = function (event) {
-
-            };
             element.onmessage = function (event) {
                 var $textarea = document.getElementById("messages");
                 $textarea.value = $textarea.value + event.data + "\n";
             };
-            element.onclose = function (event) {
-
+            element.onerror = function(error) {
+                console.log("Ошибка " + error.message);
             };
         }
 
         function wssInit(arr) {
             for (i = 0; i < arr.length; i++) {
-                arr[i] = new WebSocket("ws://localhost:8080/auth");
+                arr[i] = new WebSocket("wss://localhost:8080/auth");
                 wsInit(arr[i]);
             }
         }
@@ -38,11 +35,11 @@
             wssOneEmail.forEach(function (element, index, array) {
                 element.send(JSON.stringify(getOneEmailMsg()));
             });
-            wssTwoEmail.forEach(function (element, index, array) {
-                element.send(JSON.stringify(getTwoEmailMsg()));
-            });
             wssBadEmail.forEach(function (element, index, array) {
                 element.send(JSON.stringify(getBadEmailMsg()));
+            });
+            wssTwoEmail.forEach(function (element, index, array) {
+                element.send(JSON.stringify(getTwoEmailMsg()));
             });
         }
 
@@ -78,22 +75,14 @@
 </head>
 <body onload="init();">
 <div id="body">
-    <div id="menu">
-        <p class="welcome">
-            <label for="email">Email:</label><input id="email" value="gleb@mail.ru" type="email"/>
-        </p>
-
-        <div style="clear: both"></div>
-    </div>
 
     <div id="response">
-        <textarea id="messages" rows="20" cols="50" readonly="readonly"></textarea>
+        <textarea id="messages" rows="50" cols="80" readonly="readonly"></textarea>
     </div>
     <form name="message" action="">
-        <label for="password">Password:</label><input name="password" type="password" id="password" size="40"/>
         <input type="button" name="submitmsg" value="Send..." onclick="sendMessage();"/>
     </form>
 </div>
-Dat page makes 10 login requests of the one email, 5 of the other and 5 baf emails at the same time;
+Dat page makes 10 login requests of the one email, 5 of the other and 5 bad emails at the same time;
 </body>
 </html>
