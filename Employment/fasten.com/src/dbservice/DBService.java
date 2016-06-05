@@ -4,6 +4,8 @@ import dbservice.dao.AuthDAO;
 import dbservice.executor.Executor;
 import main.models.AccessToken;
 import main.models.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.h2.jdbcx.JdbcDataSource;
 
 import java.sql.Connection;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 
 public class DBService {
     private static DBService dbService = new DBService();
+    private static final Logger logger = LogManager.getLogger();
     private final Connection connection;
 
     private DBService() {
@@ -20,7 +23,7 @@ public class DBService {
             cleanup();
             initDB();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.catching(e);
         }
     }
 
@@ -66,19 +69,15 @@ public class DBService {
         executor.execUpdate("INSERT INTO users(password, email) VALUES('qwer', 'donatella@mail.ru')");
     }
 
-    private void cleanup() {
+    private void cleanup() throws SQLException {
         Executor executor = new Executor(connection);
-        try {
-            executor.execUpdate("drop table users");
-            executor.execUpdate("drop table tokens");
-        } catch (SQLException e) {
-            System.out.println("DBService.cleanup SQLException " + e.getSQLState());
-        }
+        executor.execUpdate("drop table users");
+        executor.execUpdate("drop table tokens");
     }
 
     private static Connection getH2Connection() {
         try {
-            String url = "jdbc:h2:~/h2db";
+            String url = "jdbc:h2:./h2db";
 
             JdbcDataSource ds = new JdbcDataSource();
             ds.setURL(url);

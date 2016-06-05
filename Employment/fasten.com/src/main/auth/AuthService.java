@@ -20,13 +20,15 @@ public class AuthService {
         DBService dbService = DBService.getDbService();
 
         if(dbService.isUserExists(user)) {
-            AccessToken usersToken = dbService.activeTokenOf(user);
 
-            if (usersToken != null) {
-                dbService.closeToken(usersToken);
+            synchronized (user) {
+                AccessToken usersToken = dbService.activeTokenOf(user);
+                if (usersToken != null) {
+                    dbService.closeToken(usersToken);
+                }
+
+                dbService.addTokenTo(user);
             }
-
-            dbService.addTokenTo(user);
 
             result = MsgHelper.getAuthOKMsg(dbService.activeTokenOf(user));
         } else {

@@ -13,23 +13,20 @@ public class Executor {
     }
 
     public int execUpdate(String update) throws SQLException {
-        Statement stmt = connection.createStatement();
-        int result = stmt.executeUpdate(update);
-        stmt.close();
-        return result;
+        try (Statement stmt = connection.createStatement()) {
+            return stmt.executeUpdate(update);
+        }
     }
 
-    public <T> T execQuery(String query,
-                           ResultHandler<T> handler)
-            throws SQLException {
-        Statement stmt = connection.createStatement();
-        stmt.execute(query);
-        ResultSet result = stmt.getResultSet();
-        T value = handler.handle(result);
-        result.close();
-        stmt.close();
-
-        return value;
+    public <T> T execQuery(String query, ResultHandler<T> handler) throws SQLException {
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute(query);
+            try (ResultSet result = stmt.getResultSet()) {
+                T value = handler.handle(result);
+                result.close();
+                return value;
+            }
+        }
     }
 
 }

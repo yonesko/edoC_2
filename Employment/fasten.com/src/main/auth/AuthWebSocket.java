@@ -49,17 +49,16 @@ public class AuthWebSocket {
 
             try {
                 response = authService.authorization(user);
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 logger.catching(e);
             }
-
         }
-
         sendMsg(response);
     }
 
     @OnWebSocketClose
     public void onClose(int statusCode, String reason) {
+        logger.trace("local={}, remote={}", session.getLocalAddress(), session.getRemoteAddress());
         logger.trace("statusCode={}, reason={}", statusCode, reason);
     }
 
@@ -77,7 +76,9 @@ public class AuthWebSocket {
 
     public void sendString(String data) {
         try {
-            session.getRemote().sendString(data);
+            if (session.isOpen()) {
+                session.getRemote().sendString(data);
+            }
         } catch (Exception e) {
             logger.catching(e);
         }
