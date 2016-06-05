@@ -14,8 +14,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import main.models.Msg;
 
-import java.sql.SQLException;
-
 @SuppressWarnings("UnusedDeclaration")
 @WebSocket
 public class AuthWebSocket {
@@ -48,11 +46,12 @@ public class AuthWebSocket {
                     msg.getData().get("password"));
 
             try {
-                response = authService.authorization(user);
+                response = authService.authorize(user);
             } catch (Exception e) {
                 logger.catching(e);
             }
         }
+
         sendMsg(response);
     }
 

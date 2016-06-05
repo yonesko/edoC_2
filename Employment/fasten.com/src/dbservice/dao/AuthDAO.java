@@ -34,15 +34,21 @@ public class AuthDAO {
         return logger.exit(executor.execQuery(query, ResultSet::next));
     }
     /**
-     * token is active if its expiration timestamp is after current
+     * token is active if its expiration timestamp is after current.
+     * @param forUpdate if true - Blocks row with user's active token
      */
-    public AccessToken activeTokenOf(User user) throws SQLException {
-        logger.entry(user);
+    public AccessToken activeTokenOf(User user, boolean forUpdate) throws SQLException {
+        logger.entry(user, forUpdate);
+
         String query = String.format(
                 "SELECT token, expiration FROM tokens " +
                         "WHERE expiration >= '%s' " +
-                        "AND email = '%s'", Timestamp.from(Instant.now()), user.getEmail());
+                        "AND email = '%s' ", Timestamp.from(Instant.now()), user.getEmail());
+        if (forUpdate)
+            query += " FOR UPDATE ";
+
         logger.trace(query);
+
         return logger.exit(executor.execQuery(query, resultSet -> {
             AccessToken result = null;
             if (resultSet.next()) {
@@ -54,18 +60,36 @@ public class AuthDAO {
             return result;
         }));
     }
+    public AccessToken checkAndAddTokenTo(User user) throws SQLException {
+        logger.entry(user);
+        AccessToken activeToken = activeTokenOf(user, true);
+
+        if (activeToken != null) {
+            closeToken(activeToken);
+        }
+
+        return logger.exit(addTokenTo(user));
+    }
 
     /**
      * Add new random token to user's email.
      * Duration of the token is one day;
+     * @return added token;
      */
-    public void addTokenTo(User user) throws SQLException {
+    public AccessToken addTokenTo(User user) throws SQLException {
         logger.entry(user);
+
+        UUID uuid = UUID.randomUUID();
+        Timestamp timestamp = Timestamp.from(Instant.now().plus(1, ChronoUnit.DAYS));
+
         String update = String.format("INSERT INTO tokens(email, token, expiration) " +
                         "VALUES('%s', '%s', '%s')",
-                user.getEmail(), UUID.randomUUID(), Timestamp.from(Instant.now().plus(1, ChronoUnit.DAYS)));
+                user.getEmail(), uuid, timestamp);
+
         logger.trace(update);
         executor.execUpdate(update);
+
+        return logger.exit(new AccessToken(uuid.toString(), timestamp));
     }
 
     /**

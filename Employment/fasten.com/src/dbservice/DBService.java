@@ -15,11 +15,12 @@ import java.sql.SQLException;
 public class DBService {
     private static DBService dbService = new DBService();
     private static final Logger logger = LogManager.getLogger();
-    private final Connection connection;
+    private Connection connection;
 
     private DBService() {
-        this.connection = getH2Connection();
         try {
+            connection = getH2Connection();
+            connection.setAutoCommit(false);
             cleanup();
             initDB();
         } catch (SQLException e) {
@@ -32,19 +33,11 @@ public class DBService {
         return authDAO.isUserExists(user);
     }
 
-    public AccessToken activeTokenOf(User user) throws SQLException {
+    public AccessToken checkAndAddTokenTo(User user) throws SQLException {
         AuthDAO authDAO = new AuthDAO(connection);
-        return authDAO.activeTokenOf(user);
-    }
-
-    public void closeToken(AccessToken token) throws SQLException {
-        AuthDAO authDAO = new AuthDAO(connection);
-        authDAO.closeToken(token);
-    }
-
-    public void addTokenTo(User user) throws SQLException {
-        AuthDAO authDAO = new AuthDAO(connection);
-        authDAO.addTokenTo(user);
+        AccessToken accessToken = authDAO.checkAndAddTokenTo(user);
+        connection.commit();
+        return accessToken;
     }
 
     public static DBService getDbService() {
@@ -75,18 +68,13 @@ public class DBService {
         executor.execUpdate("drop table tokens");
     }
 
-    private static Connection getH2Connection() {
-        try {
-            String url = "jdbc:h2:./h2db";
+    private static Connection getH2Connection() throws SQLException {
+        String url = "jdbc:h2:./h2db";
 
-            JdbcDataSource ds = new JdbcDataSource();
-            ds.setURL(url);
+        JdbcDataSource ds = new JdbcDataSource();
+        ds.setURL(url);
 
-            Connection connection = DriverManager.getConnection(url);
-            return connection;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        Connection connection = DriverManager.getConnection(url);
+        return connection;
     }
 }
