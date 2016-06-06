@@ -4,8 +4,8 @@
     <title>Test concurrent Auth</title>
     <script type="text/javascript">
         var ws;
-        var wssOneEmail = new Array(10);
-        var wssTwoEmail = new Array(5);
+        var wssOneEmail = new Array(1000);
+        var wssTwoEmail = new Array(500);
 
         function wsInit(element) {
             element.onmessage = function (event) {
@@ -19,9 +19,14 @@
 
         function wssInit(arr) {
             for (i = 0; i < arr.length; i++) {
-                arr[i] = new WebSocket("ws://localhost:8080/auth");
+                arr[i] = new WebSocket(getRootUri() + "/auth");
                 wsInit(arr[i]);
             }
+        }
+
+        function getRootUri() {
+            return "ws://" + (document.location.hostname === "" ? "localhost" : document.location.hostname) + ":" +
+                    (document.location.port === "" ? "8080" : document.location.port);
         }
 
         function init() {
