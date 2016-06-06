@@ -101,6 +101,6 @@ public class TokenDAO {
     }
 
     public void cleanup() throws SQLException {
-        executor.execUpdate("drop table tokens");
+        executor.execUpdate("drop table if exists tokens");
     }
 }

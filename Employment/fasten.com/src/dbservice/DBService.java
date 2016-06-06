@@ -1,7 +1,7 @@
 package dbservice;
 
-import dbservice.dao.AuthDAO;
-import dbservice.executor.Executor;
+import dbservice.dao.TokenDAO;
+import dbservice.dao.UserDAO;
 import main.models.AccessToken;
 import main.models.User;
 import org.apache.logging.log4j.LogManager;
@@ -50,6 +50,7 @@ public class DBService {
         UserDAO userDAO = new UserDAO(connection);
         tokenDAO.initDB();
         userDAO.initDB();
+        connection.commit();
     }
 
     private static Connection getH2Connection() throws SQLException {

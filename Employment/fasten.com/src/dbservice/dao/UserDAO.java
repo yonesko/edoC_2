@@ -40,6 +40,6 @@ public class UserDAO {
     }
 
     public void cleanup() throws SQLException {
-        executor.execUpdate("drop table users");
+        executor.execUpdate("drop table if exists users");
     }
 }
