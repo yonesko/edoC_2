@@ -1,7 +1,7 @@
 package dbservice;
 
-import dbservice.dao.AuthDAO;
-import dbservice.executor.Executor;
+import dbservice.dao.TokenDAO;
+import dbservice.dao.UserDAO;
 import main.models.AccessToken;
 import main.models.User;
 import org.apache.logging.log4j.LogManager;
@@ -13,59 +13,43 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBService {
-    private static DBService dbService = new DBService();
     private static final Logger logger = LogManager.getLogger();
     private Connection connection;
 
-    private DBService() {
+    public DBService() {
         try {
             connection = getH2Connection();
             connection.setAutoCommit(false);
-            cleanup();
-            initDB();
+            TokenDAO tokenDAO = new TokenDAO(connection);
         } catch (SQLException e) {
             logger.catching(e);
         }
     }
 
     public boolean isUserExists(User user) throws SQLException {
-        AuthDAO authDAO = new AuthDAO(connection);
-        return authDAO.isUserExists(user);
+        UserDAO userDAO = new UserDAO(connection);
+        return userDAO.isUserExists(user);
     }
 
     public AccessToken checkAndAddTokenTo(User user) throws SQLException {
-        AuthDAO authDAO = new AuthDAO(connection);
-        AccessToken accessToken = authDAO.checkAndAddTokenTo(user);
+        TokenDAO tokenDAO = new TokenDAO(connection);
+        AccessToken accessToken = tokenDAO.checkAndAddTokenTo(user);
         connection.commit();
         return accessToken;
     }
 
-    public static DBService getDbService() {
-        return dbService;
+    public void cleanup() throws SQLException {
+        TokenDAO tokenDAO = new TokenDAO(connection);
+        UserDAO userDAO = new UserDAO(connection);
+        tokenDAO.cleanup();
+        userDAO.cleanup();
     }
 
-    private void initDB() throws SQLException {
-        Executor executor = new Executor(connection);
-        executor.execUpdate("create table if not exists " +
-                "users (" +
-                "password varchar(256), " +
-                "email varchar(256), " +
-                "primary key (email))");
-        executor.execUpdate("create table if not exists " +
-                "tokens (" +
-                "email varchar(256), " +
-                "token varchar(256), " +
-                "expiration TIMESTAMP," +
-                "primary key (token))");
-
-        executor.execUpdate("INSERT INTO users(password, email) VALUES('123', 'gleb@mail.ru')");
-        executor.execUpdate("INSERT INTO users(password, email) VALUES('qwer', 'donatella@mail.ru')");
-    }
-
-    private void cleanup() throws SQLException {
-        Executor executor = new Executor(connection);
-        executor.execUpdate("drop table users");
-        executor.execUpdate("drop table tokens");
+    public void initDB() throws SQLException {
+        TokenDAO tokenDAO = new TokenDAO(connection);
+        UserDAO userDAO = new UserDAO(connection);
+        tokenDAO.initDB();
+        userDAO.initDB();
     }
 
     private static Connection getH2Connection() throws SQLException {

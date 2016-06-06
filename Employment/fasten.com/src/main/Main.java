@@ -13,8 +13,11 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 public class Main {
     private static final Logger logger = LogManager.getLogger();
-    public static void main(String[] args) {
-        DBService.getDbService();
+    public static void main(String[] args) throws Exception {
+        DBService dbService = new DBService();
+        dbService.cleanup();
+        dbService.initDB();
+
         Server server = new Server(8080);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
@@ -28,11 +31,7 @@ public class Main {
         handlers.setHandlers(new Handler[]{resource_handler, context});
         server.setHandler(handlers);
 
-        try {
-            server.start();
-            server.join();
-        } catch (Exception e) {
-            logger.catching(e);
-        }
+        server.start();
+        server.join();
     }
 }

@@ -28,11 +28,4 @@ public class Executor {
             }
         }
     }
-
-//    public void commit() throws SQLException {
-//        connection.commit();
-//    }
-//    public void rollback() throws SQLException {
-//        connection.rollback();
-//    }
 }

@@ -14,24 +14,12 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
-public class AuthDAO {
+public class TokenDAO {
     private static final Logger logger = LogManager.getLogger();
     private Executor executor;
 
-    public AuthDAO(Connection connection) {
+    public TokenDAO(Connection connection) {
         this.executor = new Executor(connection);
-    }
-    /**
-     * @return true if pair of email and password exist in one row
-     */
-    public boolean isUserExists(User user) throws SQLException {
-        logger.entry(user);
-        String query = String.format(
-                "SELECT 1 FROM users " +
-                "WHERE password = '%s' " +
-                "AND email = '%s'", user.getPassword(), user.getEmail());
-        logger.trace(query);
-        return logger.exit(executor.execQuery(query, ResultSet::next));
     }
     /**
      * token is active if its expiration timestamp is after current.
@@ -91,7 +79,6 @@ public class AuthDAO {
 
         return logger.exit(new AccessToken(uuid.toString(), timestamp));
     }
-
     /**
      * Sets token's expiration date to now.
      */
@@ -103,5 +90,17 @@ public class AuthDAO {
                 Timestamp.from(Instant.now()).toString(), token.getVal());
         logger.trace(update);
         executor.execUpdate(update);
+    }
+    public void initDB() throws SQLException {
+        executor.execUpdate("create table if not exists " +
+                "tokens (" +
+                "email varchar(256), " +
+                "token varchar(256), " +
+                "expiration TIMESTAMP," +
+                "primary key (token))");
+    }
+
+    public void cleanup() throws SQLException {
+        executor.execUpdate("drop table tokens");
     }
 }

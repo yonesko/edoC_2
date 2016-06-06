@@ -17,7 +17,7 @@ public class AuthService {
     public Msg authorize(User user) throws SQLException {
         Msg result;
 
-        DBService dbService = DBService.getDbService();
+        DBService dbService = new DBService();
 
         if (dbService.isUserExists(user)) {
 
