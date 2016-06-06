@@ -20,7 +20,7 @@
 
         function wssInit(arr) {
             for (i = 0; i < arr.length; i++) {
-                arr[i] = new WebSocket("wss://localhost:8080/auth");
+                arr[i] = new WebSocket("ws://localhost:8080/auth");
                 wsInit(arr[i]);
             }
         }

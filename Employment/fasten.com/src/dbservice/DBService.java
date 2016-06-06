@@ -1,7 +1,7 @@
 package dbservice;
 
-import dbservice.dao.TokenDAO;
-import dbservice.dao.UserDAO;
+import dbservice.dao.AuthDAO;
+import dbservice.executor.Executor;
 import main.models.AccessToken;
 import main.models.User;
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBService {
+    private static DBService dbService = new DBService();
     private static final Logger logger = LogManager.getLogger();
     private Connection connection;
 
@@ -20,7 +21,6 @@ public class DBService {
         try {
             connection = getH2Connection();
             connection.setAutoCommit(false);
-            TokenDAO tokenDAO = new TokenDAO(connection);
         } catch (SQLException e) {
             logger.catching(e);
         }
