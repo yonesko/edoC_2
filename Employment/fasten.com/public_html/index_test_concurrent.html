@@ -1,0 +1,79 @@
+﻿<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Test concurrent Auth</title>
+    <script type="text/javascript">
+        var ws;
+        var wssOneEmail = new Array(1000);
+        var wssTwoEmail = new Array(500);
+
+        function wsInit(element) {
+            element.onmessage = function (event) {
+                var $textarea = document.getElementById("messages");
+                $textarea.value = $textarea.value + event.data + "\n";
+            };
+            element.onerror = function(error) {
+                console.log("Ошибка " + error.message);
+            };
+        }
+
+        function wssInit(arr) {
+            for (i = 0; i < arr.length; i++) {
+                arr[i] = new WebSocket(getRootUri() + "/auth");
+                wsInit(arr[i]);
+            }
+        }
+
+        function getRootUri() {
+            return "ws://" + (document.location.hostname === "" ? "localhost" : document.location.hostname) + ":" +
+                    (document.location.port === "" ? "8080" : document.location.port);
+        }
+
+        function init() {
+            wssInit(wssOneEmail);
+            wssInit(wssTwoEmail);
+        }
+
+        function sendMessage() {
+            wssOneEmail.forEach(function (element, index, array) {
+                element.send(JSON.stringify(getOneEmailMsg()));
+            });
+            wssTwoEmail.forEach(function (element, index, array) {
+                element.send(JSON.stringify(getTwoEmailMsg()));
+            });
+        }
+
+        function getOneEmailMsg() {
+            var message = {};
+
+            message.type = 'LOGIN_CUSTOMER';
+            message.data = {};
+            message.data.email = 'donatella@mail.ru';
+            message.data.password = 'qwer';
+            return message;
+        }
+        function getTwoEmailMsg() {
+            var message = {};
+
+            message.type = 'LOGIN_CUSTOMER';
+            message.data = {};
+            message.data.email = 'gleb@mail.ru';
+            message.data.password = '123';
+            return message;
+        }
+
+    </script>
+</head>
+<body onload="init();">
+<div id="body">
+
+    <div id="response">
+        <textarea id="messages" rows="50" cols="80" readonly="readonly"></textarea>
+    </div>
+    <form name="message" action="">
+        <input type="button" name="submitmsg" value="Send..." onclick="sendMessage();"/>
+    </form>
+</div>
+Dat page makes 10 login requests of the one email and 5 of the other at the same time;
+</body>
+</html>
