@@ -1,31 +1,28 @@
 package gleb;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Waitress {
-    private PancakeHouseMenu pancakeHouseMenu;
-    private DinerMenu dinerMenu;
+    private List<Menu> menu;
 
-    public Waitress(PancakeHouseMenu pancakeHouseMenu, DinerMenu dinerMenu) {
-        this.pancakeHouseMenu = pancakeHouseMenu;
-        this.dinerMenu = dinerMenu;
+    public Waitress() {
+        menu = new ArrayList<>();
+    }
+
+    public boolean add(Menu menuItems) {
+        return menu.add(menuItems);
     }
 
     public void printMenu() {
-        Iterator<MenuItem> pancakeItr = pancakeHouseMenu.iterator();
-        Iterator<MenuItem> dinerItr = dinerMenu.iterator();
-        System.out.println("BREAKFAST");
-        printMenu(pancakeItr);
-        System.out.println("LAUNCH");
-        printMenu(dinerItr);
+        for (Menu menuItems : menu)
+            printMenu(menuItems);
     }
 
-    private void printMenu(Iterator<MenuItem> itemIterator) {
+    private void printMenu(Menu menu) {
         String out = "%s, %.2f -- %s";
-        while (itemIterator.hasNext()) {
-            MenuItem item = itemIterator.next();
 
+        for (MenuItem item : menu)
             System.out.println(String.format(out, item.getName(), item.getPrice(), item.getDescription()));
-        }
     }
 }
