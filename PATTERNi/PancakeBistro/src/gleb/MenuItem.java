@@ -1,6 +1,6 @@
 package gleb;
 
-public class MenuItem {
+public class MenuItem implements MenuComponent {
     private String name;
     private String description;
     private boolean vegetarian;
@@ -27,5 +27,10 @@ public class MenuItem {
 
     public double getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString() {
+        return name + (vegetarian ? "(v)" : "") + ", " + price + "  -- " + description;
     }
 }

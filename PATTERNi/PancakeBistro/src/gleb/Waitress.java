@@ -1,28 +1,14 @@
 package gleb;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Waitress {
-    private List<Menu> menu;
+    private MenuComponent menus;
 
-    public Waitress() {
-        menu = new ArrayList<>();
-    }
-
-    public boolean add(Menu menuItems) {
-        return menu.add(menuItems);
+    public Waitress(MenuComponent menus) {
+        this.menus = menus;
     }
 
     public void printMenu() {
-        for (Menu menuItems : menu)
-            printMenu(menuItems);
+        System.out.println(menus);
     }
 
-    private void printMenu(Menu menu) {
-        String out = "%s, %.2f -- %s";
-
-        for (MenuItem item : menu)
-            System.out.println(String.format(out, item.getName(), item.getPrice(), item.getDescription()));
-    }
 }
