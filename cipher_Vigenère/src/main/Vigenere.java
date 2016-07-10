@@ -7,9 +7,9 @@ public class Vigenere {
 
     public static void main(String[] args) {
 
-        String key = "izmail";
+        String key = "качерыжка";
 
-        String text = "//?! ololol Hello World";
+        String text = "Привет, Люда!";
 
         String ciphertext = encode(key, text);
 
